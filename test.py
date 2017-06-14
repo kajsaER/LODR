@@ -2,3 +2,5 @@
 
 from Subsystems import *
 
+orb = orbit()
+print orb.T
