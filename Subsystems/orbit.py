@@ -16,7 +16,7 @@ class orbit:
         self.ep = float('nan') #eccentricity
         self.ra = float('nan') #apogee
         self.rp = float('nan') #perigee
-        self.vals = 0 #np.zeros((int(1e6+1), 7))
+        self.__vals = 0 #np.zeros((int(1e6+1), 7))
         #debris self.nu = float('nan') #true anomaly
         #self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
         #self.Omega = float('nan') #right ascension
@@ -37,11 +37,14 @@ class orbit:
         ct = math.cos(theta)
         snuw = math.sin(nuw)
         cnuw = math.cos(nuw)
-        dt = 1
+        dt = .01
         
-        steps = int(1e6)
-        self.vals = np.zeros((steps+1, 7))
-        self.vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw]
+        steps = int(8e6)
+        self.__vals = np.zeros((steps+1, 7))
+        self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw]
+
+        print "L0: " + repr(r*v*st)
+        print "E0: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         
         for x in range(steps) :
             v1 = v
@@ -86,22 +89,33 @@ class orbit:
             cnuw = cnuw2
             
             row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw])
-            self.vals[x+1, :] = row
+            self.__vals[x+1, :] = row
+            if x == steps-1: 
+                print "L: " + repr(r*v*st)
+                print "E: " + repr(math.pow(v, 2)/2 - consts.mu/r)
+        R = self.__vals[:, 3]
+        self.rp = np.amin(R)
+        self.ra = np.amax(R)
+        self.a = (self.ra + self.rp)/2
+        mini = np.argmin(R)
+        self.omega = math.acos(self.__vals[mini, 5]/self.rp)
+        self.ep = (self.ra-self.rp)/(self.ra+self.rp)
+        self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
             
     def show_approx(self):
         self.plot_approx()
         plt.show()
 
     def plot_approx(self):
-        steps = self.vals.shape[0]
+        steps = self.__vals.shape[0]
         x = range(steps)
-        V = self.vals[:, 0]
-        VR = self.vals[:, 1]
-        VRN = self.vals[:, 2]
-        R = self.vals[:, 3]
-        THETA = self.vals[:, 4]
-        X = self.vals[:, 5]
-        Y = self.vals[:, 6]
+        V = self.__vals[:, 0]
+        VR = self.__vals[:, 1]
+        VRN = self.__vals[:, 2]
+        R = self.__vals[:, 3]
+        THETA = self.__vals[:, 4]
+        X = self.__vals[:, 5]
+        Y = self.__vals[:, 6]
         Dtheta = np.fmax(math.fabs(90 - np.amin(THETA)), math.fabs(np.amax(THETA) - 90))
 
         plt.figure()
