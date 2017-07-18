@@ -6,5 +6,11 @@ class laser:
         self.P = power #Power
         self.lambd = wavelength #Wavelength
 
-        def __del__(self):
-            print "Laser has been deleted"
+    
+
+    def __del__(self):
+        print "Laser has been deleted"
+
+
+class beam:
+    def __init__(self, wavelength, angle):

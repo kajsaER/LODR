@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import constants as consts
 
 class debris:
-    def __init__(self, shape, material, size, mass, orientation, orbit, nu):
+    def __init__(self, shape, Cm, size, mass, orientation, orbit, nu):
         self._shape = shape
-        self._material = material
+        self._Cm = Cm
         self._size = size
         self._mass = mass
         self._orientation = orientation
@@ -33,6 +33,8 @@ class debris:
         plt.plot(self._r*math.cos(self.__orbit.omega+self._nu), self._r*math.sin(self.__orbit.omega+self._nu), 'o' )
         #plt.show()
 
+    def hit(self, beam):
+        
 
     def __del__(self):
         print "Debris deleted"

@@ -37,7 +37,7 @@ class orbit:
         ct = math.cos(theta)
         snuw = math.sin(nuw)
         cnuw = math.cos(nuw)
-        dt = .01
+        dt = 2
         
         steps = int(8e6)
         self.__vals = np.zeros((steps+1, 7))
