@@ -33,9 +33,7 @@ class debris:
         plt.plot(self._r*math.cos(self.__orbit.omega+self._nu), self._r*math.sin(self.__orbit.omega+self._nu), 'o' )
         #plt.show()
 
-    def hit(self, beam):
-        
-
+#   def hit(self, beam):
     def __del__(self):
         print "Debris deleted"
 

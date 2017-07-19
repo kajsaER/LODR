@@ -37,11 +37,12 @@ class orbit:
         ct = math.cos(theta)
         snuw = math.sin(nuw)
         cnuw = math.cos(nuw)
-        dt = 2
+        dt1 = 1
+        t = 0
         
-        steps = int(8e6)
-        self.__vals = np.zeros((steps+1, 7))
-        self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw]
+        steps = int(8e5)
+        self.__vals = np.zeros((steps+1, 9))
+        self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt1, t]
 
         print "L0: " + repr(r*v*st)
         print "E0: " + repr(math.pow(v, 2)/2 - consts.mu/r)
@@ -51,19 +52,32 @@ class orbit:
             r1 = r
             st1 = st
             ct1 = ct
+            dt = dt1
+
+            dvn = consts.mu/math.pow(r1, 2)*st1*dt
+            dvt = consts.mu/math.pow(r1, 2)*ct1*dt
+
+            while math.fabs(dvt) <= 1e-4 and dt <= 30:
+                dt = dt + .1
+                dvn = consts.mu/math.pow(r1, 2)*st1*dt
+                dvt = consts.mu/math.pow(r1, 2)*ct1*dt
             
-            v2 = math.sqrt(math.pow(v1 + consts.mu/math.pow(r1,2)*ct1*dt, 2) + 
-                           math.pow(consts.mu/math.pow(r1,2)*st1*dt, 2))
+            if math.fabs(dvt) <= 1e-4:
+                dt = dt1
+                dvn = consts.mu/math.pow(r1, 2)*st1*dt
+                dvt = consts.mu/math.pow(r1, 2)*ct1*dt
+ 
+            v2 = math.sqrt(math.pow(v1 + dvt, 2) + math.pow(dvn, 2))
             r2 = consts.mu / (1/2*(math.pow(v2, 2) - math.pow(v1, 2)) + consts.mu / r1)
             st2 = r1*v1/(r2*v2)*st1
            
-            if math.fabs(st2) >= 1 :
+            if math.fabs(st2) > 1 :
                 r2 = math.sqrt(math.pow(r1, 2) + math.pow(v1*dt, 2) - 2*r1*v1*dt*ct1)
                 v2 = math.sqrt(math.pow(v1, 2) + 2*consts.mu*(1/r2 - 1/r1))
                 st2 = r1*v1/(r2*v2)*st1
            
-            if math.fabs(st2) >=1 :
-                print "Error, dt too big?"
+            if math.fabs(st2) > 1: 
+                print "Error, dt too big?" + repr(dt)
                 break
             
             ct2 = math.sqrt(1-math.pow(st2, 2))
@@ -87,18 +101,27 @@ class orbit:
             r = r2
             snuw = snuw2
             cnuw = cnuw2
+            t = t+dt
             
-            row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw])
+            row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt, t])
             self.__vals[x+1, :] = row
             if x == steps-1: 
                 print "L: " + repr(r*v*st)
                 print "E: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         R = self.__vals[:, 3]
+        VR = self.__vals[:, 1]
+        zer = np.zeros(1)
+        temp = np.concatenate((zer, VR), axis=0)*np.concatenate((VR, zer), axis=0)
+        turns = np.where(temp<0)[0]
+        print turns
+        mini = turns[0]
+        print mini
+        if R[turns[1]] < R[mini]:
+            mini = turns[1]
         self.rp = np.amin(R)
         self.ra = np.amax(R)
         self.a = (self.ra + self.rp)/2
-        mini = np.argmin(R)
-        self.omega = math.acos(self.__vals[mini, 5]/self.rp)
+        self.omega = math.acos(self.__vals[mini-1, 5]/self.rp)
         self.ep = (self.ra-self.rp)/(self.ra+self.rp)
         self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
             
@@ -116,20 +139,25 @@ class orbit:
         THETA = self.__vals[:, 4]
         X = self.__vals[:, 5]
         Y = self.__vals[:, 6]
+        DT = self.__vals[:, 7]
+        T = self.__vals[:, 8]
         Dtheta = np.fmax(math.fabs(90 - np.amin(THETA)), math.fabs(np.amax(THETA) - 90))
 
         plt.figure()
         plt.subplot(311)
-        plt.plot(x, R)
+        plt.plot(T, R)
         plt.title('Distance')
         
         plt.subplot(312)
-        plt.plot(x, THETA)
+        plt.plot(T, THETA)
         plt.title('Theta')
-        plt.axis([0, steps, 90-1.1*Dtheta, 90+1.1*Dtheta])
+        plt.axis([0, T[steps-1], 90-1.1*Dtheta, 90+1.1*Dtheta])
 
         plt.subplot(313)
-        plt.plot(x, V)
+        plt.plot(T, V)
+        plt.hold('on')
+        plt.plot(T, VRN, 'r')
+        plt.plot(T, VR, 'g')
         plt.title('Velocity')
 
         plt.figure()
@@ -149,6 +177,15 @@ class orbit:
 #       plt.figure()
         plt.plot(X,Y, line)
         plt.axis('equal')
+
+    def Print(self):
+        print "Semi-major axis, a: " + repr(self.a)
+        print "Semi-minor axis, b: " + repr(self.b)
+        print "Eccentricity, ep: " + repr(self.ep)
+        print "Appogee, ra: " + repr(self.ra)
+        print "Perigee, rp: " + repr(self.rp)
+        print "Argument of perigee, w: " + repr(self.omega)
+        print 
     
     def __del__(self):
         print "Orbit has been deleted"
