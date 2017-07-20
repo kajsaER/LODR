@@ -31,6 +31,8 @@ class orbit:
         self.ra = self.a*(1 + self.ep)
         self.rp = self.a*(1 - self.ep)
         self.b = self.a*math.sqrt(1 - math.pow(ep,2))
+        self.cw = math.cos(self.omega)
+        self.sw = math.sin(self.omega)
 
     def find(self, r, v, theta, nuw) :
         st = math.sin(theta)
@@ -72,12 +74,22 @@ class orbit:
             st2 = r1*v1/(r2*v2)*st1
            
             if math.fabs(st2) > 1 :
+                st2a = st2
+#               print "st2= " + repr(st2) + ",  trying second computation."
                 r2 = math.sqrt(math.pow(r1, 2) + math.pow(v1*dt, 2) - 2*r1*v1*dt*ct1)
                 v2 = math.sqrt(math.pow(v1, 2) + 2*consts.mu*(1/r2 - 1/r1))
                 st2 = r1*v1/(r2*v2)*st1
-           
+#               print "st2 diff= " + repr(st2a-st2)
+            else :
+                st2a = -st2
+            
+            if st2 == st2a:
+                st2 = 1
+                v2 = v1
+                r2 = r1
+
             if math.fabs(st2) > 1: 
-                print "Error, dt too big?" + repr(dt)
+                print "st2= " + repr(st2) + ",  dt= " + repr(dt) + " too big?" 
                 break
             
             ct2 = math.sqrt(1-math.pow(st2, 2))
@@ -113,17 +125,25 @@ class orbit:
         zer = np.zeros(1)
         temp = np.concatenate((zer, VR), axis=0)*np.concatenate((VR, zer), axis=0)
         turns = np.where(temp<0)[0]
-        print turns
-        mini = turns[0]
-        print mini
-        if R[turns[1]] < R[mini]:
-            mini = turns[1]
         self.rp = np.amin(R)
         self.ra = np.amax(R)
         self.a = (self.ra + self.rp)/2
-        self.omega = math.acos(self.__vals[mini-1, 5]/self.rp)
         self.ep = (self.ra-self.rp)/(self.ra+self.rp)
         self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
+        if turns.shape[0] > 1 :
+#           print turns
+            mini = turns[0]
+#           print mini
+            if R[turns[1]] < R[mini]:
+                mini = turns[1]
+            self.cw = self.__vals[mini-1, 5]/self.rp
+            self.sw = math.sqrt(1 - math.pow(self.cw, 2))
+            self.omega = math.acos(self.cw)
+        else :
+            self.cw = 1
+            self.sw = 0
+            self.omega = 0.0
+
             
     def show_approx(self):
         self.plot_approx()

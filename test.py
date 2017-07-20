@@ -20,7 +20,7 @@ orb = orbit()
 #orb.find(r0, v0, theta0, nuw)
 #orb.show()
 
-orb.make(45e6, 0.9, math.radians(40))
+orb.make(45e6, 0.8, math.radians(40))
 deb1 = debris(0, 0, 1, 1, 0, orb, math.radians(60))
 #orb.show2()
 deb1.plot('b')
