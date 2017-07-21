@@ -2,6 +2,7 @@
 
 from __future__ import division
 import math
+import extmath
 import constants as consts
 import numpy as np
 import matplotlib.pyplot as plt
@@ -34,11 +35,21 @@ class orbit:
         self.cw = math.cos(self.omega)
         self.sw = math.sin(self.omega)
 
-    def find(self, r, v, theta, nuw) :
-        st = math.sin(theta)
-        ct = math.cos(theta)
-        snuw = math.sin(nuw)
-        cnuw = math.cos(nuw)
+    def find(self, z, v, szeta, czeta, sgamma, cgamma) :
+        salpha = extmath.sinplus(sgamma, cgamma, 1, 0)
+        calpha = extmath.cosplus(sgamma, cgamma, 1, 0)
+        r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*calpha)
+        cphi = (math.pow(consts.Re, 2) + math.pow(r, 2) - math.pow(z, 2)) / (2*consts.Re*r)
+        sphi = z/r*salpha
+        cdelta = (math.pow(z, 2) + math.pow(r, 2) - math.pow(consts.Re, 2)) / (2*r*z)
+        sdelta = consts.Re/r*salpha
+
+
+        st = extmath.sinplus(sdelta, cdelta, szeta, czeta)
+        ct = extmath.cosplus(sdelta, cdelta, szeta, czeta)
+        snuw = extmath.sinminus(consts.slat, consts.clat, sphi, cphi)
+        cnuw = extmath.cosminus(consts.slat, consts.clat, sphi, cphi)
+
         dt1 = 1
         t = 0
         

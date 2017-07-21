@@ -27,7 +27,7 @@ deb1.plot('b')
 
 orb2 = orbit()
 meas = deb1.measure()
-orb2.find(meas['r'], meas['v'], meas['theta'], meas['nuw'])
+orb2.find(meas['z'], meas['v'], meas['szeta'], meas['czeta'], meas['sgamma'], meas['cgamma'])
 
 orb.Print()
 orb2.Print()

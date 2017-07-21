@@ -29,11 +29,25 @@ class debris:
         self._theta = math.asin(self.__orbit.rp*self.v0/(self._r*self._v))
         if self._nu < math.pi:
             self._theta = math.pi - self._theta
+        self._stheta = math.sin(self._theta)
+        self._ctheta = math.cos(self._theta)
         # print "alpha: " + repr(self._theta*180/math.pi)
 
     def measure(self):
+        snuw = extmath.sinplus(self.__orbit.sw, self.__orbit.cw, self._snu, self._cnu)
+        cnuw = extmath.cosplus(self.__orbit.sw, self.__orbit.cw, self._snu, self._cnu)
+        cphi = extmath.cosminus(consts.slat, consts.clat, snuw, cnuw) 
+        sphi = extmath.sinminus(consts.slat, consts.clat, snuw, cnuw) 
         z = math.sqrt(math.pow(consts.Re, 2) + math.pow(self._r, 2) - 2*consts.Re*self._r*cphi)
-        return{'z':z, 'v':self._v, 'zeta':self._zeta, 'gamma':self._gamma}
+        cdelta = (math.pow(self._r, 2) + math.pow(z, 2) - math.pow(consts.Re, 2)) / (2*self._r*z)
+        sdelta = consts.Re/z*sphi
+        calpha = (math.pow(consts.Re, 2) + math.pow(z, 2) - math.pow(self._r, 2)) / (2*consts.Re*z)
+        salpha = self._r/z*sphi
+        cgamma = extmath.cosminus(salpha, calpha, 1, 0) # alpha - pi/2
+        sgamma = extmath.sinminus(salpha, calpha, 1, 0) # alpha - pi/2
+        szeta = extmath.sinminus(self._stheta, self._ctheta, sdelta, cdelta)
+        czeta = extmath.cosminus(self._stheta, self._ctheta, sdelta, cdelta)
+        return{'z':z, 'v':self._v, 'szeta':szeta, 'czeta':czeta, 'sgamma':sgamma, 'cgamma':cgamma}
 
     def plot(self, line):
         self.__orbit.plot(line)
