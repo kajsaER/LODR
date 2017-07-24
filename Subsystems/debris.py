@@ -55,8 +55,18 @@ class debris:
         plt.plot(self._r*math.cos(self.__orbit.omega+self._nu), self._r*math.sin(self.__orbit.omega+self._nu), 'o' )
         #plt.show()
 
-#    def hit(self, beam):
-#        z = 
+    def hit(self, beam):
+        meas = self.measure()
+        z = meas['z']
+        Phi = beam.fluence(z)
+        ds = beam.spot(z)
+        if ds >= self._size:
+            dvz = self._etac*self._Cm*Phi / (self._mass/self._size)
+            v = math.sqrt(math.pow(self._v - dvz*czeta, 2) + math.pow(dvz*szeta, 2))
+            sdzeta = dvz*szeta/v
+            cdzeta = (self._v - dvz*czeta) / v
+            self._v = v
+
 
     def __del__(self):
         print "Debris deleted"
