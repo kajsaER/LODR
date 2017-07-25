@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+import math
+import extmath
+
 class laser:
 
     def __init__(self, power, wavelength):

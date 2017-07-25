@@ -18,9 +18,6 @@ class orbit:
         self.ra = float('nan') #apogee
         self.rp = float('nan') #perigee
         self.__vals = 0 #np.zeros((int(1e6+1), 7))
-        #debris self.nu = float('nan') #true anomaly
-        #self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
-        #self.Omega = float('nan') #right ascension
         self.omega = float('nan') #argument of perigee
         
 
@@ -34,7 +31,10 @@ class orbit:
         self.b = self.a*math.sqrt(1 - math.pow(ep,2))
         self.cw = math.cos(self.omega)
         self.sw = math.sin(self.omega)
-
+        self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
+        self.n = 2*math.pi/self.T
+        print "T: " + repr(self.T)
+ 
     def find(self, z, v, szeta, czeta, sgamma, cgamma) :
         salpha = extmath.sinplus(sgamma, cgamma, 1, 0)
         calpha = extmath.cosplus(sgamma, cgamma, 1, 0)
@@ -154,7 +154,9 @@ class orbit:
             self.cw = 1
             self.sw = 0
             self.omega = 0.0
-
+        self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
+        self.n = 2*math.pi/self.T
+ 
             
     def show_approx(self):
         self.plot_approx()
