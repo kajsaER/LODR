@@ -12,25 +12,11 @@ orb = orbit()
 
 orb.make(45e6, 0.8, math.radians(40))
 deb1 = debris(0, 100, .1, 1, 0, orb, math.radians(60))
-#deb1.plot('b')
-
-#orb2 = orbit()
-#meas = deb1.measure()
-#orb2.find(meas['z'], meas['v'], meas['szeta'], meas['czeta'], meas['sgamma'], meas['cgamma'])
-
-#orb.Print()
-#orb2.Print()
-
-#orb2.plot_approx()
-#plt.hold('on')
-#deb1.plot('r:')
-#orb2.plot('g:')
 
 plt.figure()
 deb1.plot('r')
 plt.hold('on')
 plt.plot(0, 0, '*')
-#orb2.plot('g:')
 
 for x in range(int(9e4)):
     deb1.step()
