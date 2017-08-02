@@ -57,8 +57,8 @@ class orbit:
         self.__vals = np.zeros((steps+1, 9))
         self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt1, t]
 
-        print "L0: " + repr(r*v*st)
-        print "E0: " + repr(math.pow(v, 2)/2 - consts.mu/r)
+#        print "L0: " + repr(r*v*st)
+#        print "E0: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         
         for x in range(steps) :
             v1 = v
@@ -128,9 +128,9 @@ class orbit:
             
             row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt, t])
             self.__vals[x+1, :] = row
-            if x == steps-1: 
-                print "L: " + repr(r*v*st)
-                print "E: " + repr(math.pow(v, 2)/2 - consts.mu/r)
+#            if x == steps-1: 
+#                print "L: " + repr(r*v*st)
+#                print "E: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         R = self.__vals[:, 3]
         VR = self.__vals[:, 1]
         zer = np.zeros(1)
@@ -149,7 +149,7 @@ class orbit:
                 mini = turns[1]
             self.cw = self.__vals[mini-1, 5]/self.rp
             self.sw = math.sqrt(1 - math.pow(self.cw, 2))
-            self.omega = math.acos(self.cw)
+            self.omega = math.atan2(self.sw, self.cw)
         else :
             self.cw = 1
             self.sw = 0

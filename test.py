@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/ython
 
 from __future__ import division
 from Subsystems import *
@@ -12,33 +12,30 @@ orb = orbit()
 
 orb.make(45e6, 0.8, math.radians(40))
 deb1 = debris(0, 100, .1, 1, 0, orb, math.radians(60))
-#deb1.plot('b')
-
-#orb2 = orbit()
-#meas = deb1.measure()
-#orb2.find(meas['z'], meas['v'], meas['szeta'], meas['czeta'], meas['sgamma'], meas['cgamma'])
-
-#orb.Print()
-#orb2.Print()
-
-#orb2.plot_approx()
-#plt.hold('on')
-#deb1.plot('r:')
-#orb2.plot('g:')
 
 plt.figure()
 deb1.plot('r')
 plt.hold('on')
 plt.plot(0, 0, '*')
-#orb2.plot('g:')
 
 for x in range(int(9e4)):
     deb1.step()
 deb1.plot('g:')
 
-bm = beam(1.06e-6, 1.7, 10, 2, 1e5, 5e-7)
+laser = laser()
+laser.switch(0)
 
-deb1.hit(bm)
+bm = beam(laser, 1.7, 10, 2, 5e-7, 10e7)
+
+print "nuw1: " + repr(deb1._nu+deb1._orbit.omega)
+
+bm.fire(deb1, 1.0)
+
+print "nuw2: " + repr(deb1._nu+deb1._orbit.omega)
+
+for x in range(1):
+    deb1.step()
+
 deb1.plot('b-.')
 
 plt.show()
