@@ -63,21 +63,8 @@ class debris:
         self._orbit.plot(line)
         plt.hold('on')
         plt.plot(self._r*extmath.cosplus(self._orbit.sw, self._orbit.cw, self._snu, self._cnu), self._r*extmath.sinplus(self._orbit.sw, self._orbit.cw, self._snu, self._cnu), 'o' )
-        #plt.show()
 
     def hit(self, ds, Phi, szeta, czeta, reps):
-#        meas = self.measure()
-#        z = meas['z']
-#        szeta = meas['szeta']
-#        czeta = meas['czeta']
-#        sgamma = meas['sgamma']
-#        cgamma = meas['cgamma']
-#        sdelta = meas['sdelta']
-#        cdelta = meas['cdelta']
-#        sphi = meas['sphi']
-#        cphi = meas['cphi']
-#        Phi = beam.fluence(z, 0.5)
-#        ds = beam.spot(z)
         if ds >= self._size:
             dvz = reps*self._etac*self._Cm*Phi / (self._mass/(math.pi*math.pow(self._size, 2)))
             v = math.sqrt(math.pow((self._v - dvz*czeta), 2) + math.pow((dvz*szeta), 2))
@@ -87,37 +74,9 @@ class debris:
             szeta = extmath.sinplus(szeta, czeta, sdzeta, cdzeta)
             czeta = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
             return np.array([szeta, czeta, v])
-#            self.__orbit.find(z, self._v, szeta, czeta, sgamma, cgamma)
-#            sw = self.__orbit.sw
-#            cw = self.__orbit.cw
-#            spw = extmath.sinplus(sphi, cphi, sw, cw)
-#            cpw = extmath.cosplus(sphi, cphi, sw, cw)
-#            self._snu = extmath.sinminus(consts.slat, consts.clat, spw, cpw)
-#            self._cnu = extmath.cosminus(consts.slat, consts.clat, spw, cpw)
-#            self._nu = math.atan2(self._snu, self._cnu)
-#            if self._nu < 0:
-#                self._nu += 2*math.pi
-#
-#            self._stheta = extmath.sinplus(sdelta, cdelta, szeta, czeta)
-#            self._ctheta = extmath.cosplus(sdelta, cdelta, szeta, czeta)
         else:
             print "Spot size too small."
             return np.array([szeta, czeta, v])
 
     def __del__(self):
         print "Debris deleted"
-
-
-
-#class shape:
-#   def __init__(self, form, size):
-#       self._type = form
-#       if form == ball:
-#           self._radious = size
-#       elif form == square:
-#           self._side = size
-#
-#   def __del__(self):
-#       print "No shape"
-
-        

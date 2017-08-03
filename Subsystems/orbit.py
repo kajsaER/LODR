@@ -176,24 +176,24 @@ class orbit:
         T = self.__vals[:, 8]
         Dtheta = np.fmax(math.fabs(90 - np.amin(THETA)), math.fabs(np.amax(THETA) - 90))
 
-        plt.figure()
-        plt.subplot(311)
-        plt.plot(T, R)
-        plt.title('Distance')
+#        plt.figure()
+#        plt.subplot(311)
+#        plt.plot(T, R)
+#        plt.title('Distance')
         
-        plt.subplot(312)
-        plt.plot(T, THETA)
-        plt.title('Theta')
-        plt.axis([0, T[steps-1], 90-1.1*Dtheta, 90+1.1*Dtheta])
+#        plt.subplot(312)
+#        plt.plot(T, THETA)
+#        plt.title('Theta')
+#        plt.axis([0, T[steps-1], 90-1.1*Dtheta, 90+1.1*Dtheta])
+#
+#        plt.subplot(313)
+#        plt.plot(T, V)
+#        plt.hold('on')
+#        plt.plot(T, VRN, 'r')
+#        plt.plot(T, VR, 'g')
+#        plt.title('Velocity')
 
-        plt.subplot(313)
-        plt.plot(T, V)
-        plt.hold('on')
-        plt.plot(T, VRN, 'r')
-        plt.plot(T, VR, 'g')
-        plt.title('Velocity')
-
-        plt.figure()
+#        plt.figure()
         plt.plot(X, Y)
         plt.axis('equal')
 

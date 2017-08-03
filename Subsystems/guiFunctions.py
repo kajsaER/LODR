@@ -1,11 +1,15 @@
 #!/usr/bin/python
 
-class GUI:
-    
-    # All QtDesigner code goes here (?)
+def changeLaser(self, i):
+    self.LODR.laser.switch(i)
 
+def radBtnState(self, b):
 
-    def changeLaser(self, i):
-        self.LODR.laser.switch(i)
+    if b.text() == "Frequency doubling":
+        if b.ischecked() == True:
+            self._laser.doubfreq()
+        else:
+            self._laser.normfreq()
+
 
 
