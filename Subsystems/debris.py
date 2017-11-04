@@ -28,6 +28,7 @@ class debris:
 
     def step(self):
         dnu = self._orbit.a*self._orbit.b*self._orbit.n / math.pow(self._r, 2)
+#       self.v0 = math.sqrt(consts.mu*(2/self._orbit.rp - 1/self._orbit.a))
         self._nu = self._nu + dnu
         if self._nu > 2*math.pi:
             self._nu -= 2*math.pi
@@ -38,6 +39,8 @@ class debris:
         self._r = self._orbit.a*(1- math.pow(self._orbit.ep, 2))/(1+self._orbit.ep*self._cnu)
         self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))
         self._stheta = self._orbit.rp*self.v0 / (self._r*self._v)
+        if self._stheta > 1:
+            print "Sin Theta = " + repr(self._stheta)
         self._ctheta = math.sqrt(1 - math.pow(self._stheta, 2))
         if self._nu < math.pi:
             self._ctheta = - self._ctheta
@@ -65,18 +68,19 @@ class debris:
         plt.plot(self._r*extmath.cosplus(self._orbit.sw, self._orbit.cw, self._snu, self._cnu), self._r*extmath.sinplus(self._orbit.sw, self._orbit.cw, self._snu, self._cnu), 'o' )
 
     def hit(self, ds, Phi, szeta, czeta, reps):
-        if ds >= self._size:
-            dvz = reps*self._etac*self._Cm*Phi / (self._mass/(math.pi*math.pow(self._size, 2)))
-            v = math.sqrt(math.pow((self._v - dvz*czeta), 2) + math.pow((dvz*szeta), 2))
-            sdzeta = dvz*szeta/v
-            cdzeta = (self._v - dvz*czeta) / v
-            self._v = v
-            szeta = extmath.sinplus(szeta, czeta, sdzeta, cdzeta)
-            czeta = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
-            return np.array([szeta, czeta, v])
-        else:
-            print "Spot size too small."
-            return np.array([szeta, czeta, v])
+#       if ds > self._size:
+#           u = math.pow(ds/(2*self._size), 2) 
+#       else:
+#           u = 1
+#       dvz = reps*self._etac*self._Cm*Phi / (self._mass*u/(math.pi*math.pow(self._size, 2)))
+        dvz = reps*self._etac*self._Cm*Phi / (self._mass/(math.pi*math.pow(self._size, 2)))
+        v = math.sqrt(math.pow((self._v - dvz*czeta), 2) + math.pow((dvz*szeta), 2))
+        sdzeta = dvz*szeta/v
+        cdzeta = (self._v - dvz*czeta) / v
+        self._v = v
+        szeta2 = extmath.sinplus(szeta, czeta, sdzeta, cdzeta)
+        czeta2 = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
+        return np.array([szeta2, czeta2, v])
 
     def __del__(self):
         print "Debris deleted"

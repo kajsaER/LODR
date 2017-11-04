@@ -19,7 +19,6 @@ class orbit:
         self.rp = float('nan') #perigee
         self.__vals = 0 #np.zeros((int(1e6+1), 7))
         self.omega = float('nan') #argument of perigee
-        
 
     def make(self, a, ep, omega):
         self.a = a
@@ -44,7 +43,6 @@ class orbit:
         cdelta = (math.pow(z, 2) + math.pow(r, 2) - math.pow(consts.Re, 2)) / (2*r*z)
         sdelta = consts.Re/r*salpha
 
-
         st = extmath.sinplus(sdelta, cdelta, szeta, czeta)
         ct = extmath.cosplus(sdelta, cdelta, szeta, czeta)
         snuw = extmath.sinminus(consts.slat, consts.clat, sphi, cphi)
@@ -56,9 +54,6 @@ class orbit:
         steps = int(8e5)
         self.__vals = np.zeros((steps+1, 9))
         self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt1, t]
-
-#        print "L0: " + repr(r*v*st)
-#        print "E0: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         
         for x in range(steps) :
             v1 = v
@@ -86,11 +81,9 @@ class orbit:
            
             if math.fabs(st2) > 1 :
                 st2a = st2
-#               print "st2= " + repr(st2) + ",  trying second computation."
                 r2 = math.sqrt(math.pow(r1, 2) + math.pow(v1*dt, 2) - 2*r1*v1*dt*ct1)
                 v2 = math.sqrt(math.pow(v1, 2) + 2*consts.mu*(1/r2 - 1/r1))
                 st2 = r1*v1/(r2*v2)*st1
-#               print "st2 diff= " + repr(st2a-st2)
             else :
                 st2a = -st2
             
@@ -128,9 +121,6 @@ class orbit:
             
             row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt, t])
             self.__vals[x+1, :] = row
-#            if x == steps-1: 
-#                print "L: " + repr(r*v*st)
-#                print "E: " + repr(math.pow(v, 2)/2 - consts.mu/r)
         R = self.__vals[:, 3]
         VR = self.__vals[:, 1]
         zer = np.zeros(1)
@@ -142,9 +132,7 @@ class orbit:
         self.ep = (self.ra-self.rp)/(self.ra+self.rp)
         self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
         if turns.shape[0] > 1 :
-#           print turns
             mini = turns[0]
-#           print mini
             if R[turns[1]] < R[mini]:
                 mini = turns[1]
             self.cw = self.__vals[mini-1, 5]/self.rp
@@ -176,24 +164,6 @@ class orbit:
         T = self.__vals[:, 8]
         Dtheta = np.fmax(math.fabs(90 - np.amin(THETA)), math.fabs(np.amax(THETA) - 90))
 
-#        plt.figure()
-#        plt.subplot(311)
-#        plt.plot(T, R)
-#        plt.title('Distance')
-        
-#        plt.subplot(312)
-#        plt.plot(T, THETA)
-#        plt.title('Theta')
-#        plt.axis([0, T[steps-1], 90-1.1*Dtheta, 90+1.1*Dtheta])
-#
-#        plt.subplot(313)
-#        plt.plot(T, V)
-#        plt.hold('on')
-#        plt.plot(T, VRN, 'r')
-#        plt.plot(T, VR, 'g')
-#        plt.title('Velocity')
-
-#        plt.figure()
         plt.plot(X, Y)
         plt.axis('equal')
 
@@ -207,7 +177,6 @@ class orbit:
             X[l] = r*math.cos(ang)
             Y[l] = r*math.sin(ang)
         
-#       plt.figure()
         plt.plot(X,Y, line)
         plt.axis('equal')
 
