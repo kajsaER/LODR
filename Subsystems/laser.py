@@ -13,7 +13,7 @@ class laser:
         self._M2s = np.array([2, 2, 2]) # Array of beam quality factors for different lasers
 
         self._type = 0 # The index of the chosen laser
-        self._P = self._powers[0] #The power of the chosen laser
+        self._P = self._powers[0]#The power of the chosen laser
         self._lambda = self._lambdas[0] #The wavelength of the chosen laser
         self._M2 = self._M2s[0] # The beam quality factor of the chosen laser
         self._Cb = 1.9 # Beam coefficient
@@ -22,7 +22,7 @@ class laser:
         self._tau = 5e-7
         self._frep = 10e3
         self._W = self._P/self._frep
-        print "W = " + repr(self._W)
+#        print "W = " + repr(self._W)
 
     def switch(self, i):
         self._P = self._powers[i]
@@ -33,7 +33,7 @@ class laser:
 
     def doubfreq(self):
         self._dubf = True
-        self._lambda = 2*self._lambdas[self._type]
+        self._lambda = self._lambdas[self._type]/2
 
     def normfreq(self):
         self._dubf = False

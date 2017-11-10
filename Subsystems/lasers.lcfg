@@ -1,0 +1,27 @@
+[CO2]
+power = 70.0
+energy = 0.007
+lambda = 10.6e-6
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+
+[Nd:YAG]
+power = 2.0
+energy = 0.0002
+lambda = 1.06e-6
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+
+[TiS]
+power = 5.0
+energy = 0.0005
+lambda = 830e-9
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+

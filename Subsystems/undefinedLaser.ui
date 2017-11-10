@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>274</width>
+    <width>292</width>
     <height>214</height>
    </rect>
   </property>
@@ -31,9 +31,15 @@
     <rect>
      <x>31</x>
      <y>60</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_W">
@@ -54,9 +60,15 @@
     <rect>
      <x>31</x>
      <y>80</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_lambda">
@@ -77,9 +89,15 @@
     <rect>
      <x>31</x>
      <y>140</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_frep">
@@ -100,9 +118,15 @@
     <rect>
      <x>31</x>
      <y>120</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_Cb">
@@ -123,9 +147,15 @@
     <rect>
      <x>31</x>
      <y>100</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_M2">
@@ -146,9 +176,15 @@
     <rect>
      <x>31</x>
      <y>160</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_tau">
@@ -169,9 +205,15 @@
     <rect>
      <x>31</x>
      <y>40</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_P">
@@ -190,8 +232,8 @@
   <widget class="QSlider" name="slide_frep">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>140</y>
+     <x>120</x>
+     <y>142</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -203,8 +245,8 @@
   <widget class="QSlider" name="slide_tau">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>160</y>
+     <x>120</x>
+     <y>162</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -216,8 +258,8 @@
   <widget class="QSlider" name="slide_T">
    <property name="geometry">
     <rect>
-     <x>89</x>
-     <y>180</y>
+     <x>120</x>
+     <y>182</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -242,18 +284,24 @@
   <widget class="QLCDNumber" name="num_T">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>31</x>
      <y>180</y>
-     <width>51</width>
+     <width>80</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="numDigits">
+    <number>8</number>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
   <widget class="QSlider" name="slide_Cb">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>120</y>
+     <x>120</x>
+     <y>122</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -265,8 +313,8 @@
   <widget class="QSlider" name="slide_M2">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>100</y>
+     <x>120</x>
+     <y>102</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -278,8 +326,8 @@
   <widget class="QSlider" name="slide_P">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>40</y>
+     <x>120</x>
+     <y>42</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -291,8 +339,8 @@
   <widget class="QSlider" name="slide_W">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>60</y>
+     <x>120</x>
+     <y>62</y>
      <width>160</width>
      <height>18</height>
     </rect>
@@ -304,8 +352,8 @@
   <widget class="QSlider" name="slide_lambda">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>80</y>
+     <x>120</x>
+     <y>82</y>
      <width>160</width>
      <height>18</height>
     </rect>
