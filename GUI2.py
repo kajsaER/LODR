@@ -14,7 +14,12 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         super(OperatorGUI, self).__init__(parent)
         self.setupUi(self)
         self.filefolder = os.getcwd()
-        self.laserConf = SCP(allow_no_value=True)
+        dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
+                            'Repetition rate', 'Pulse duration'])
+        dl.update({'Repetition min':'0', 'Repetition max':'1e5','Pulse min':'1e-9',
+                'Pulse max':'1e-3'})
+        self.laserConf = SCP(dl, allow_no_value=True)
+
 
         # File Menu
         self.actionOpen_file.triggered.connect(self.open_file)
@@ -25,8 +30,10 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         # Run Menu
 
         # Laser Widget
-        self.laserType.activated[str].connect(self.laser_choice)
-
+        self.laserType.activated[str].connect(self.laser_choice) 
+        self.laser_type_list = ['Choose']
+        
+        self.lasersystem = laser()
         self.laserwidget.setLayout(QtGui.QVBoxLayout())
         self.laserstack = QtGui.QStackedWidget()
         self.laserwidget.layout().addWidget(self.laserstack)
@@ -44,16 +51,31 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def laser_choice(self, choice):
         if choice == "Choose":
             self.laserstack.setCurrentWidget(self.laserEmpty)
+            LT = self.laserConf.defaults()
+            self.lasersystem.switch(LT)
         elif choice == "Custom":
             self.laserstack.setCurrentWidget(self.laserUndef)
+            LT = dict(self.laserConf.items(str(choice)))
+            self.laserUndef.setDefaultLaserParam(LT)
+            self.lasersystem.switch(LT)
         else:
             self.laserstack.setCurrentWidget(self.laserDef)
-            self.laserDef.setDefaultLaserParam(dict(self.laserConf.items(str(choice))))
+            LT = dict(self.laserConf.items(str(choice)))
+            self.laserDef.setDefaultLaserParam(LT)
+            self.lasersystem.switch(LT)
 
     def load_laser(self, filename):
         self.laserConf.read(str(filename))
         lasers = self.laserConf.sections()
-        self.laserType.insertItems(self.laserType.count()-1, lasers)
+        if 'Custom' in self.laser_type_list:
+            pos = self.laserType.count()-1
+        else:
+            pos = self.laserType.count()
+        for laser in lasers:
+            if laser not in self.laser_type_list:
+                self.laserType.insertItem(pos, laser)
+                self.laser_type_list.append(laser)
+                pos = pos+1
 
 
     def open_file(self):

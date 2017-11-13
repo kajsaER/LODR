@@ -5,39 +5,37 @@ import extmath
 import constants as consts
 import numpy as np
 
+NAN = float('nan')
+
 class laser:
 
     def __init__(self):
-        self._powers = np.array([70.0, 2.0, 5.0]) # Array of powers of different lasers
-        self._lambdas = np.array([10.6e-6, 1.06e-6, 830e-9]) # Array of wavelengths of different lasers
-        self._M2s = np.array([2, 2, 2]) # Array of beam quality factors for different lasers
+        self._P = NAN                   # The power of the chosen laser
+        self._W =  NAN                  # Pulse energy          self._P/self._frep
+        self._lambda = NAN              # The wavelength of the chosen laser
+        self._M2 = NAN                  # The beam quality factor of the chosen laser
+        self._Cb = NAN                  # Beam coefficient
+        self._frep = NAN                # Repetition rate
+        self._tau = NAN                 # Pulse duration
+        self._dubf = False              # Bool for indication of frequency doubling
 
-        self._type = 0 # The index of the chosen laser
-        self._P = self._powers[0]#The power of the chosen laser
-        self._lambda = self._lambdas[0] #The wavelength of the chosen laser
-        self._M2 = self._M2s[0] # The beam quality factor of the chosen laser
-        self._Cb = 1.9 # Beam coefficient
-
+    def switch(self, LaserType):
+        self._P = extmath.myfloat(LaserType.get('power'))
+        self._W = extmath.myfloat(LaserType.get('energy'))
+        self._lambda = extmath.myfloat(LaserType.get('lambda'))
+        self._M2 = extmath.myfloat(LaserType.get('m2'))
+        self._Cb = extmath.myfloat(LaserType.get('cb'))
+        self._frep = extmath.myfloat(LaserType.get('repetition rate'))
+        self._tau = extmath.myfloat(LaserType.get('pulse duration'))
         self._dubf = False
-        self._tau = 5e-7
-        self._frep = 10e3
-        self._W = self._P/self._frep
-#        print "W = " + repr(self._W)
-
-    def switch(self, i):
-        self._P = self._powers[i]
-        self._lambda = self._lambdas[i]
-        self._type = i
-        if self._dubf == True:
-            self._lambda = 2*self._lambda
 
     def doubfreq(self):
         self._dubf = True
-        self._lambda = self._lambdas[self._type]/2
+        self._lambda = self._lambda/2
 
     def normfreq(self):
         self._dubf = False
-        self._lambda = self._lambdas[self._type]
+        self._lambda = self._lambda*2
 
     def spot(self, z, Deff, atm):
         diveff = self.div(Deff, atm)
@@ -63,12 +61,16 @@ class laser:
         sphi = meas['sphi']
         cphi = meas['cphi']
         if duration <= 1:
-            debval = deb.hit(self.spot(z, ant.Deff(), atm), self.fluence(z, ant.Deff(), atm), szeta, czeta, self._frep*duration)
+            debval = deb.hit(self.spot(z, ant.Deff(), atm),
+                    self.fluence(z, ant.Deff(), atm), szeta,
+                    czeta, self._frep*duration)
             szeta = debval[0]
             czeta = debval[1]
             v = debval[2]
         else :
-            debval = deb.hit(self.spot(z, ant.Deff(), atm), self.fluence(z,ant.Deff(), atm), szeta, czeta, self._frep)
+            debval = deb.hit(self.spot(z, ant.Deff(), atm),
+                    self.fluence(z,ant.Deff(), atm), szeta,
+                    czeta, self._frep)
             szeta = debval[0]
             czeta = debval[1]
             v = debval[2]

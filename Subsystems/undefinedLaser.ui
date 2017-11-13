@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>292</width>
+    <width>350</width>
     <height>214</height>
    </rect>
   </property>
@@ -232,11 +232,14 @@
   <widget class="QSlider" name="slide_frep">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>142</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -245,11 +248,14 @@
   <widget class="QSlider" name="slide_tau">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>162</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -258,11 +264,14 @@
   <widget class="QSlider" name="slide_T">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>182</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -300,11 +309,14 @@
   <widget class="QSlider" name="slide_Cb">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>122</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -313,11 +325,14 @@
   <widget class="QSlider" name="slide_M2">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>102</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -326,11 +341,14 @@
   <widget class="QSlider" name="slide_P">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>42</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -339,11 +357,14 @@
   <widget class="QSlider" name="slide_W">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>62</y>
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="tracking">
+    <bool>false</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -352,14 +373,125 @@
   <widget class="QSlider" name="slide_lambda">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>82</y>
      <width>160</width>
      <height>18</height>
     </rect>
    </property>
+   <property name="tracking">
+    <bool>false</bool>
+   </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_P">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>40</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;W&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_lambda">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>80</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;m&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_tau">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>160</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_frep">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>140</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Hz&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_W">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>60</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;J&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="unit_T">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>180</y>
+     <width>35</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>
