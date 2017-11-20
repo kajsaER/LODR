@@ -386,112 +386,64 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_P">
+  <widget class="QComboBox" name="unit_P">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>40</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>39</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;W&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_lambda">
+  <widget class="QComboBox" name="unit_W">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>80</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>59</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;m&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_tau">
+  <widget class="QComboBox" name="unit_lambda">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>160</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>79</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_frep">
+  <widget class="QComboBox" name="unit_frep">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>140</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>139</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Hz&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_W">
+  <widget class="QComboBox" name="unit_tau">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>60</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>159</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;J&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="unit_T">
+  <widget class="QComboBox" name="unit_T">
    <property name="geometry">
     <rect>
-     <x>115</x>
-     <y>180</y>
-     <width>35</width>
-     <height>20</height>
+     <x>111</x>
+     <y>179</y>
+     <width>48</width>
+     <height>22</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

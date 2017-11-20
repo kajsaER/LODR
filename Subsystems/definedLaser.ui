@@ -239,7 +239,7 @@
     </rect>
    </property>
    <property name="maximum">
-    <number>899999</number>
+    <number>1000</number>
    </property>
    <property name="tracking">
     <bool>false</bool>
@@ -257,6 +257,9 @@
      <height>18</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
    <property name="tracking">
     <bool>false</bool>
    </property>
@@ -272,6 +275,9 @@
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>100</number>
    </property>
    <property name="tracking">
     <bool>false</bool>
