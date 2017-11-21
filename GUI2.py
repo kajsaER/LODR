@@ -16,8 +16,9 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.filefolder = os.getcwd()
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
                             'Repetition rate', 'Pulse duration'])
-        dl.update({'Repetition min':'0', 'Repetition max':'1e5','Pulse min':'1e-9',
-            'Pulse max':'1e-3', 'Fire duration':'0', 'Fire min':'0', 'Fire max':'10'})
+        dl.update({'Repetition rate min':'0', 'Repetition rate max':'1e5',
+            'Pulse duration min':'1e-9', 'Pulse duration max':'1e-3',
+            'Fire duration':'0', 'Fire duration min':'0', 'Fire duration max':'10'})
         self.laserConf = SCP(dl, allow_no_value=True)
 
 

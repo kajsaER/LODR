@@ -1,9 +1,10 @@
 from PyQt4 import QtCore, QtGui, uic
 from ConfigParser import SafeConfigParser
-import math, extmath
+import math, extmath, sys
 import constants as consts
 import numpy as np
 from decimal import Decimal
+
 
 qtCreatorLaser = "Subsystems/laser_widget.ui"
 laser_widget, laserBaseClass = uic.loadUiType(qtCreatorLaser)
@@ -134,9 +135,12 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         if 'Custom' not in self.main.laser_type_list:
             self.main.laserType.addItem('Custom')
             self.main.laser_type_list.append('Custom')
-        LT = {'Power':'1000', 'Power min':'0', 'Power max':'1e6', 'Energy':'0',
-                'Lambda':'0', 'M2': '0', 'Cb':'0',
-                'Repetition rate':'0', 'Pulse duration':'0'}
+        LT = {'Power':'1000', 'Power min':'0', 'Power max':'1e6',
+              'Energy':'0', 'Energy min':'0', 'Energy max':'1',
+              'Lambda':'0', 'Lambda min':'0', 'Lambda max':'1', 
+              'M2':'1', 'M2 min':'1', 'M2 max':'1e2',
+              'Cb':'1', 'Cb min':'1', 'Cb max':'1e1',
+              'Repetition rate':'0', 'Pulse duration':'0'}
         for name in LT.keys():
             self.main.laserConf.set('Custom', name, LT[name])
 
@@ -159,69 +163,58 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.slide_T.valueChanged.connect(lambda value: self.slide_changed(value, 'T'))
 
     def build_unit_box(self, measure):
+        listed = []
         if measure in {'P', 'frep'}:
-            listed = []
             for pref in ['', 'k', 'M', 'G']:
-                listed.append(str(pref + units.get(measure)))
+                listed.append(unicode(pref + units.get(measure)))
             exec("%s" % 'self.unit_' + measure + '.addItems(listed)')
+        elif measure in {'W', 'lambda', 'tau'}:
+            for pref in ['', 'm', u'\u03bc', 'n']:
+                listed.append(unicode(pref + units.get(measure)))
+            exec("%s" % 'self.unit_' + measure + '.addItems(listed)')
+        elif measure in {'T'}:
+            for pref in ['', 'm', u'\u03bc']:
+                listed.append(unicode(pref + units.get(measure)))
+            exec('self.unit_' + measure + '.addItems(listed)')
 
 
     def setDefaultLaserParam(self, LaserType):
         self.freqDub.setChecked(False)
+        self.LaserType = LaserType
 
-        temp = extmath.prefixedValue(LaserType.get('power'))
-        self.num_P.display(temp[1])
-        self.build_unit_box('P')
-        self.pot_P = pow(10, temp[2])
-        if self.pot_P != 1:
-            power = '%.0E' % Decimal(self.pot_P)
-            prefixedunit = extmath.allPot.get(power) + units.get('P')
-            for ind in range(0, self.unit_P.count()-1):
-                if self.unit_P.itemText(ind) == prefixedunit:
-                    self.unit_P.setCurrentIndex(ind)
-                    break
-        self.min_P = extmath.myfloat(LaserType.get('power min'))
-        self.scale_P = extmath.myfloat(LaserType.get('power max'))-self.min_P
-        self.slide_P.setValue((self.num_P.value()*self.pot_P-self.min_P)*
-                self.slide_P.maximum()/self.scale_P)
-
-        temp = extmath.prefixedValue(LaserType.get('energy'))
-        self.num_W.display(temp[1])
-        self.unit_W.setText(temp[0]+'J')
-
-        temp = extmath.prefixedValue(LaserType.get('lambda'))
-        self.num_lambda.display(temp[1])
-        self.unit_lambda.setText(temp[0]+'m')
+        self.set_default_value('power', 'P')
+        self.set_default_value('energy', 'W')
+        self.set_default_value('lambda', 'lambda')
 
         self.num_M2.display(float(LaserType.get('m2')))
         self.num_Cb.display(float(LaserType.get('cb')))
         
-        temp = extmath.prefixedValue(LaserType.get('repetition rate'))
-        self.num_frep.display(temp[1])
-        self.unit_frep.setText(temp[0]+'Hz')
-        self.pot_frep = pow(10, temp[2])
-        self.min_frep = extmath.myfloat(LaserType.get('repetition min'))
-        self.scale_frep = extmath.myfloat(LaserType.get('repetition max'))-self.min_frep
-        self.slide_frep.setValue((self.num_frep.value()*self.pot_frep-self.min_frep)*
-                self.slide_frep.maximum()/self.scale_frep)
+        self.set_default_value('repetition rate', 'frep')
+        self.set_default_value('pulse duration', 'tau')
+        self.set_default_value('fire duration', 'T')
 
-        temp = extmath.prefixedValue(LaserType.get('pulse duration'))
-        self.num_tau.display(temp[1])
-        self.unit_tau.setText(temp[0]+'s')
-        self.pot_tau = pow(10, temp[2])
-        self.min_tau = extmath.myfloat(LaserType.get('pulse min'))
-        self.scale_tau = extmath.myfloat(LaserType.get('pulse max'))-self.min_tau
-        self.slide_tau.setValue((self.num_tau.value()*self.pot_tau-self.min_tau)*
-                self.slide_tau.maximum()/self.scale_tau)
-        
-        temp = extmath.prefixedValue(LaserType.get('fire duration'))
-        self.num_T.display(temp[1])
-        self.unit_T.setText(temp[0]+'s')
-        self.pot_T = pow(10, temp[2])
-        self.min_T = extmath.myfloat(LaserType.get('fire min'))
-        self.scale_T = extmath.myfloat(LaserType.get('fire max'))-self.min_T
-        self.slide_T.setValue((self.num_T.value()*self.pot_T-self.min_T)*
-                self.slide_T.maximum()/self.scale_T)
+    def set_default_value(self, LONG, SHORT):
+        temp = extmath.prefixedValue(self.LaserType.get(LONG))
+        exec('self.num_' + SHORT + '.display(temp[1])')
+        self.build_unit_box(SHORT)
+        pot = pow(10, temp[2])
+        exec('self.pot_' + SHORT + ' = pot')
+        if pot != 1:
+            self.set_unit(SHORT)
+        exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')
+        exec('self.scale_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))-self.min_' + SHORT)
+        exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()*pot-self.min_'+SHORT+')*self.slide_'+SHORT+'.maximum()/self.scale_'+SHORT+')')
+
+    def set_unit(self, var):
+        exec('p = self.pot_' + var)
+        power = '%.0E' % Decimal(p)
+        prefixedunit = extmath.allPot.get(power) + units.get(var)
+#        print prefixedunit
+        exec('unit = self.unit_' + var)
+        for ind in range(0, unit.count()-1):
+            if unit.itemText(ind) == prefixedunit:
+                unit.setCurrentIndex(ind)
+                break
 
     def double_freq(self):
         if self.freqDub.isChecked():
