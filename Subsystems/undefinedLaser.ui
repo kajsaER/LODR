@@ -238,6 +238,12 @@
      <height>18</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
    <property name="tracking">
     <bool>false</bool>
    </property>
@@ -254,6 +260,12 @@
      <height>18</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
    <property name="tracking">
     <bool>false</bool>
    </property>
@@ -269,6 +281,12 @@
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
    </property>
    <property name="tracking">
     <bool>false</bool>
@@ -347,6 +365,12 @@
      <height>18</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
    <property name="tracking">
     <bool>false</bool>
    </property>
@@ -362,6 +386,12 @@
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
    </property>
    <property name="tracking">
     <bool>false</bool>
@@ -379,6 +409,12 @@
      <height>18</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
    <property name="tracking">
     <bool>false</bool>
    </property>
@@ -394,6 +430,9 @@
      <width>48</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QComboBox" name="unit_W">

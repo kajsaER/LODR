@@ -16,9 +16,9 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.filefolder = os.getcwd()
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
                             'Repetition rate', 'Pulse duration'])
-        dl.update({'Repetition rate min':'0', 'Repetition rate max':'1e5',
-            'Pulse duration min':'1e-9', 'Pulse duration max':'1e-3',
-            'Fire duration':'0', 'Fire duration min':'0', 'Fire duration max':'10'})
+        dl.update({'Repetition rate min':'1E+00', 'Repetition rate max':'1E+05',
+            'Pulse duration min':'1E-09', 'Pulse duration max':'1E-03',
+            'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})
         self.laserConf = SCP(dl, allow_no_value=True)
 
 
@@ -26,8 +26,10 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.actionOpen_file.triggered.connect(self.open_file)
         self.actionClose.triggered.connect(self.close_application)
         # Edit Menu
+        self.actionAdd_Debris.triggered.connect(self.add_debris)
         self.actionLoad_Lasers.triggered.connect(lambda: self.load_laser(
             self.get_filename('Laser Files (*.lcfg)')))
+
         # Run Menu
 
         # Laser Widget
@@ -44,10 +46,25 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.laserstack.addWidget(self.laserEmpty)
         self.laserstack.addWidget(self.laserDef)
         self.laserstack.addWidget(self.laserUndef)
+
+        # Antenna
+        self.antenna = antenna(0,0)
+        self.antennaD.editingFinished.connect(lambda: self.antenna.set_D(self.antennaD.text()))
+        self.antennaEff.valueChanged.connect(lambda value: self.antenna.set_ratio(
+            float(self.antennaEff.value()/100)))
+
+        # Debris
+        
+        # Position
+
+        # Orbit
         
         # Close Button
         self.closeBtn.clicked.connect(self.close_application)
-
+    
+    def add_debris(self):
+        self.new_deb = NewDebris(self)
+        self.new_deb.show()
 
     def laser_choice(self, choice):
         if choice == "Choose":

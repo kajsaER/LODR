@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import constants as consts
 import numpy as np
 
+
 class debris:
     def __init__(self, shape, Cm, size, mass, orientation, orbit, nu):
         self._shape = shape

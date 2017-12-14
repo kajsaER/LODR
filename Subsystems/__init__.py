@@ -7,3 +7,5 @@ from atmosphere import atmosphere
 from orbit import orbit
 import guiFunctions
 from laser_widget import *
+from Debris_Widget import *
+
