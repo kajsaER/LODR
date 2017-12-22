@@ -6,30 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>176</height>
+    <width>332</width>
+    <height>171</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Add Debris</string>
   </property>
   <property name="toolTip">
-   <string>Tooool</string>
+   <string/>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>140</y>
-     <width>341</width>
+     <width>181</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+   <property name="centerButtons">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_Cm">
@@ -93,6 +99,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The mass of the debris in kg</string>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -100,13 +109,13 @@
     <string/>
    </property>
    <property name="text">
-    <string comment="textdisambiguation" extracomment="textcomment"/>
+    <string/>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string comment="placeholdertextdisam" extracomment="placecomment"/>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="d">
@@ -118,17 +127,26 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The diameter of the debris in m</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
    <property name="inputMask">
     <string/>
    </property>
    <property name="text">
-    <string comment="textdisambiguation" extracomment="textcomment"/>
+    <string/>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string comment="placeholdertextdisam" extracomment="placecomment"/>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="Cm">
@@ -140,17 +158,20 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The momentum coupling coefficient in N/MW</string>
+   </property>
    <property name="inputMask">
     <string/>
    </property>
    <property name="text">
-    <string comment="textdisambiguation" extracomment="textcomment"/>
+    <string/>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string comment="placeholdertextdisam" extracomment="placecomment"/>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="etac">
@@ -162,30 +183,36 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The combined efficiency factor</string>
+   </property>
    <property name="inputMask">
     <string/>
    </property>
    <property name="text">
-    <string comment="textdisambiguation" extracomment="textcomment"/>
+    <string/>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string comment="placeholdertextdisam" extracomment="placecomment"/>
+    <string/>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QListWidget" name="orbitListWidget">
    <property name="geometry">
     <rect>
      <x>180</x>
      <y>30</y>
-     <width>171</width>
+     <width>145</width>
      <height>101</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Choose the orbit</string>
+   </property>
   </widget>
-  <widget class="QLabel" name="label_m_2">
+  <widget class="QLabel" name="label_orbit">
    <property name="geometry">
     <rect>
      <x>180</x>
@@ -198,7 +225,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Orbit :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_m_3">
+  <widget class="QLabel" name="label_debris">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -233,20 +260,46 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The true anomaly angle in rad</string>
+   </property>
    <property name="inputMask">
     <string/>
    </property>
    <property name="text">
-    <string comment="textdisambiguation" extracomment="textcomment"/>
+    <string/>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string comment="placeholdertextdisam" extracomment="placecomment"/>
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="newOrbitButton">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>New Orbit</string>
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>m</tabstop>
+  <tabstop>d</tabstop>
+  <tabstop>Cm</tabstop>
+  <tabstop>etac</tabstop>
+  <tabstop>nu</tabstop>
+  <tabstop>orbitListWidget</tabstop>
+  <tabstop>newOrbitButton</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

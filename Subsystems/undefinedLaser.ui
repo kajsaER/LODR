@@ -486,6 +486,23 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>freqDub</tabstop>
+  <tabstop>unit_P</tabstop>
+  <tabstop>slide_P</tabstop>
+  <tabstop>unit_W</tabstop>
+  <tabstop>slide_W</tabstop>
+  <tabstop>unit_lambda</tabstop>
+  <tabstop>slide_lambda</tabstop>
+  <tabstop>slide_M2</tabstop>
+  <tabstop>slide_Cb</tabstop>
+  <tabstop>unit_frep</tabstop>
+  <tabstop>slide_frep</tabstop>
+  <tabstop>unit_tau</tabstop>
+  <tabstop>slide_tau</tabstop>
+  <tabstop>unit_T</tabstop>
+  <tabstop>slide_T</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

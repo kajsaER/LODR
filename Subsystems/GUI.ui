@@ -99,8 +99,11 @@
          <height>21</height>
         </rect>
        </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhFormattedNumbersOnly</set>
+       </property>
        <property name="inputMask">
-        <string>00; </string>
+        <string/>
        </property>
        <property name="text">
         <string comment="textdisambiguation" extracomment="textcomment">0</string>
@@ -737,6 +740,14 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>laserType</tabstop>
+  <tabstop>antennaD</tabstop>
+  <tabstop>antennaEff</tabstop>
+  <tabstop>objectNbr</tabstop>
+  <tabstop>closeBtn</tabstop>
+  <tabstop>plotView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

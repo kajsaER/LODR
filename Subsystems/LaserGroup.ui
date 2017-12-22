@@ -68,6 +68,10 @@
    </item>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>laserType</tabstop>
+  <tabstop>freqDub</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

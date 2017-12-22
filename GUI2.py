@@ -20,6 +20,9 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             'Pulse duration min':'1E-09', 'Pulse duration max':'1E-03',
             'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})
         self.laserConf = SCP(dl, allow_no_value=True)
+        
+        self.debrisConf = SCP(allow_no_value=False)
+        self.orbitConf = SCP(allow_no_value=True)
 
 
         # File Menu
@@ -49,11 +52,13 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
         # Antenna
         self.antenna = antenna(0,0)
+        self.antennaD.setValidator(QtGui.QDoubleValidator())
         self.antennaD.editingFinished.connect(lambda: self.antenna.set_D(self.antennaD.text()))
         self.antennaEff.valueChanged.connect(lambda value: self.antenna.set_ratio(
             float(self.antennaEff.value()/100)))
 
         # Debris
+        self.orbit_list = []
         
         # Position
 
@@ -64,7 +69,11 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     
     def add_debris(self):
         self.new_deb = NewDebris(self)
-        self.new_deb.show()
+        self.new_deb.exec_()
+
+    def add_orbit(self):
+        self.new_orb = NewOrbit(self)
+        self.new_orb.exec_()
 
     def laser_choice(self, choice):
         if choice == "Choose":
