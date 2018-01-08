@@ -13,6 +13,12 @@ DefinedLaserWidget, DefinedLaserBaseClass = uic.loadUiType(qtCreatorDefinedLaser
 qtCreatorUndefinedLaser = "Subsystems/undefinedLaser.ui"
 UndefinedLaserWidget, UndefinedLaserBaseClass = uic.loadUiType(qtCreatorUndefinedLaser)
 
+qtCreatorNewLaser = "Subsystems/NewLaser.ui"
+NewLaserClass, NewLaserBaseClass = uic.loadUiType(qtCreatorNewLaser)
+
+#qtCreatorRemoveLaser = "Subsystems/RemoveLaser.ui"
+#RemoveLaserClass, RemoveLaserBaseClass = uic.loadUiType(qtCreatorRemoveLaser)
+
 units = {'P':'W', 'W':'J','lambda':'m', 'frep':'Hz', 'tau':'s', 'T':'s'}
 
 
@@ -281,3 +287,177 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         exec('self.num_' + var + '.display(value)')
         if var != 'T':
             exec('self.main.lasersystem._' + var + ' = value*pot')
+
+
+class NewLaser(NewLaserBaseClass, NewLaserClass):
+    def __init__(self, main, parent=None):
+        super(NewLaser, self).__init__(parent)
+        self.setupUi(self)
+        self.main = main
+
+        self.validname = False
+        self.validP = False
+        self.validW = False
+        self.validlam = False
+        self.validM2 = False
+        self.validCb = False
+        self.validfrep = False
+        self.validtau = False
+
+        self.valueW = None
+        self.valuefrep = None
+        
+        self.P.setValidator(QtGui.QDoubleValidator())
+        self.W.setValidator(QtGui.QDoubleValidator())
+        self.lam.setValidator(QtGui.QDoubleValidator())
+        self.M2.setValidator(QtGui.QDoubleValidator())
+        self.Cb.setValidator(QtGui.QDoubleValidator())
+        self.frep.setValidator(QtGui.QDoubleValidator())
+        self.tau.setValidator(QtGui.QDoubleValidator())
+
+        self.name.editingFinished.connect(self.updatename)
+        self.P.editingFinished.connect(self.updateP)
+        self.W.editingFinished.connect(lambda val=None:
+                self.updateW(extmath.myfloat(val)))
+        self.lam.editingFinished.connect(self.updatelam)
+        self.M2.editingFinished.connect(self.updateM2)
+        self.Cb.editingFinished.connect(self.updateCb)
+        self.frep.editingFinished.connect(lambda val=None: 
+                self.updatefrep(extmath.myfloat(val)))
+        self.tau.editingFinished.connect(self.updatetau)
+
+        self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+        self.buttonBox.accepted.connect(self.OKClicked)
+#        self.buttonBox.rejected.connect(self.cancelClicked)
+
+    def updatename(self):
+        name = str(self.name.text())
+        if len(str(name)) < 1:
+            self.validname = False
+            self.name.setText("name required")
+        elif self.main.laserConf.has_section(name):
+            self.validname = False
+            self.name.setText("in use")
+        else:
+            self.validname = True
+        self.checkOK()
+
+    def updateP(self):
+        P = float(self.P.text())
+        if P <= 0:
+            self.P.setText("value too low")
+            self.validP = False
+        else:
+            self.valueP = P
+            self.validP = True
+        self.checkOK()
+
+    def updateW(self, W):
+        if W == None:
+            W = extmath.myfloat(self.W.text())
+        if W <= 0:
+            self.W.setText("value too low")
+            self.validW = False
+        else:
+            self.valueW = W
+            self.W.setText(str(W))
+            self.validW = True
+            if self.validP:
+                frep = self.valueP / W
+                if self.valuefrep != frep:
+                    self.updatefrep(frep)
+        self.checkOK()
+
+    def updatelam(self):
+        lam = float(self.lam.text())
+        if lam <= 0:
+            self.lam.setText("value too low")
+            self.validlam = False
+        else:
+            self.valuelam = lam
+            self.validlam = True
+        self.checkOK()
+
+    def updateM2(self):
+        M2 = float(self.M2.text())
+        if M2 < 1:
+            self.M2.setText("value too low")
+            self.validM2 = False
+        else:
+            self.valueM2 = M2
+            self.validM2 = True
+        self.checkOK()
+
+    def updateCb(self):
+        Cb = float(self.Cb.text())
+        if Cb < 1:
+            self.Cb.setText("value too low")
+            self.validCb = False
+        else:
+            self.valueCb = Cb
+            self.validCb = True
+        self.checkOK()
+
+    def updatefrep(self, frep):
+        if frep == None:
+            frep = extmath.myfloat(self.frep.text())
+        if frep <= 0:
+            self.frep.setText("value too low")
+            self.validfrep = False
+        else:
+            self.valuefrep = frep
+            self.frep.setText(str(frep))
+            self.validfrep = True
+            if self.validP:
+                W = self.valueP / frep
+                if self.valueW != W:
+                    self.updateW(W)
+            if self.validtau:
+                taumax = 1 / frep
+                if self.valuetau > taumax:
+                    self.tau.setText("max value: " + str(taumax))
+                    self.validtau = False
+        self.checkOK()
+
+    def updatetau(self):
+        tau = float(self.tau.text())
+        if tau <= 0:
+            self.tau.setText("value too low")
+            self.validtau = False
+        elif self.validfrep:
+            taumax = 1 / self.valuefrep
+            if tau > taumax:
+                self.tau.setText("max value: " + str(taumax))
+                self.validtau = False
+            else:
+                self.valuetau = tau
+                self.validtau = True
+        else:
+            self.valuetau = tau
+            self.validtau = True
+        self.checkOK()
+
+    def checkOK(self):
+        if (self.validname and self.validP and self.validW and self.validlam and
+            self.validM2 and self.validCb and self.validfrep and self.validtau):
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+        else:
+            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+
+    def OKClicked(self):
+        name = str(self.name.text())
+        self.main.laserConf.add_section(name)
+        self.main.laserConf.set(name, "power", str(self.valueP))
+        self.main.laserConf.set(name, "energy", str(self.valueW))
+        self.main.laserConf.set(name, "lambda", str(self.valuelam))
+        self.main.laserConf.set(name, "m2", str(self.valueM2))
+        self.main.laserConf.set(name, "cb", str(self.valueCb))
+        self.main.laserConf.set(name, "repetition rate", str(self.valuefrep))
+        self.main.laserConf.set(name, "tau", str(self.valuetau))
+        
+        if "Custom" in self.main.laser_type_list:
+            pos = self.main.laserType.count()-1
+        else:
+            pos = self.main.laserType.count()
+        self.main.laserType.insertItem(pos, name)
+        self.main.laser_type_list.insert(pos, name)

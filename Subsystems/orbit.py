@@ -32,7 +32,7 @@ class orbit:
         self.sw = math.sin(self.omega)
         self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
         self.n = 2*math.pi/self.T
-        print "T: " + repr(self.T)
+#        print "T: " + repr(self.T)
  
     def find(self, z, v, szeta, czeta, sgamma, cgamma) :
         salpha = extmath.sinplus(sgamma, cgamma, 1, 0)

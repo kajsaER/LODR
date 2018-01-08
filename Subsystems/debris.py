@@ -8,15 +8,15 @@ import numpy as np
 
 
 class debris:
-    def __init__(self, shape, Cm, size, mass, orientation, orbit, nu):
-        self._shape = shape
+    def __init__(self, etac, Cm, size, mass, orbit, nu):
+#        self._shape = shape
         self._Cm = Cm
         self._size = size
         self._mass = mass
-        self._orientation = orientation
+#        self._orientation = orientation
         self._orbit = orbit
         self._nu = nu
-        self._etac = 0.3
+        self._etac = etac
         self._snu = math.sin(self._nu)
         self._cnu = math.cos(self._nu)
         self.v0 = math.sqrt(consts.mu*(2/self._orbit.rp - 1/self._orbit.a))

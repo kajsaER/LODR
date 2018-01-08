@@ -1,8 +1,13 @@
 from PyQt4 import QtCore, QtGui, uic
 import math
+from orbit import orbit
+from debris import debris
 
 qtCreatorNewDebris = "Subsystems/NewDebris.ui"
 NewDebrisClass, NewDebrisBaseClass = uic.loadUiType(qtCreatorNewDebris)
+
+qtCreatorRemoveDebris = "Subsystems/RemoveDebris.ui"
+RemoveDebrisClass, RemoveDebrisBaseClass = uic.loadUiType(qtCreatorRemoveDebris)
 
 mmin = 0
 mmax = 100
@@ -46,7 +51,7 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
         
         self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.OKClicked)
-        self.buttonBox.rejected.connect(self.cancelClicked)
+#        self.buttonBox.rejected.connect(self.cancelClicked)
         self.newOrbitButton.clicked.connect(self.add_orbit)
 
     def updatem(self):
@@ -116,9 +121,47 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
                 self.orbitListWidget.sortItems(order=QtCore.Qt.AscendingOrder)
 
     def OKClicked(self):
-        self.main.indeb = False
-        print "OK!"
+        name = str(len(self.main.debrisConf.sections())+1)
+        orbname = str(self.orbitListWidget.currentItem().text())
+        orbvals = self.main.orbitConf.items(orbname)
+        self.main.debrisConf.add_section(name)
+        self.main.debrisConf.set(name, "mass", str(self.valuem))
+        self.main.debrisConf.set(name, "size", str(self.valued))
+        self.main.debrisConf.set(name, "Cm", str(self.valueCm))
+        self.main.debrisConf.set(name, "etac", str(self.valueetac))
+        self.main.debrisConf.set(name, "nu", str(self.valuenu))
+        self.main.debrisConf.set(name, "orbit", orbname)
+        self.main.debrisConf.set("ORBITS", orbname, str(orbvals))
 
-    def cancelClicked(self):
-        self.main.indeb = False
-        print "Cancel"
+        orb = orbit()
+        o = dict(orbvals)
+        orb.make(float(o.get("a")), float(o.get("epsilon")), float(o.get("omega")))
+        deb = debris(self.valueetac, self.valueCm, self.valued, self.valuem, orb, self.valuenu)
+        self.main.debris_list.append(deb)
+
+
+#    def cancelClicked(self):
+#        print "Cancel"
+
+class RemoveDebris(RemoveDebrisBaseClass, RemoveDebrisClass):
+    def __init__(self, main, parent=None):
+        super(RemoveDebris, self).__init__(parent)
+        self.setupUi(self)
+        self.main = main
+
+        self.objectNbr.setMaximum(main.objectNbr.maximum())
+        self.objectNbr.valueChanged.connect(self.showData)
+        self.buttonBox.accepted.connect(self.remove)
+
+    def showData(self):
+        deb = self.main.debris_list[self.objectNbr.value()-1]
+        self.num_m.display(deb._mass)
+        self.num_d.display(deb._size)
+        self.num_Cm.display(deb._Cm)
+        self.num_etac.display(deb._etac)
+
+    def remove(self):
+        i = self.objectNbr.value()-1
+        if i >= 0:
+            del self.main.debris_list[i]
+            self.main.objectNbr.setMaximum(len(self.main.debris_list))

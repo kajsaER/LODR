@@ -24,10 +24,11 @@ def cosplus(sa, ca, sb, cb): # cos(a+b)
     return ca*cb - sa*sb
 
 def myfloat(item):
-    if item == None:
-        return item
-    else:
-        return float(item)
+    try:    
+        f = float(item)
+        return f
+    except (TypeError, ValueError):
+        return None
 
 def prefixedValue(item, useDeci=False, useDeca=False, useHecto=False):
     number = myfloat(item)

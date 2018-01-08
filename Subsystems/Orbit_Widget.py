@@ -1,9 +1,12 @@
 from PyQt4 import QtCore, QtGui, uic
 import math
-from orbit import orbit
+#from orbit import orbit
 
 qtCreatorNewOrbit = "Subsystems/NewOrbit.ui"
 NewOrbitClass, NewOrbitBaseClass = uic.loadUiType(qtCreatorNewOrbit)
+
+qtCreatorRemoveOrbit = "Subsystems/RemoveOrbit.ui"
+RemoveOrbitClass, RemoveOrbitBaseClass = uic.loadUiType(qtCreatorRemoveOrbit)
 
 amin = 6000
 amax = 800000
@@ -34,12 +37,14 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
 
         self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.OKClicked)
-        self.buttonBox.rejected.connect(self.cancelClicked)
+#        self.buttonBox.rejected.connect(self.cancelClicked)
 
     def updatename(self):
-        if len(str(self.name)) < 1:
+        name = str(self.name.text())
+        if len(name) < 1:
             self.validname = False
-        if self.main.debrisConf.has_section(self.name):
+            self.name.setText("name required")
+        if self.main.debrisConf.has_section(name):
             self.validname = False
             self.name.setText("in use")
         else:
@@ -82,11 +87,31 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
 
     def OKClicked(self):
-        self.main.orbit_list.append(self.name.text())
-        self.main.orbitConf.add_section(self.name)
-        self.main.orbitConf.set(self.name, "a", str(self.valuea))
-        self.main.orbitConf.set(self.name, "epsilon", str(self.valueepsilon))
-        self.main.orbitConf.set(self.name, "omega", str(self.valueomega))
+        name = str(self.name.text())
+        self.main.orbit_list.append(name)
+        self.main.orbitConf.add_section(name)
+        self.main.orbitConf.set(name, "a", str(self.valuea))
+        self.main.orbitConf.set(name, "epsilon", str(self.valueepsilon))
+        self.main.orbitConf.set(name, "omega", str(self.valueomega))
 
-    def cancelClicked(self):
-        print "Candeled"
+
+#    def cancelClicked(self):
+#        print "Candeled"
+
+
+class RemoveOrbit(RemoveOrbitBaseClass, RemoveOrbitClass):
+    def __init__(self, main, parent=None):
+        super(RemoveOrbit, self).__init__(parent)
+        self.setupUi(self)
+        self.main = main
+        for orbit in self.main.orbit_list:
+            self.orbitListWidget.addItem(orbit)
+#        self.orbitListWidget.sortItems(order=QtCore.Qt.AscendingOrder)
+        self.buttonBox.accepted.connect(self.remove)
+
+
+    def remove(self):
+        i = self.orbitListWidget.currentRow()
+        if i > -1:
+            del self.main.orbit_list[i]
+
