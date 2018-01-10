@@ -1,0 +1,62 @@
+[DEFAULT]
+pulse duration = None
+repetition rate max = 1E+05
+power = None
+fire duration min = 1E-06
+cb = None
+energy = None
+pulse duration max = 1E-03
+fire duration = 1E+00
+repetition rate = None
+m2 = None
+repetition rate min = 1E+00
+fire duration max = 1E+01
+pulse duration min = 1E-09
+lambda = None
+
+[Custom]
+cb min = 1
+lambda min = 1E-09
+power min = 1E+00
+power = 1000
+cb = 1
+energy = 1E-09
+m2 max = 1E+02
+m2 min = 1
+energy max = 1E+00
+repetition rate = 1
+m2 = 1
+power max = 5E+06
+energy min = 1E-09
+cb max = 1E+01
+lambda max = 1E+00
+pulse duration = 1e-09
+lambda = 1E-09
+
+[CO2]
+power = 70.0
+energy = 0.007
+lambda = 10.6e-6
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+
+[Nd:YAG]
+power = 2.0
+energy = 0.0002
+lambda = 1.06e-6
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+
+[TiS]
+power = 5.0
+energy = 0.0005
+lambda = 830e-9
+m2 = 2
+cb = 1.9
+repetition rate = 10e3
+pulse duration = 5e-7
+

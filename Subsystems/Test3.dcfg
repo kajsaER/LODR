@@ -1,0 +1,29 @@
+[ORBITS]
+LEO = [('a', '30000'), ('epsilon', '0.8'), ('omega', '2.34')]
+GEO = [('a', '40000'), ('epsilon', '0.9'), ('omega', '1.23')]
+min = [('a', '40000.0'), ('epsilon', '0.3'), ('omega', '1.3')]
+
+[2]
+mass = 16
+size = 2.3
+Cm = 300
+etac = 0.2
+nu = 1.25
+orbit = GEO
+
+[0x108LEO]
+mass = 2.0
+size = 2.0
+Cm = 300.0
+etac = 0.4
+nu = 1.23
+orbit = LEO
+
+[0x1d8min]
+mass = 56.0
+size = 3.0
+Cm = 300.0
+etac = 0.5
+nu = 2.3
+orbit = min
+

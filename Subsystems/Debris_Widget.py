@@ -121,8 +121,14 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
                 self.orbitListWidget.sortItems(order=QtCore.Qt.AscendingOrder)
 
     def OKClicked(self):
-        name = str(len(self.main.debrisConf.sections())+1)
         orbname = str(self.orbitListWidget.currentItem().text())
+        name = (str(hex(int(self.valuem + self.valued + 
+                self.valueCm*self.valueetac + 360/math.pi*self.valuenu))) + orbname)
+        extra = 0
+        n0 = name
+        while self.main.debrisConf.has_section(name):
+            name = n0 + str(extra)
+            extra += 1
         orbvals = self.main.orbitConf.items(orbname)
         self.main.debrisConf.add_section(name)
         self.main.debrisConf.set(name, "mass", str(self.valuem))
@@ -136,12 +142,10 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
         orb = orbit()
         o = dict(orbvals)
         orb.make(float(o.get("a")), float(o.get("epsilon")), float(o.get("omega")))
-        deb = debris(self.valueetac, self.valueCm, self.valued, self.valuem, orb, self.valuenu)
+        deb = debris(name, self.valueetac, self.valueCm, self.valued, self.valuem, orb, self.valuenu)
         self.main.debris_list.append(deb)
 
 
-#    def cancelClicked(self):
-#        print "Cancel"
 
 class RemoveDebris(RemoveDebrisBaseClass, RemoveDebrisClass):
     def __init__(self, main, parent=None):
@@ -154,14 +158,22 @@ class RemoveDebris(RemoveDebrisBaseClass, RemoveDebrisClass):
         self.buttonBox.accepted.connect(self.remove)
 
     def showData(self):
-        deb = self.main.debris_list[self.objectNbr.value()-1]
-        self.num_m.display(deb._mass)
-        self.num_d.display(deb._size)
-        self.num_Cm.display(deb._Cm)
-        self.num_etac.display(deb._etac)
+        if self.objectNbr.value() == 0:
+            self.num_m.display(0)
+            self.num_d.display(0)
+            self.num_Cm.display(0)
+            self.num_etac.display(0)
+        else:
+            deb = self.main.debris_list[self.objectNbr.value()-1]
+            self.num_m.display(deb._mass)
+            self.num_d.display(deb._size)
+            self.num_Cm.display(deb._Cm)
+            self.num_etac.display(deb._etac)
 
     def remove(self):
         i = self.objectNbr.value()-1
         if i >= 0:
+            ID = str(self.main.debris_list[i].ID)
             del self.main.debris_list[i]
-            self.main.objectNbr.setMaximum(len(self.main.debris_list))
+            self.main.debrisConf.remove_section(ID)
+

@@ -16,8 +16,8 @@ UndefinedLaserWidget, UndefinedLaserBaseClass = uic.loadUiType(qtCreatorUndefine
 qtCreatorNewLaser = "Subsystems/NewLaser.ui"
 NewLaserClass, NewLaserBaseClass = uic.loadUiType(qtCreatorNewLaser)
 
-#qtCreatorRemoveLaser = "Subsystems/RemoveLaser.ui"
-#RemoveLaserClass, RemoveLaserBaseClass = uic.loadUiType(qtCreatorRemoveLaser)
+qtCreatorRemoveLaser = "Subsystems/RemoveLaser.ui"
+RemoveLaserClass, RemoveLaserBaseClass = uic.loadUiType(qtCreatorRemoveLaser)
 
 units = {'P':'W', 'W':'J','lambda':'m', 'frep':'Hz', 'tau':'s', 'T':'s'}
 
@@ -461,3 +461,25 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
             pos = self.main.laserType.count()
         self.main.laserType.insertItem(pos, name)
         self.main.laser_type_list.insert(pos, name)
+
+
+class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):
+    def __init__(self, main, parent=None):
+        super(RemoveLaser, self).__init__(parent)
+        self.setupUi(self)
+        self.main = main
+
+        for laser in self.main.laser_type_list:
+            if laser != "Choose" and laser != "Custom":
+                self.laserListWidget.addItem(laser)
+
+        self.buttonBox.accepted.connect(self.remove)
+
+    def remove(self):
+        i = self.laserListWidget.currentRow()
+        if i > -1:
+            del self.main.laser_type_list[i]
+            name = str(self.laserListWidget.currentItem().text())
+            self.main.laserConf.remove_section(name)
+            ind = self.main.laserType.findText(name)
+            self.main.laserType.removeItem(ind)

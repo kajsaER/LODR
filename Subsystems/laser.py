@@ -91,6 +91,6 @@ class laser:
             deb.step()
             self.fire(ant, deb, duration, atm)
  
-    def __del__(self):
-        print "Laser has been deleted"
+#    def __del__(self):
+#        print "Laser has been deleted"
 

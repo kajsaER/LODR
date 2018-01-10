@@ -1,0 +1,10 @@
+[GEO]
+a = 40000
+epsilon = 0.9
+omega = 1.23
+
+[LEO]
+a = 30000
+epsilon = 0.8
+omega = 2.34
+

@@ -8,7 +8,8 @@ import numpy as np
 
 
 class debris:
-    def __init__(self, etac, Cm, size, mass, orbit, nu):
+    def __init__(self, ID, etac, Cm, size, mass, orbit, nu):
+        self.ID = ID
 #        self._shape = shape
         self._Cm = Cm
         self._size = size
@@ -83,5 +84,5 @@ class debris:
         czeta2 = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
         return np.array([szeta2, czeta2, v])
 
-    def __del__(self):
-        print "Debris deleted"
+#    def __del__(self):
+#        print "Debris deleted"

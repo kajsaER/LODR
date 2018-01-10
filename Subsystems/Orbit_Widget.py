@@ -95,18 +95,15 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         self.main.orbitConf.set(name, "omega", str(self.valueomega))
 
 
-#    def cancelClicked(self):
-#        print "Candeled"
-
-
 class RemoveOrbit(RemoveOrbitBaseClass, RemoveOrbitClass):
     def __init__(self, main, parent=None):
         super(RemoveOrbit, self).__init__(parent)
         self.setupUi(self)
         self.main = main
+        
         for orbit in self.main.orbit_list:
             self.orbitListWidget.addItem(orbit)
-#        self.orbitListWidget.sortItems(order=QtCore.Qt.AscendingOrder)
+        
         self.buttonBox.accepted.connect(self.remove)
 
 
@@ -114,4 +111,6 @@ class RemoveOrbit(RemoveOrbitBaseClass, RemoveOrbitClass):
         i = self.orbitListWidget.currentRow()
         if i > -1:
             del self.main.orbit_list[i]
+            name = str(self.orbitListWidget.currentItem().text())
+            self.main.orbitConf.remove_section(name)
 

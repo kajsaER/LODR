@@ -189,5 +189,5 @@ class orbit:
         print "Argument of perigee, w: " + repr(self.omega)
         print 
     
-    def __del__(self):
-        print "Orbit has been deleted"
+#    def __del__(self):
+#        print "Orbit has been deleted"

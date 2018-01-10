@@ -12,7 +12,23 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(OperatorGUI, self).__init__(parent)
         self.setupUi(self)
+
         self.filefolder = os.getcwd()
+        formats = QtCore.QStringList()
+        for string in ['LODR Files (*.lodr)','Debris Files (*.dcfg)',
+                           'Laser Files (*.lcfg)','Orbit Files (*.ocfg)',
+                           'All Files (*)']:
+            formats.append(string)
+        
+        self.openDiag = QtGui.QFileDialog(self.central_widget)
+        self.openDiag.setAcceptMode(QtGui.QFileDialog.AcceptOpen)
+        self.openDiag.setFileMode(QtGui.QFileDialog.ExistingFile)
+        self.openDiag.setNameFilters(formats)
+        
+        self.saveDiag = QtGui.QFileDialog(self.central_widget)
+        self.saveDiag.setAcceptMode(QtGui.QFileDialog.AcceptSave)
+        self.saveDiag.setNameFilters(formats)
+        
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
                             'Repetition rate', 'Pulse duration'])
         dl.update({'Repetition rate min':'1E+00', 'Repetition rate max':'1E+05',
@@ -32,20 +48,17 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.actionClose.triggered.connect(self.close_application)
 
         # Edit Menu
-        self.actionLoad_Debris.triggered.connect(lambda: self.load_debris(
-            self.get_filename('Debris Files (*.dcfg)')))
+        self.actionLoad_Debris.triggered.connect(self.load_debris)
         self.actionAdd_Debris.triggered.connect(self.add_debris)
         self.actionRemove_Debris.triggered.connect(self.remove_debris)
         self.actionSave_Debris.triggered.connect(self.save_debris)
         
-        self.actionLoad_Lasers.triggered.connect(lambda: self.load_laser(
-            self.get_filename('Laser Files (*.lcfg)')))
+        self.actionLoad_Lasers.triggered.connect(self.load_laser)
         self.actionAdd_Laser.triggered.connect(self.add_laser)
         self.actionRemove_Laser.triggered.connect(self.remove_laser)
         self.actionSave_Laser.triggered.connect(self.save_laser)
 
-        self.actionLoad_Orbits.triggered.connect(lambda: self.load_orbits(
-            self.get_filename('Orbit Files (*.ocfg)')))
+        self.actionLoad_Orbits.triggered.connect(self.load_orbits)
         self.actionAdd_Orbits.triggered.connect(self.add_orbit)
         self.actionRemove_Orbits.triggered.connect(self.remove_orbit)
         self.actionSave_Orbits.triggered.connect(self.save_orbit)
@@ -89,7 +102,8 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.runBtn.clicked.connect(self.run_app)
      
     # Debris functions #
-    def load_debris(self, filename):
+    def load_debris(self):
+        filename = self.get_filename('Debris Files (*.dcfg)')
         self.debrisConf.read(str(filename))
         Debris = self.debrisConf.sections()
         orbits = dict(self.debrisConf.items("ORBITS"))
@@ -108,8 +122,8 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
                 orb = orbit()
                 o = dict(self.orbitConf.items(d.get("orbit")))
                 orb.make(float(o.get("a")), float(o.get("epsilon")), float(o.get("omega")))
-                Deb = debris(float(d.get("etac")), float(d.get("Cm")), float(d.get("size")),
-                             float(d.get("mass")), orb, float(d.get("nu")))
+                Deb = debris(str(deb), float(d.get("etac")), float(d.get("Cm")),
+                        float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
                 self.debris_list.append(Deb)
         self.objectNbr.setMaximum(len(self.debris_list))
 
@@ -121,16 +135,20 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def remove_debris(self):
         rem_deb = RemoveDebris(self)
         rem_deb.exec_()
+        self.objectNbr.setMaximum(len(self.debris_list))
 
     def save_debris(self):
-        print "Save debris needs to be implemented"
+        filename = self.set_filename('Debris Files (*.dcfg)', 'dcfg')
+        with open(filename, 'w') as writefile:
+            self.debrisConf.write(writefile)
 
     def change_debris(self, i):
         print "Switching debris needs to be implemented"
         print i
 
     # Orbit functions #
-    def load_orbits(self, filename):
+    def load_orbits(self):
+        filename = self.get_filename('Orbit Files (*.ocfg)')
         self.orbitConf.read(str(filename))
         orbits = self.orbitConf.sections()
         for orb in orbits:
@@ -147,10 +165,13 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         rem_orb.exec_()
 
     def save_orbit(self):
-        print "Save orbit needs to be implemented"
+        filename = self.set_filename('Orbit Files (*.ocfg)', 'ocfg')
+        with open(filename, 'w') as writefile:
+            self.orbitConf.write(writefile)
 
     # Laser functions #
-    def load_laser(self, filename):
+    def load_laser(self):
+        filename = self.get_filename('Laser Files (*.lcfg)')
         self.laserConf.read(str(filename))
         lasers = self.laserConf.sections()
         if 'Custom' in self.laser_type_list:
@@ -168,10 +189,13 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         new_laser.exec_()
 
     def remove_laser(self):
-        print "Remove laser needs to be implemented"
+        rem_laser = RemoveLaser(self)
+        rem_laser.exec_()
 
     def save_laser(self):
-        print "Save laser needs to be implemented"
+        filename = self.set_filename('Laser Files (*.lcfg)', 'lcfg')
+        with open(filename, 'w') as writefile:
+            self.laserConf.write(writefile)
 
     def laser_choice(self, choice):
         if choice == "Choose":
@@ -192,17 +216,26 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     # Other functions #
     def open_file(self):
         self.get_filename('LODR Files')
+        print "Open file needs to be implemented"
 
     def save_file(self):
         print "Save file needs to be implemented"
 
-    def get_filename(self, pref):    
-        filename = QtGui.QFileDialog.getOpenFileName(self.central_widget, 'Open File',
-                self.filefolder, ('LODR Files (*.lodr);;Debris Files (*.dcfg);;'+
-                                  'Laser Files (*.lcfg);;Orbit Files (*.ocfg);;'+
-                                  'All Files (*)'), pref)
-        self.filefolder = os.path.dirname(os.path.realpath(str(filename)))
-        return filename
+    def get_filename(self, pref):
+        self.openDiag.setDirectory(self.filefolder)
+        self.openDiag.selectNameFilter(pref)
+        if (self.openDiag.exec_()):
+            filename = self.openDiag.selectedFiles().takeFirst()
+            self.filefolder = os.path.dirname(os.path.realpath(str(filename)))
+            return filename
+
+    def set_filename(self, pref, suffix):
+        self.saveDiag.selectNameFilter(pref)
+        self.saveDiag.setDefaultSuffix(suffix)
+        if (self.saveDiag.exec_()):
+            filename = self.saveDiag.selectedFiles().takeFirst()
+            self.filefolder = os.path.dirname(os.path.realpath(str(filename)))
+            return filename
 
     def run_app(self):
         print "Run function needs to be implemented"
