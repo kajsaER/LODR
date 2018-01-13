@@ -34,9 +34,9 @@ class orbit:
         self.n = 2*math.pi/self.T
 #        print "T: " + repr(self.T)
  
-    def find(self, z, v, szeta, czeta, sbeta, cbeta) :
-        salpha = extmath.sinplus(sbeta, cbeta, 1, 0)
-        calpha = extmath.cosplus(sbeta, cbeta, 1, 0)
+    def find(self, z, v, szeta, czeta, sgamma, cgamma) :
+        salpha = extmath.sinplus(sgamma, cgamma, 1, 0)
+        calpha = extmath.cosplus(sgamma, cgamma, 1, 0)
         r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*calpha)
         cphi = (math.pow(consts.Re, 2) + math.pow(r, 2) - math.pow(z, 2)) / (2*consts.Re*r)
         sphi = z/r*salpha
@@ -146,27 +146,26 @@ class orbit:
         self.n = 2*math.pi/self.T
  
             
-#    def show_approx(self):
-#        self.plot_approx()
-#        plt.show()
+    def show_approx(self):
+        self.plot_approx()
+        plt.show()
 
-    def plot_approx_data(self):
-#        steps = self.__vals.shape[0]
-#        x = range(steps)
+    def plot_approx(self):
+        steps = self.__vals.shape[0]
+        x = range(steps)
         V = self.__vals[:, 0]
         VR = self.__vals[:, 1]
         VRN = self.__vals[:, 2]
         R = self.__vals[:, 3]
-        GAMMA = self.__vals[:, 4]
+        THETA = self.__vals[:, 4]
         X = self.__vals[:, 5]
         Y = self.__vals[:, 6]
         DT = self.__vals[:, 7]
         T = self.__vals[:, 8]
-        Dgamma = np.fmax(math.fabs(90 - np.amin(GAMMA)), math.fabs(np.amax(GAMMA) - 90))
+        Dtheta = np.fmax(math.fabs(90 - np.amin(THETA)), math.fabs(np.amax(THETA) - 90))
 
-#        plt.plot(X, Y)
-#        plt.axis('equal')
-        return [X, Y]
+        plt.plot(X, Y)
+        plt.axis('equal')
 
     def plot(self, line):
         X = np.zeros((360, 1))

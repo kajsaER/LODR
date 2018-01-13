@@ -1,8 +1,13 @@
 from __future__ import division
+import numpy as np
 from Subsystems import *
 
 from ConfigParser import SafeConfigParser as SCP
 import sys, os
+import time, threading
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui, uic
 
 qtCreatorMain = "Subsystems/GUI.ui"
@@ -14,21 +19,19 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.filefolder = os.getcwd()
-        formats = QtCore.QStringList()
+        self.formats = QtCore.QStringList()
         for string in ['LODR Files (*.lodr)','Debris Files (*.dcfg)',
                            'Laser Files (*.lcfg)','Orbit Files (*.ocfg)',
                            'All Files (*)']:
-            formats.append(string)
+            self.formats.append(string)
         
         self.openDiag = QtGui.QFileDialog(self.central_widget)
         self.openDiag.setAcceptMode(QtGui.QFileDialog.AcceptOpen)
         self.openDiag.setFileMode(QtGui.QFileDialog.ExistingFile)
-        self.openDiag.setNameFilters(formats)
         
         self.saveDiag = QtGui.QFileDialog(self.central_widget)
         self.saveDiag.setAcceptMode(QtGui.QFileDialog.AcceptSave)
-        self.saveDiag.setNameFilters(formats)
-        
+        self.saveDiag.filterSelected.connect(self.updateSuffix)
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
                             'Repetition rate', 'Pulse duration'])
         dl.update({'Repetition rate min':'1E+00', 'Repetition rate max':'1E+05',
@@ -40,6 +43,8 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.debrisConf.add_section("ORBITS")
         self.debrisConf.optionxform = str
         self.orbitConf = SCP(allow_no_value=True)
+
+        self.atmosphere = atmosphere()
 
 
         # File Menu
@@ -58,7 +63,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.actionRemove_Laser.triggered.connect(self.remove_laser)
         self.actionSave_Laser.triggered.connect(self.save_laser)
 
-        self.actionLoad_Orbits.triggered.connect(self.load_orbits)
+        self.actionLoad_Orbits.triggered.connect(self.load_orbit)
         self.actionAdd_Orbits.triggered.connect(self.add_orbit)
         self.actionRemove_Orbits.triggered.connect(self.remove_orbit)
         self.actionSave_Orbits.triggered.connect(self.save_orbit)
@@ -100,21 +105,34 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         # Buttons
         self.closeBtn.clicked.connect(self.close_application)
         self.runBtn.clicked.connect(self.run_app)
+
+        # PlotView
+        bgcolor =  np.asarray(self.palette().color(self.backgroundRole()).getRgb()[0:3])/255
+        self.figure = Figure(tight_layout=True, facecolor=bgcolor)
+#        self.figure.suptitle('Title', fontsize=15, y=0.995)
+        self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.plotLayout.addWidget(self.toolbar)
+        self.plotLayout.addWidget(self.canvas)
+        self.graph = self.figure.add_subplot(111)
+        
+################## End of main window init code #####################
      
     # Debris functions #
-    def load_debris(self):
-        filename = self.get_filename('Debris Files (*.dcfg)')
+    def load_debris(self, filename):
+        if filename == False:
+            filename = self.get_filename(formats=["Debris Files (*.dcfg)"])
         self.debrisConf.read(str(filename))
         Debris = self.debrisConf.sections()
         orbits = dict(self.debrisConf.items("ORBITS"))
         for orb in orbits.keys():
             if orb not in self.orbitConf.sections():
                 self.orbitConf.add_section(orb)
+                self.orbit_list.append(str(orb))
             exec('vals = dict('+orbits.get(orb)+')')
             self.orbitConf.set(orb, "a", vals.get("a"))
             self.orbitConf.set(orb, "epsilon", vals.get("epsilon"))
             self.orbitConf.set(orb, "omega", vals.get("omega"))
-            self.orbit_list.append(str(orb))
         self.orbit_list.sort()
         for deb in Debris:
             if deb != "ORBITS":
@@ -137,18 +155,59 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         rem_deb.exec_()
         self.objectNbr.setMaximum(len(self.debris_list))
 
-    def save_debris(self):
-        filename = self.set_filename('Debris Files (*.dcfg)', 'dcfg')
+    def save_debris(self, filename):
+        if filename == False:
+            filename = self.set_filename('dcfg', formats=['Debris Files (*.dcfg)'])
         with open(filename, 'w') as writefile:
             self.debrisConf.write(writefile)
 
     def change_debris(self, i):
-        print "Switching debris needs to be implemented"
-        print i
+        if i == 0:
+            self.num_m.display(0)
+            self.num_d.display(0)
+            self.num_Cm.display(0)
+            self.num_etac.display(0)
+            self.num_r.display(0)
+            self.num_nu.display(0)
+            self.num_v.display(0)
+            self.num_rp.display(0)
+            self.num_ra.display(0)
+            self.num_omega.display(0)
+            self.num_epsilon.display(0)
+        else:
+            self.debris = self.debris_list[i-1]
+            self.num_m.display(self.debris._mass)
+            self.num_d.display(self.debris._size)
+            self.num_Cm.display(self.debris._Cm)
+            self.num_etac.display(self.debris._etac)
+            self.update_position()
+            self.update_orbit()
+
+#    def debris_step(self):
+#        self.steptimer.start()
+#        print time.ctime()
+
+    def plot_debris(self):
+        data = self.debris.plot_data()
+        self.graph.plot(data[0], data[1], 'o')
+        self.canvas.draw()
+
+    def update_position(self):
+        self.num_r.display(self.debris._r)
+        self.num_nu.display(self.debris._nu)
+        self.num_v.display(self.debris._v)
+
+    def update_orbit(self):
+        orb = self.debris._orbit
+        self.num_rp.display(orb.rp)
+        self.num_ra.display(orb.ra)
+        self.num_omega.display(orb.omega)
+        self.num_epsilon.display(orb.ep)
 
     # Orbit functions #
-    def load_orbits(self):
-        filename = self.get_filename('Orbit Files (*.ocfg)')
+    def load_orbit(self, filename):
+        if filename == False:
+            filename = self.get_filename(formats=['Orbit Files (*.ocfg)'])
         self.orbitConf.read(str(filename))
         orbits = self.orbitConf.sections()
         for orb in orbits:
@@ -164,14 +223,20 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         rem_orb = RemoveOrbit(self)
         rem_orb.exec_()
 
-    def save_orbit(self):
-        filename = self.set_filename('Orbit Files (*.ocfg)', 'ocfg')
+    def save_orbit(self, filename):
+        if filename == False:
+            filename = self.set_filename('ocfg', formats=['Orbit Files (*.ocfg)'])
         with open(filename, 'w') as writefile:
             self.orbitConf.write(writefile)
 
+    def plot_approx_orbit(self):
+        data = self.debris._orbit.plot_approx_data()
+        print data
+
     # Laser functions #
-    def load_laser(self):
-        filename = self.get_filename('Laser Files (*.lcfg)')
+    def load_laser(self, filename):
+        if filename == False:
+            filename = self.get_filename(formats=['Laser Files (*.lcfg)'])
         self.laserConf.read(str(filename))
         lasers = self.laserConf.sections()
         if 'Custom' in self.laser_type_list:
@@ -192,8 +257,9 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         rem_laser = RemoveLaser(self)
         rem_laser.exec_()
 
-    def save_laser(self):
-        filename = self.set_filename('Laser Files (*.lcfg)', 'lcfg')
+    def save_laser(self, filename):
+        if filename == False:
+            filename = self.set_filename('lcfg', formats=['Laser Files (*.lcfg)'])
         with open(filename, 'w') as writefile:
             self.laserConf.write(writefile)
 
@@ -215,13 +281,45 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
     # Other functions #
     def open_file(self):
-        self.get_filename('LODR Files')
-        print "Open file needs to be implemented"
-
+        filename = str(self.get_filename(pref='LODR Files (*.lodr)'))
+        if filename != 'None':
+            if filename.endswith('lodr'):
+                print "Open lodr file needs to be implemented"
+            elif filename.endswith('dcfg'): # Debris files
+                self.load_debris(filename=filename)
+            elif filename.endswith('lcfg'): # Laser files
+                self.load_laser(filename=filename)
+            elif filename.endswith('ocfg'): # Orbit files
+                self.load_orbit(filename=filename)
+            else:
+                QtGui.QMessageBox.warning(self.central_widget, 'Unsupported format',
+                        'The file you chose has an unsupported format. \n' +
+                        'Please choose a different file', buttons=QtGui.QMessageBox.Ok,
+                        defaultButton=QtGui.QMessageBox.NoButton)
+    
     def save_file(self):
-        print "Save file needs to be implemented"
-
-    def get_filename(self, pref):
+        filename = str(self.set_filename('lodr', pref='LODR Files (*.lodr)'))
+        if filename != 'None':
+            if filename.endswith('lodr'):
+                print "Save lodr file needs to be implemented"
+            elif filename.endswith('dcfg'): # Debris files
+                self.save_debris(filename=filename)
+            elif filename.endswith('lcfg'): # Laser files
+                self.save_laser(filename=filename)
+            elif filename.endswith('ocfg'): # Orbit files
+                self.save_orbit(filename=filename)
+            else:
+                QtGui.QMessageBox.warning(self.central_widget, 'Unsupported format',
+                        'The file you chose has an unsupported format. \n' +
+                        'Please choose a different file', buttons=QtGui.QMessageBox.Ok,
+                        defaultButton=QtGui.QMessageBox.NoButton)
+    
+    def get_filename(self, pref=None, formats=None):
+        if formats == None:
+            formats = self.formats
+        if pref == None:
+            pref = formats[0]
+        self.openDiag.setNameFilters(formats)
         self.openDiag.setDirectory(self.filefolder)
         self.openDiag.selectNameFilter(pref)
         if (self.openDiag.exec_()):
@@ -229,7 +327,12 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             self.filefolder = os.path.dirname(os.path.realpath(str(filename)))
             return filename
 
-    def set_filename(self, pref, suffix):
+    def set_filename(self, suffix, pref=None, formats=None):
+        if formats == None:
+            formats = self.formats
+        if pref == None:
+            pref = formats[0]
+        self.saveDiag.setNameFilters(formats)
         self.saveDiag.selectNameFilter(pref)
         self.saveDiag.setDefaultSuffix(suffix)
         if (self.saveDiag.exec_()):
@@ -237,7 +340,26 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             self.filefolder = os.path.dirname(os.path.realpath(str(filename)))
             return filename
 
+    def updateSuffix(self, nameFilter):
+        namefilter = str(nameFilter)
+        if namefilter.rfind('*.') > -1:
+            part = namefilter.rpartition('*.')[2]
+            suffix = part[0:len(part)-1]
+        else:
+            suffix = 'txt'
+        self.saveDiag.setDefaultSuffix(suffix)
+
     def run_app(self):
+#        self.steptimer = threading.Timer(1.0, self.debris_step)
+#        self.debris_step()
+
+#        t1 = time.clock()
+#        self.debris.step()
+#        self.update_position()
+#        t2 = time.clock()
+#        if (t2-t1) < 1:
+#            time.sleep(1-(t2-t1))
+        
         print "Run function needs to be implemented"
 
     def close_application(self):

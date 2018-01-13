@@ -54,8 +54,8 @@ class laser:
         z = meas['z']
         szeta = meas['szeta']
         czeta = meas['czeta']
-        sbeta = meas['sbeta']
-        cbeta = meas['cbeta']
+        sgamma = meas['sgamma']
+        cgamma = meas['cgamma']
         sdelta = meas['sdelta']
         cdelta = meas['cdelta']
         sphi = meas['sphi']
@@ -75,7 +75,7 @@ class laser:
             czeta = debval[1]
             v = debval[2]
         duration -= 1
-        deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)
+        deb._orbit.find(z, v, szeta, czeta, sgamma, cgamma)
         sw = deb._orbit.sw
         cw = deb._orbit.cw
         spw = extmath.sinplus(sphi, cphi, sw, cw)
@@ -85,8 +85,8 @@ class laser:
         deb._nu = math.atan2(deb._snu, deb._cnu)
         if deb._nu < 0:
             deb._nu += 2*math.pi
-        deb._sgamma = extmath.sinplus(sdelta, cdelta, szeta, czeta)
-        deb._cgamma = extmath.cosplus(sdelta, cdelta, szeta, czeta)
+        deb._stheta = extmath.sinplus(sdelta, cdelta, szeta, czeta)
+        deb._ctheta = extmath.cosplus(sdelta, cdelta, szeta, czeta)
         if duration > 0:
             deb.step()
             self.fire(ant, deb, duration, atm)
