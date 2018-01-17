@@ -2,8 +2,8 @@
 
 from __future__ import division
 import math
-import extmath
-import constants as consts
+import Support_Files.extmath as extmath
+import Support_Files.constants as consts
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,21 +20,23 @@ class orbit:
         self.__vals = 0 #np.zeros((int(1e6+1), 7))
         self.omega = float('nan') #argument of perigee
 
-    def make(self, a, ep, omega):
-        self.a = a
+    def make(self, rp, ep, omega):
+#        self.a = a
+        self.rp = rp
         self.ep = ep
         self.omega = omega
         # Computations
+        self.a = self.rp/(1 - self.ep)
         self.ra = self.a*(1 + self.ep)
-        self.rp = self.a*(1 - self.ep)
+#        self.rp = self.a*(1 - self.ep)
         self.b = self.a*math.sqrt(1 - math.pow(ep,2))
+        self.v0 = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
         self.cw = math.cos(self.omega)
         self.sw = math.sin(self.omega)
         self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
         self.n = 2*math.pi/self.T
-#        print "T: " + repr(self.T)
  
-    def find(self, z, v, szeta, czeta, sbeta, cbeta) :
+    def find(self, z, v, szeta, czeta, sbeta, cbeta):
         salpha = extmath.sinplus(sbeta, cbeta, 1, 0)
         calpha = extmath.cosplus(sbeta, cbeta, 1, 0)
         r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*calpha)
@@ -53,9 +55,14 @@ class orbit:
         
         steps = int(8e5)
         self.__vals = np.zeros((steps+1, 9))
-        self.__vals[0, :] = [v, -v*ct, v*st, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt1, t]
+        self.__vals[0, :] = ([v, -v*ct, v*st, r, math.degrees(math.acos(ct)),
+                              r*cnuw, r*snuw, dt1, t])
         
-        for x in range(steps) :
+        nuw = math.atan2(snuw, cnuw)
+        x = 1
+        passes = 0
+#        for x in range(steps):
+        while passes < 5:
             v1 = v
             r1 = r
             st1 = st
@@ -117,10 +124,18 @@ class orbit:
             r = r2
             snuw = snuw2
             cnuw = cnuw2
+            
+            nuw_old = nuw
+            nuw = math.atan2(snuw, cnuw)
             t = t+dt
             
+            if (nuw*nuw_old) < 0:
+                passes += 1
+
             row = np.array([v, vr, vrn, r, math.degrees(math.acos(ct)), r*cnuw, r*snuw, dt, t])
-            self.__vals[x+1, :] = row
+            self.__vals[x, :] = row
+            x += 1
+        self.__vals = self.__vals[0:x-1, :]
         R = self.__vals[:, 3]
         VR = self.__vals[:, 1]
         zer = np.zeros(1)
@@ -131,6 +146,7 @@ class orbit:
         self.a = (self.ra + self.rp)/2
         self.ep = (self.ra-self.rp)/(self.ra+self.rp)
         self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
+        self.v0 = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
         if turns.shape[0] > 1 :
             mini = turns[0]
             if R[turns[1]] < R[mini]:
@@ -168,7 +184,20 @@ class orbit:
 #        plt.axis('equal')
         return [X, Y]
 
-    def plot(self, line):
+#    def plot(self, line):
+#        X = np.zeros((360, 1))
+#        Y = np.zeros((360, 1))
+#        for l in range(0, 360):
+#            phi = l*math.pi/180
+#            ang = self.omega + phi
+#            r = self.a * (1 - math.pow(self.ep, 2)) / (1 + self.ep*math.cos(phi))
+#            X[l] = r*math.cos(ang)
+#            Y[l] = r*math.sin(ang)
+#        
+#        plt.plot(X,Y, line)
+#        plt.axis('equal')
+
+    def plot_data(self):
         X = np.zeros((360, 1))
         Y = np.zeros((360, 1))
         for l in range(0, 360):
@@ -177,9 +206,7 @@ class orbit:
             r = self.a * (1 - math.pow(self.ep, 2)) / (1 + self.ep*math.cos(phi))
             X[l] = r*math.cos(ang)
             Y[l] = r*math.sin(ang)
-        
-        plt.plot(X,Y, line)
-        plt.axis('equal')
+        return [X, Y]        
 
     def Print(self):
         print "Semi-major axis, a: " + repr(self.a)
@@ -188,7 +215,7 @@ class orbit:
         print "Appogee, ra: " + repr(self.ra)
         print "Perigee, rp: " + repr(self.rp)
         print "Argument of perigee, w: " + repr(self.omega)
-        print 
+        print "T: " + repr(self.T)
     
 #    def __del__(self):
 #        print "Orbit has been deleted"

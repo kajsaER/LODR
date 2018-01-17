@@ -2,8 +2,8 @@
 
 from __future__ import division
 import math
-import extmath
-import constants as consts
+import Support_Files.extmath as extmath
+import Support_Files.constants as consts
 
 sea = 0
 high = 6

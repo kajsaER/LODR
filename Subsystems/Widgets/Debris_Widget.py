@@ -1,12 +1,12 @@
 from PyQt4 import QtCore, QtGui, uic
 import math
-from orbit import orbit
-from debris import debris
+from Subsystems.orbit import orbit
+from Subsystems.debris import debris
 
-qtCreatorNewDebris = "Subsystems/NewDebris.ui"
+qtCreatorNewDebris = "Subsystems/ui_Files/NewDebris.ui"
 NewDebrisClass, NewDebrisBaseClass = uic.loadUiType(qtCreatorNewDebris)
 
-qtCreatorRemoveDebris = "Subsystems/RemoveDebris.ui"
+qtCreatorRemoveDebris = "Subsystems/ui_Files/RemoveDebris.ui"
 RemoveDebrisClass, RemoveDebrisBaseClass = uic.loadUiType(qtCreatorRemoveDebris)
 
 mmin = 0
@@ -141,7 +141,7 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
 
         orb = orbit()
         o = dict(orbvals)
-        orb.make(float(o.get("a")), float(o.get("epsilon")), float(o.get("omega")))
+        orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
         deb = debris(name, self.valueetac, self.valueCm, self.valued, self.valuem, orb, self.valuenu)
         self.main.debris_list.append(deb)
 

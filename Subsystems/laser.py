@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import math
-import extmath
-import constants as consts
+import Support_Files.extmath as extmath
+import Support_Files.constants as consts
 import numpy as np
 
 NAN = float('nan')
@@ -90,7 +90,17 @@ class laser:
         if duration > 0:
             deb.step()
             self.fire(ant, deb, duration, atm)
- 
+
+    def Print(self):
+        print "P: " + str(self._P)                   # The power of the chosen laser
+        print "Cb: " + str(self._Cb)                 # Beam coefficient
+        print "W: " + str(self._W)                   # Pulse energy          self._P/self._frep
+        print "lam: " + str(self._lambda)            # The wavelength of the chosen laser
+        print "M2: " + str(self._M2)                 # The beam quality factor of the chosen laser
+        print "frep: " + str(self._frep)             # Repetition rate
+        print "tau: " + str(self._tau)               # Pulse duration
+        print "dub: " + str(self._dubf)              # Bool for indication of frequency doubling
+
 #    def __del__(self):
 #        print "Laser has been deleted"
 

@@ -32,7 +32,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_a">
+  <widget class="QLabel" name="label_rp">
    <property name="geometry">
     <rect>
      <x>11</x>
@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;a &lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;p &lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="omega">
@@ -101,7 +101,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="a">
+  <widget class="QLineEdit" name="rp">
    <property name="geometry">
     <rect>
      <x>51</x>
@@ -111,7 +111,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Semi-major axis in meters</string>
+    <string>Semi-major axis in km</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -199,7 +199,7 @@
  </widget>
  <tabstops>
   <tabstop>name</tabstop>
-  <tabstop>a</tabstop>
+  <tabstop>rp</tabstop>
   <tabstop>epsilon</tabstop>
   <tabstop>omega</tabstop>
   <tabstop>buttonBox</tabstop>

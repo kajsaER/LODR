@@ -2,14 +2,17 @@ from PyQt4 import QtCore, QtGui, uic
 import math
 #from orbit import orbit
 
-qtCreatorNewOrbit = "Subsystems/NewOrbit.ui"
+qtCreatorNewOrbit = "Subsystems/ui_Files/NewOrbit.ui"
 NewOrbitClass, NewOrbitBaseClass = uic.loadUiType(qtCreatorNewOrbit)
 
-qtCreatorRemoveOrbit = "Subsystems/RemoveOrbit.ui"
+qtCreatorRemoveOrbit = "Subsystems/ui_Files/RemoveOrbit.ui"
 RemoveOrbitClass, RemoveOrbitBaseClass = uic.loadUiType(qtCreatorRemoveOrbit)
 
-amin = 6000
-amax = 800000
+qtCreatorDuplicateOrbit = "Subsystems/ui_Files/DuplicateOrbit.ui"
+DuplicateOrbitClass, DuplicateOrbitBaseClass = uic.loadUiType(qtCreatorDuplicateOrbit)
+
+rpmin = 6538e+03 # Altitude at perigee must be at least 160 km 
+rpmax = 150e+06  # Radious at perigee for a very HEO
 emin = 0
 emax = 1
 omin = 0
@@ -22,16 +25,16 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         self.main = main
 
         self.validname = False
-        self.valida = False
+        self.validrp = False
         self.validepsilon = False
         self.validomega = False
 
-        self.a.setValidator(QtGui.QDoubleValidator())
+        self.rp.setValidator(QtGui.QDoubleValidator())
         self.epsilon.setValidator(QtGui.QDoubleValidator())
         self.omega.setValidator(QtGui.QDoubleValidator())
 
         self.name.editingFinished.connect(self.updatename)
-        self.a.editingFinished.connect(self.updatea)
+        self.rp.editingFinished.connect(self.updaterp)
         self.epsilon.editingFinished.connect(self.updateepsilon)
         self.omega.editingFinished.connect(self.updateomega)
 
@@ -44,20 +47,20 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         if len(name) < 1:
             self.validname = False
             self.name.setText("name required")
-        if self.main.debrisConf.has_section(name):
+        if self.main.orbitConf.has_section(name):
             self.validname = False
             self.name.setText("in use")
         else:
             self.validname = True
 
-    def updatea(self):
-        a = float(self.a.text())
-        if a >= amin and a <= amax:
-            self.valuea = a
-            self.valida = True
+    def updaterp(self):
+        rp = float(self.rp.text())*1e+03
+        if rp >= rpmin and rp <= rpmax:
+            self.valuerp = rp
+            self.validrp = True
         else:
-            self.a.setText("invalid")
-            self.valida = False
+            self.rp.setText("invalid")
+            self.validrp = False
         self.checkOK()
 
     def updateepsilon(self):
@@ -81,7 +84,7 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         self.checkOK()
 
     def checkOK(self):
-        if self.valida and self.validepsilon and self.validomega:
+        if self.validrp and self.validepsilon and self.validomega:
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
         else:
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
@@ -90,7 +93,7 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         name = str(self.name.text())
         self.main.orbit_list.append(name)
         self.main.orbitConf.add_section(name)
-        self.main.orbitConf.set(name, "a", str(self.valuea))
+        self.main.orbitConf.set(name, "rp", str(self.valuerp))
         self.main.orbitConf.set(name, "epsilon", str(self.valueepsilon))
         self.main.orbitConf.set(name, "omega", str(self.valueomega))
 
@@ -113,4 +116,41 @@ class RemoveOrbit(RemoveOrbitBaseClass, RemoveOrbitClass):
             del self.main.orbit_list[i]
             name = str(self.orbitListWidget.currentItem().text())
             self.main.orbitConf.remove_section(name)
+
+skipThis = 00
+renameThis = 01
+replaceThis = 02
+skipAll = 10
+renameAll = 11
+replaceAll = 12
+
+class DuplicateOrbit(DuplicateOrbitBaseClass, DuplicateOrbitClass):
+    def __init__(self, name, parent=None):
+        super(DuplicateOrbit, self).__init__(parent)
+        self.setupUi(self)
+
+        self.textBox.setText("An orbit with the name " + str(name) +
+                "is already in use. \nWhat would you like to do?")
+
+        self.skipButton.clicked.connect(self.skip)
+        self.renameButton.clicked.connect(self.rename)
+        self.replaceButton.clicked.connect(self.replace)
+
+    def skip(self):
+        if self.apply2All.isChecked():
+            self.done(skipAll)
+        else:
+            self.done(skipThis)
+
+    def rename(self):
+        if self.apply2All.isChecked():
+            self.done(renameAll)
+        else:
+            self.done(renameThis)
+
+    def replace(self):
+        if self.apply2All.isChecked():
+            self.done(replaceAll)
+        else:
+            self.done(replaceThis)
 

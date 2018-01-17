@@ -1,22 +1,23 @@
 from PyQt4 import QtCore, QtGui, uic
 from ConfigParser import SafeConfigParser
-import math, extmath, sys
-import constants as consts
+import math, sys
+import Subsystems.Support_Files.extmath as extmath
+import Subsystems.Support_Files.constants as consts
 import numpy as np
 from decimal import Decimal
 
 
-qtCreatorLaser = "Subsystems/laser_widget.ui"
+qtCreatorLaser = "Subsystems/ui_Files/Laser_Widget.ui"
 laser_widget, laserBaseClass = uic.loadUiType(qtCreatorLaser)
-qtCreatorDefinedLaser = "Subsystems/definedLaser.ui"
+qtCreatorDefinedLaser = "Subsystems/ui_Files/DefinedLaser.ui"
 DefinedLaserWidget, DefinedLaserBaseClass = uic.loadUiType(qtCreatorDefinedLaser)
-qtCreatorUndefinedLaser = "Subsystems/undefinedLaser.ui"
+qtCreatorUndefinedLaser = "Subsystems/ui_Files/UndefinedLaser.ui"
 UndefinedLaserWidget, UndefinedLaserBaseClass = uic.loadUiType(qtCreatorUndefinedLaser)
 
-qtCreatorNewLaser = "Subsystems/NewLaser.ui"
+qtCreatorNewLaser = "Subsystems/ui_Files/NewLaser.ui"
 NewLaserClass, NewLaserBaseClass = uic.loadUiType(qtCreatorNewLaser)
 
-qtCreatorRemoveLaser = "Subsystems/RemoveLaser.ui"
+qtCreatorRemoveLaser = "Subsystems/ui_Files/RemoveLaser.ui"
 RemoveLaserClass, RemoveLaserBaseClass = uic.loadUiType(qtCreatorRemoveLaser)
 
 units = {'P':'W', 'W':'J','lambda':'m', 'frep':'Hz', 'tau':'s', 'T':'s'}
@@ -131,6 +132,10 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         if var != 'T':
             exec("%s" % 'self.main.lasersystem._' + var + ' = val')
 
+    def get_duration(self):
+        return self.num_T.value()*self.pot_T
+
+################### End of Defined Laser ###########################
 
 class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
     def __init__(self, main, parent=None):
@@ -254,9 +259,13 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         if val < mini:
             exec('self.num_'+var+'.display(mini/new_pot)')
             exec('self.slide_'+var+'.setValue(mini/new_pot)')
+            exec('self.main.lasersystem._' + var + '= mini')
         elif val > maxi:
             exec('self.num_'+var+'.display(maxi/new_pot)')
             exec('self.slide_'+var+'.setValue(maxi/new_pot)')
+            exec('self.main.lasersystem._' + var + '= maxi')
+        else:
+            exec('self.main.lasersystem._' + var + '= val')
 
     def double_freq(self):
         if self.freqDub.isChecked():
@@ -288,6 +297,10 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         if var != 'T':
             exec('self.main.lasersystem._' + var + ' = value*pot')
 
+    def get_duration(self):
+        return self.num_T.value()*self.pot_T
+
+#################### End of Undefined Laser ########################
 
 class NewLaser(NewLaserBaseClass, NewLaserClass):
     def __init__(self, main, parent=None):
@@ -462,6 +475,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.main.laserType.insertItem(pos, name)
         self.main.laser_type_list.insert(pos, name)
 
+######################### End of New Laser #########################
 
 class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):
     def __init__(self, main, parent=None):

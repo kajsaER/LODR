@@ -7,11 +7,19 @@ import sys, os
 import time, threading
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.patches import Circle as Circle
 from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui, uic
 
-qtCreatorMain = "Subsystems/GUI.ui"
+qtCreatorMain = "Subsystems/ui_Files/GUI.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorMain)
+
+skipThis = 00
+renameThis = 01
+replaceThis = 02
+skipAll = 10
+renameAll = 11
+replaceAll = 12
 
 class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -21,8 +29,8 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.filefolder = os.getcwd()
         self.formats = QtCore.QStringList()
         for string in ['LODR Files (*.lodr)','Debris Files (*.dcfg)',
-                           'Laser Files (*.lcfg)','Orbit Files (*.ocfg)',
-                           'All Files (*)']:
+                       'Laser Files (*.lcfg)','Orbit Files (*.ocfg)',
+                       'All Files (*)']:
             self.formats.append(string)
         
         self.openDiag = QtGui.QFileDialog(self.central_widget)
@@ -115,36 +123,30 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.plotLayout.addWidget(self.toolbar)
         self.plotLayout.addWidget(self.canvas)
         self.graph = self.figure.add_subplot(111)
+        self.empty_plot()
         
 ################## End of main window init code #####################
      
     # Debris functions #
-    def load_debris(self, filename):
-        if filename == False:
-            filename = self.get_filename(formats=["Debris Files (*.dcfg)"])
-        self.debrisConf.read(str(filename))
-        Debris = self.debrisConf.sections()
-        orbits = dict(self.debrisConf.items("ORBITS"))
-        for orb in orbits.keys():
-            if orb not in self.orbitConf.sections():
-                self.orbitConf.add_section(orb)
-                self.orbit_list.append(str(orb))
-            exec('vals = dict('+orbits.get(orb)+')')
-            self.orbitConf.set(orb, "a", vals.get("a"))
-            self.orbitConf.set(orb, "epsilon", vals.get("epsilon"))
-            self.orbitConf.set(orb, "omega", vals.get("omega"))
-        self.orbit_list.sort()
-        for deb in Debris:
-            if deb != "ORBITS":
-                d = dict(self.debrisConf.items(deb))
-                orb = orbit()
-                o = dict(self.orbitConf.items(d.get("orbit")))
-                orb.make(float(o.get("a")), float(o.get("epsilon")), float(o.get("omega")))
-                Deb = debris(str(deb), float(d.get("etac")), float(d.get("Cm")),
-                        float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
-                self.debris_list.append(Deb)
-        self.objectNbr.setMaximum(len(self.debris_list))
-
+    def load_debris(self, filename=False, Units=False):
+        if Units == False:
+            if filename == False:
+                filename = self.get_filename(formats=["Debris Files (*.dcfg)"])
+            self.debrisConf.read(str(filename))
+            Debris = self.debrisConf.sections()
+            orbits = dict(self.debrisConf.items("ORBITS"))
+            self.load_orbit(Units=orbits)
+            for deb in Debris:
+                if deb != "ORBITS":
+                    d = dict(self.debrisConf.items(deb))
+                    orb = orbit()
+                    o = dict(self.orbitConf.items(d.get("orbit")))
+                    orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
+                    Deb = debris(str(deb), float(d.get("etac")), float(d.get("Cm")),
+                            float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
+                    self.debris_list.append(Deb)
+            self.objectNbr.setMaximum(len(self.debris_list))
+    
     def add_debris(self):
         new_deb = NewDebris(self)
         new_deb.exec_()
@@ -183,9 +185,11 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             self.update_position()
             self.update_orbit()
 
-#    def debris_step(self):
+    def debris_step(self):
 #        self.steptimer.start()
 #        print time.ctime()
+        for x in range(int(9e3)):
+            self.debris.step()
 
     def plot_debris(self):
         data = self.debris.plot_data()
@@ -205,15 +209,61 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.num_epsilon.display(orb.ep)
 
     # Orbit functions #
-    def load_orbit(self, filename):
-        if filename == False:
-            filename = self.get_filename(formats=['Orbit Files (*.ocfg)'])
-        self.orbitConf.read(str(filename))
-        orbits = self.orbitConf.sections()
-        for orb in orbits:
-            if orb not in self.orbit_list:
-                self.orbit_list.append(orb)
-        self.orbit_list.sort()
+    def load_orbit(self, filename=False, Units=False):
+#            orbits = dict(self.debrisConf.items("ORBITS"))
+
+#            for orb in orbits.keys():
+#                if orb not in self.orbitConf.sections():
+#                    self.orbitConf.add_section(orb)
+#                    self.orbit_list.append(str(orb))
+#                exec('vals = dict('+orbits.get(orb)+')')
+#                self.orbitConf.set(orb, "rp", vals.get("rp"))
+#                self.orbitConf.set(orb, "epsilon", vals.get("epsilon"))
+#                self.orbitConf.set(orb, "omega", vals.get("omega"))
+#            self.orbit_list.sort()
+        if Units == False:
+            if filename == False:
+                filename = self.get_filename(formats=['Orbit Files (*.ocfg)'])
+            orbitConfTemp = SCP(allow_no_value=True)
+            orbitConfTemp.read(str(filename))
+            orbits = orbitConfTemp.sections()
+            forAll = None
+            for orb in orbits:
+                if orb not in self.orbit_list:
+                    vals = dict(orbitConfTemp.items(orb))
+                    self.insert_orbit(orb, vals)
+                    orbits = dict(self.debrisConf.items("ORBITS"))
+                elif len(set(orbitConfTemp.items(orb)) & set(self.orbitConf.items(orb))) == 3:
+                    pass
+                else:
+                    if forAll == None:
+                        action = DuplicateOrbit(orb).exec_()
+                        if action >= 10:
+                            action = action % 10
+                            forAll = action
+                        else:
+                            action = forAll
+                    if action == 0: # Skip
+                        pass
+                    elif action == 1: # Rename
+                        name = orb
+                        while name in self.orbit_list:
+                            name = str(QtGui.QInputDialog.getText(self.central_widget,
+                                    "Rename Orbit", "Name")[0])
+                        vals = dict(orbitConfTemp.items(orb))
+                        self.insert_orbit(name, vals)
+                    elif action == 2: # Replace
+                        vals = dict(orbitConfTemp.items(orb))
+                        self.insert_orbit(orb, vals)
+            self.orbit_list.sort()
+    
+    def insert_orbit(self, name, vals):
+        if not self.orbitConf.has_section(name):
+            self.orbitConf.add_section(name)
+        self.orbitConf.set(name, "rp", vals.get("rp"))
+        self.orbitConf.set(name, "epsilon", vals.get("epsilon"))
+        self.orbitConf.set(name, "omega", vals.get("omega"))
+        self.orbit_list.append(name)
 
     def add_orbit(self):
         self.new_orb = NewOrbit(self)
@@ -231,7 +281,16 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
     def plot_approx_orbit(self):
         data = self.debris._orbit.plot_approx_data()
-        print data
+        self.graph.plot(data[0], data[1], ':')
+        self.graph.axis('equal')
+        self.canvas.draw()
+
+    def plot_orbit(self):
+        data = self.debris._orbit.plot_data()
+        self.graph.plot(data[0], data[1])
+        self.graph.axis('equal')
+        self.canvas.draw()
+
 
     # Laser functions #
     def load_laser(self, filename):
@@ -278,6 +337,11 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             LT = dict(self.laserConf.items(str(choice)))
             self.laserDef.setDefaultLaserParam(LT)
             self.lasersystem.switch(LT)
+
+    def fire(self):
+        self.lasersystem.fire(self.antenna, self.debris,
+                float(self.laserstack.currentWidget().get_duration()),
+                self.atmosphere)
 
     # Other functions #
     def open_file(self):
@@ -349,17 +413,15 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             suffix = 'txt'
         self.saveDiag.setDefaultSuffix(suffix)
 
-    def run_app(self):
-#        self.steptimer = threading.Timer(1.0, self.debris_step)
-#        self.debris_step()
+    def empty_plot(self):
+        self.graph.add_patch(Circle((0, 0), consts.Re+160e+03, color='b', alpha=0.2))
+        self.graph.add_patch(Circle((0, 0), consts.Re, color='g', alpha=0.5))
+        self.graph.margins(0.01, tight=False)
+        self.graph.axis('equal')
+        self.canvas.draw()
 
-#        t1 = time.clock()
-#        self.debris.step()
-#        self.update_position()
-#        t2 = time.clock()
-#        if (t2-t1) < 1:
-#            time.sleep(1-(t2-t1))
-        
+    def run_app(self):
+        print self.debris.get_beta()
         print "Run function needs to be implemented"
 
     def close_application(self):
