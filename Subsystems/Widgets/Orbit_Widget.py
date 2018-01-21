@@ -130,7 +130,7 @@ class DuplicateOrbit(DuplicateOrbitBaseClass, DuplicateOrbitClass):
         self.setupUi(self)
 
         self.textBox.setText("An orbit with the name " + str(name) +
-                "is already in use. \nWhat would you like to do?")
+                " is already in use. \nWhat would you like to do?")
 
         self.skipButton.clicked.connect(self.skip)
         self.renameButton.clicked.connect(self.rename)

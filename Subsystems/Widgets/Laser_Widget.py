@@ -20,6 +20,9 @@ NewLaserClass, NewLaserBaseClass = uic.loadUiType(qtCreatorNewLaser)
 qtCreatorRemoveLaser = "Subsystems/ui_Files/RemoveLaser.ui"
 RemoveLaserClass, RemoveLaserBaseClass = uic.loadUiType(qtCreatorRemoveLaser)
 
+qtCreatorDuplicateLaser = "Subsystems/ui_Files/DuplicateLaser.ui"
+DuplicateLaserClass, DuplicateLaserBaseClass = uic.loadUiType(qtCreatorDuplicateLaser)
+
 units = {'P':'W', 'W':'J','lambda':'m', 'frep':'Hz', 'tau':'s', 'T':'s'}
 
 
@@ -497,3 +500,40 @@ class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):
             self.main.laserConf.remove_section(name)
             ind = self.main.laserType.findText(name)
             self.main.laserType.removeItem(ind)
+
+skipThis = 00
+renameThis = 01
+replaceThis = 02
+skipAll = 10
+renameAll = 11
+replaceAll = 12
+
+class DuplicateLaser(DuplicateLaserBaseClass, DuplicateLaserClass):
+    def __init__(self, name, parent=None):
+        super(DuplicateLaser, self).__init__(parent)
+        self.setupUi(self)
+
+        self.textBox.setText("A laser with the name " + str(name) +
+                " in already in use. \nWhat would you like to do?")
+
+        self.skipButton.clicked.connect(self.skip)
+        self.renameButton.clicked.connect(self.rename)
+        self.replaceButton.clicked.connect(self.replace)
+
+    def skip(self):
+        if self.apply2All.isChecked():
+            self.done(skipAll)
+        else:
+            self.done(skipThis)
+
+    def rename(self):
+        if self.apply2All.isChecked():
+            self.done(renameAll)
+        else:
+            self.done(renameThis)
+
+    def replace(self):
+        if self.apply2All.isChecked():
+            self.done(replaceAll)
+        else:
+            self.done(replaceThis)

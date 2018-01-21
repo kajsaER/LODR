@@ -128,25 +128,54 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 ################## End of main window init code #####################
      
     # Debris functions #
-    def load_debris(self, filename=False, Units=False):
-        if Units == False:
+    def load_debris(self, filename=False, scp=False):
+        if scp == False:
             if filename == False:
                 filename = self.get_filename(formats=["Debris Files (*.dcfg)"])
-            self.debrisConf.read(str(filename))
-            Debris = self.debrisConf.sections()
-            orbits = dict(self.debrisConf.items("ORBITS"))
-            self.load_orbit(Units=orbits)
-            for deb in Debris:
-                if deb != "ORBITS":
-                    d = dict(self.debrisConf.items(deb))
-                    orb = orbit()
-                    o = dict(self.orbitConf.items(d.get("orbit")))
-                    orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
-                    Deb = debris(str(deb), float(d.get("etac")), float(d.get("Cm")),
-                            float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
-                    self.debris_list.append(Deb)
-            self.objectNbr.setMaximum(len(self.debris_list))
-    
+            debrisConfTemp = SCP(allow_no_value=True)
+            debrisConfTemp.optionxform = str
+            debrisConfTemp.read(str(filename))
+        else:
+            debrisConfTemp = scp
+        orbitdict = dict(debrisConfTemp.items("ORBITS"))
+        orbitscp = self.dict2scp(orbitdict)
+        self.load_orbit(scp=orbitscp)
+        debrisConfTemp.remove_section("ORBITS")
+        Debris = debrisConfTemp.sections()
+        for deb in Debris:
+            d = dict(debrisConfTemp.items(deb))
+            orbname = d.get("orbit")
+            o = set(orbitscp.items(orbname))
+            O = set(self.orbitConf.items(orbname))
+            if len(o & O) < 3:
+                for orbname in self.orbitConf.sections():
+                    O = set(self.orbitConf.items(orbname))
+                    if len(o & O) == 3:
+                        break
+            o = dict(O)
+            print orbname
+            orb = orbit()
+            orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
+            print orb.rp
+            debname = (str(hex(int(float(d.get("mass")) + float(d.get("size")) + 
+                        float(d.get("Cm"))*float(d.get("etac")) +
+                        360/math.pi*float(d.get("nu"))))) + orbname)
+            extra = 0
+            n0 = debname
+            while self.debrisConf.has_section(debname):
+                debname = n0 + str(extra)
+                extra += 1
+            Deb = debris(str(debname), float(d.get("etac")), float(d.get("Cm")),
+                         float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
+            self.debrisConf.add_section(debname)
+            for key in d:
+                self.debrisConf.set(debname, key, d.get(key))
+            self.debrisConf.set(debname, "orbit", orbname)
+            self.debrisConf.set("ORBITS", orbname, str(self.orbitConf.items(orbname)))
+
+            self.debris_list.append(Deb)
+        self.objectNbr.setMaximum(len(self.debris_list))
+
     def add_debris(self):
         new_deb = NewDebris(self)
         new_deb.exec_()
@@ -209,54 +238,44 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.num_epsilon.display(orb.ep)
 
     # Orbit functions #
-    def load_orbit(self, filename=False, Units=False):
-#            orbits = dict(self.debrisConf.items("ORBITS"))
-
-#            for orb in orbits.keys():
-#                if orb not in self.orbitConf.sections():
-#                    self.orbitConf.add_section(orb)
-#                    self.orbit_list.append(str(orb))
-#                exec('vals = dict('+orbits.get(orb)+')')
-#                self.orbitConf.set(orb, "rp", vals.get("rp"))
-#                self.orbitConf.set(orb, "epsilon", vals.get("epsilon"))
-#                self.orbitConf.set(orb, "omega", vals.get("omega"))
-#            self.orbit_list.sort()
-        if Units == False:
+    def load_orbit(self, filename=False, scp=False):
+        if scp == False:
             if filename == False:
                 filename = self.get_filename(formats=['Orbit Files (*.ocfg)'])
             orbitConfTemp = SCP(allow_no_value=True)
             orbitConfTemp.read(str(filename))
-            orbits = orbitConfTemp.sections()
-            forAll = None
-            for orb in orbits:
-                if orb not in self.orbit_list:
+        else:
+            orbitConfTemp = scp
+        orbits = orbitConfTemp.sections()
+        forAll = None
+        for orb in orbits:
+            if orb not in self.orbit_list:
+                vals = dict(orbitConfTemp.items(orb))
+                self.insert_orbit(orb, vals)
+            elif len(set(orbitConfTemp.items(orb)) & set(self.orbitConf.items(orb))) == 3:
+                pass
+            else:
+                if forAll == None:
+                    action = DuplicateOrbit(orb).exec_()
+                    if action >= 10:
+                        action = action % 10
+                        forAll = action
+                else:
+                    action = forAll
+                if action == 0: # Skip
+                    pass
+                elif action == 1: # Rename
+                    name = orb
+                    while name in self.orbit_list:
+                        name = str(QtGui.QInputDialog.getText(self.central_widget,
+                                "Rename Orbit", "Name")[0])
+                    vals = dict(orbitConfTemp.items(orb))
+                    self.insert_orbit(name, vals)
+                elif action == 2: # Replace
                     vals = dict(orbitConfTemp.items(orb))
                     self.insert_orbit(orb, vals)
-                    orbits = dict(self.debrisConf.items("ORBITS"))
-                elif len(set(orbitConfTemp.items(orb)) & set(self.orbitConf.items(orb))) == 3:
-                    pass
-                else:
-                    if forAll == None:
-                        action = DuplicateOrbit(orb).exec_()
-                        if action >= 10:
-                            action = action % 10
-                            forAll = action
-                        else:
-                            action = forAll
-                    if action == 0: # Skip
-                        pass
-                    elif action == 1: # Rename
-                        name = orb
-                        while name in self.orbit_list:
-                            name = str(QtGui.QInputDialog.getText(self.central_widget,
-                                    "Rename Orbit", "Name")[0])
-                        vals = dict(orbitConfTemp.items(orb))
-                        self.insert_orbit(name, vals)
-                    elif action == 2: # Replace
-                        vals = dict(orbitConfTemp.items(orb))
-                        self.insert_orbit(orb, vals)
-            self.orbit_list.sort()
-    
+        self.orbit_list.sort()
+
     def insert_orbit(self, name, vals):
         if not self.orbitConf.has_section(name):
             self.orbitConf.add_section(name)
@@ -293,20 +312,54 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
 
     # Laser functions #
-    def load_laser(self, filename):
-        if filename == False:
-            filename = self.get_filename(formats=['Laser Files (*.lcfg)'])
-        self.laserConf.read(str(filename))
-        lasers = self.laserConf.sections()
+    def load_laser(self, filename=False, scp=False):
+        if scp == False:
+            if filename == False:
+                filename = self.get_filename(formats=['Laser Files (*.lcfg)'])
+            laserConfTemp = SCP(allow_no_value=True)
+            laserConfTemp.read(str(filename))
+        else:
+            laserConfTemp = scp
+        lasers = laserConfTemp.sections()
+        forAll = None
+        for laser in lasers:
+            if laser not in self.laserConf.sections():
+                vals = dict(laserConfTemp.items(laser))
+                self.insert_laser(laser, vals)
+            elif len(set(laserConfTemp.items(laser)) & set(self.laserConf.items(laser))) == 7:
+                pass
+            else:
+                if forAll == None:
+                    action = DuplicateLaser(laser).exec_()
+                    if action >= 10:
+                        action = action % 10
+                        forAll = action
+                else:
+                    action = forAll
+                if action == 0: # Skip
+                    pass
+                elif action == 1: # Rename
+                    name = laser
+                    while name in self.laserConf.sections():
+                        name = str(QtGui.QInputDialog.getText(self.central_widget,
+                                "Rename Laser", "Name")[0])
+                    vals = dict(laserConfTemp.items(laser))
+                    self.insert_laser(name, vals)
+                elif action == 2: # Replace
+                    vals = dict(laserConfTemp.items(laser))
+                    self.insert_laser(laser, vals)
+
+    def insert_laser(self, name, vals):
         if 'Custom' in self.laser_type_list:
             pos = self.laserType.count()-1
         else:
             pos = self.laserType.count()
-        for laser in lasers:
-            if laser not in self.laser_type_list:
-                self.laserType.insertItem(pos, laser)
-                self.laser_type_list.insert(pos, laser)
-                pos = pos+1
+        if not self.laserConf.has_section(name):
+            self.laserConf.add_section(name)
+        for key in vals:
+            self.laserConf.set(name, key, vals.get(key))
+        self.laserType.insertItem(pos, name)
+        self.laser_type_list.insert(pos, name)
 
     def add_laser(self):
         new_laser = NewLaser(self)
@@ -348,6 +401,13 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         filename = str(self.get_filename(pref='LODR Files (*.lodr)'))
         if filename != 'None':
             if filename.endswith('lodr'):
+                confTemp = SCP(allow_no_value=True)
+                confTemp.optionxform = str
+                confTemp.read(str(filename))
+                for section in confTemp.sections():
+                    dictionary = dict(confTemp.items(section))
+                    scp = self.dict2scp(dictionary)
+                    exec("self.load_" + str(section).lower() + "(scp=scp)")
                 print "Open lodr file needs to be implemented"
             elif filename.endswith('dcfg'): # Debris files
                 self.load_debris(filename=filename)
@@ -419,6 +479,15 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.graph.margins(0.01, tight=False)
         self.graph.axis('equal')
         self.canvas.draw()
+
+    def dict2scp(self, dictionary):
+        scp = SCP(allow_no_value=True)
+        for sec in dictionary.keys():
+            scp.add_section(sec)
+            exec('vals = dict('+dictionary.get(sec)+')')
+            for key in vals:
+                scp.set(sec, key, vals.get(key))
+        return scp
 
     def run_app(self):
         print self.debris.get_beta()
