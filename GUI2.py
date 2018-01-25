@@ -78,6 +78,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
         # Run Menu
         self.menuRun.menuAction().setVisible(False)
+        self.running = False
 
         # Laser Widget
         self.laserType.activated[str].connect(self.laser_choice) 
@@ -153,10 +154,8 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
                     if len(o & O) == 3:
                         break
             o = dict(O)
-            print orbname
             orb = orbit()
             orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
-            print orb.rp
             debname = (str(hex(int(float(d.get("mass")) + float(d.get("size")) + 
                         float(d.get("Cm"))*float(d.get("etac")) +
                         360/math.pi*float(d.get("nu"))))) + orbname)
@@ -215,9 +214,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             self.update_orbit()
 
     def debris_step(self):
-#        self.steptimer.start()
-#        print time.ctime()
-        for x in range(int(9e3)):
+        for x in range(60):
             self.debris.step()
 
     def plot_debris(self):
@@ -408,7 +405,6 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
                     dictionary = dict(confTemp.items(section))
                     scp = self.dict2scp(dictionary)
                     exec("self.load_" + str(section).lower() + "(scp=scp)")
-                print "Open lodr file needs to be implemented"
             elif filename.endswith('dcfg'): # Debris files
                 self.load_debris(filename=filename)
             elif filename.endswith('lcfg'): # Laser files
@@ -425,7 +421,20 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         filename = str(self.set_filename('lodr', pref='LODR Files (*.lodr)'))
         if filename != 'None':
             if filename.endswith('lodr'):
-                print "Save lodr file needs to be implemented"
+                confTemp = SCP(allow_no_value=True)
+                confTemp.optionxform = str
+                confTemp.add_section("LASER")
+                for name in self.laserConf.sections():
+                    if name != "Custom":
+                        confTemp.set("LASER", name, str(self.laserConf.items(name)))
+                confTemp.add_section("ORBIT")
+                for name in self.orbitConf.sections():
+                    confTemp.set("ORBIT", name, str(self.orbitConf.items(name)))
+                confTemp.add_section("DEBRIS")
+                for name in self.debrisConf.sections():
+                    confTemp.set("DEBRIS", name, str(self.debrisConf.items(name)))
+                with open(filename, 'w') as writefile:
+                    confTemp.write(writefile)
             elif filename.endswith('dcfg'): # Debris files
                 self.save_debris(filename=filename)
             elif filename.endswith('lcfg'): # Laser files
@@ -482,15 +491,21 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
     def dict2scp(self, dictionary):
         scp = SCP(allow_no_value=True)
+        scp.optionxform = str
         for sec in dictionary.keys():
             scp.add_section(sec)
             exec('vals = dict('+dictionary.get(sec)+')')
             for key in vals:
-                scp.set(sec, key, vals.get(key))
+                scp.set(sec, key, str(vals.get(key)))
         return scp
 
     def run_app(self):
-        print self.debris.get_beta()
+        self.running = not self.running
+#        while self.running:
+#            print self.debris.get_beta()
+#            self.debris_step()
+#            time.sleep(1)
+
         print "Run function needs to be implemented"
 
     def close_application(self):
