@@ -79,6 +79,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         # Run Menu
         self.menuRun.menuAction().setVisible(False)
         self.running = False
+        self.time_step = 240
 
         # Laser Widget
         self.laserType.activated[str].connect(self.laser_choice) 
@@ -113,7 +114,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         
         # Buttons
         self.closeBtn.clicked.connect(self.close_application)
-        self.runBtn.clicked.connect(self.run_app)
+        self.runBtn.clicked.connect(self.run_pushed)
 
         # PlotView
         bgcolor =  np.asarray(self.palette().color(self.backgroundRole()).getRgb()[0:3])/255
@@ -214,8 +215,19 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             self.update_orbit()
 
     def debris_step(self):
-        for x in range(60):
-            self.debris.step()
+        self.lock.acquire()
+        self.plot_orbit()
+        self.lock.release()
+        while self.running:
+            t1 = time.time()
+            for i in range(self.time_step):
+                self.lock.acquire()
+                self.debris.step()
+                self.lock.release()
+            self.plot_debris()
+            td = time.time() - t1
+            ts = 1 - td
+            time.sleep(ts if ts > 0 else 0)
 
     def plot_debris(self):
         data = self.debris.plot_data()
@@ -500,12 +512,20 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         return scp
 
     def run_app(self):
-        self.running = not self.running
-#        while self.running:
-#            print self.debris.get_beta()
-#            self.debris_step()
-#            time.sleep(1)
+        i = 0
+        self.plot_orbit()
+        while self.running:
+            print(i)
+            i += 1
+            self.debris_step()
+            self.plot_debris()
+            time.sleep(1)
 
+    def run_pushed(self):
+        self.running = not self.running
+        if self.running:
+            self.lock = threading.Lock()
+            self.debris_thread = threading.Thread(target=self.debris_step).start()
         print("Run function needs to be implemented")
 
     def close_application(self):
