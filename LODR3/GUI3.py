@@ -1,4 +1,3 @@
-
 import numpy as np
 from Subsystems import *
 
@@ -80,6 +79,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.menuRun.menuAction().setVisible(False)
         self.running = False
         self.time_step = 240
+        self.lock = threading.Lock()
 
         # Laser Widget
         self.laserType.activated[str].connect(self.laser_choice) 
@@ -225,19 +225,28 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
                 self.debris.step()
                 self.lock.release()
             self.plot_debris()
+            self.update_position()
             td = time.time() - t1
+#            print(td)
             ts = 1 - td
             time.sleep(ts if ts > 0 else 0)
 
     def plot_debris(self):
+#        print("Plot Debris")
         data = self.debris.plot_data()
-        self.graph.plot(data[0], data[1], 'o')
+        try:
+            del self.graph.lines[self.graph.lines.index(self.deb_dot)]
+        except (AttributeError, ValueError):
+            pass
+        self.deb_dot = self.graph.plot(data[0], data[1], 'ro')[0]
         self.canvas.draw()
 
     def update_position(self):
+#        print("Update Position")
         self.num_r.display(self.debris._r)
         self.num_nu.display(self.debris._nu)
         self.num_v.display(self.debris._v)
+        self.show()
 
     def update_orbit(self):
         orb = self.debris._orbit
@@ -495,9 +504,10 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.saveDiag.setDefaultSuffix(suffix)
 
     def empty_plot(self):
+        self.graph.clear()
         self.graph.add_patch(Circle((0, 0), consts.Re+160e+03, color='b', alpha=0.2))
         self.graph.add_patch(Circle((0, 0), consts.Re, color='g', alpha=0.5))
-        self.graph.margins(0.01, tight=False)
+        self.graph.margins(0.1, tight=False)
         self.graph.axis('equal')
         self.canvas.draw()
 
@@ -524,7 +534,6 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def run_pushed(self):
         self.running = not self.running
         if self.running:
-            self.lock = threading.Lock()
             self.debris_thread = threading.Thread(target=self.debris_step).start()
         print("Run function needs to be implemented")
 
@@ -541,6 +550,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
 if __name__ == "__main__":
 
+    sys.settrace
     app = QtGui.QApplication(sys.argv)
     window = OperatorGUI()
     window.show()
