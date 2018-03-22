@@ -1,0 +1,157 @@
+$1 = "pass between display r and v di"
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11752)]
+[New Thread 0x7ffff12cf700 (LWP 11753)]
+[New Thread 0x7fffeeace700 (LWP 11754)]
+[New Thread 0x7fffd3da2700 (LWP 11755)]
+[New Thread 0x7fffd2042700 (LWP 11756)]
+[New Thread 0x7fffd1841700 (LWP 11757)]
+[New Thread 0x7fffd1040700 (LWP 11758)]
+[New Thread 0x7fffbb95a700 (LWP 11759)]
+[Thread 0x7fffbb95a700 (LWP 11759) exited]
+[New Thread 0x7fffbb95a700 (LWP 11762)]
+[New Thread 0x7fffbab72700 (LWP 11763)]
+[Thread 0x7fffd2042700 (LWP 11756) exited]
+[Thread 0x7fffd3da2700 (LWP 11755) exited]
+[Thread 0x7fffd1841700 (LWP 11757) exited]
+[Thread 0x7fffd1040700 (LWP 11758) exited]
+[Thread 0x7fffeeace700 (LWP 11754) exited]
+[Thread 0x7ffff12cf700 (LWP 11753) exited]
+[Thread 0x7ffff3ad0700 (LWP 11752) exited]
+[Thread 0x7fffbab72700 (LWP 11763) exited]
+[Thread 0x7ffff7fcf700 (LWP 11748) exited]
+[Inferior 1 (process 11748) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11765)]
+[New Thread 0x7ffff12cf700 (LWP 11766)]
+[New Thread 0x7fffeeace700 (LWP 11767)]
+[New Thread 0x7fffd3da2700 (LWP 11769)]
+[New Thread 0x7fffd2042700 (LWP 11770)]
+[New Thread 0x7fffd1841700 (LWP 11771)]
+[New Thread 0x7fffd1040700 (LWP 11772)]
+[New Thread 0x7fffbb95a700 (LWP 11774)]
+[Thread 0x7fffbb95a700 (LWP 11774) exited]
+[New Thread 0x7fffbb95a700 (LWP 11777)]
+[New Thread 0x7fffbab72700 (LWP 11778)]
+[Thread 0x7fffd3da2700 (LWP 11769) exited]
+[Thread 0x7fffd2042700 (LWP 11770) exited]
+[Thread 0x7fffd1841700 (LWP 11771) exited]
+[Thread 0x7fffd1040700 (LWP 11772) exited]
+[Thread 0x7fffeeace700 (LWP 11767) exited]
+[Thread 0x7ffff12cf700 (LWP 11766) exited]
+[Thread 0x7ffff3ad0700 (LWP 11765) exited]
+[Thread 0x7fffbb95a700 (LWP 11777) exited]
+[Thread 0x7ffff7fcf700 (LWP 11764) exited]
+[Inferior 1 (process 11764) exited normally]
+Undefined command: "runs".  Try "help".
+Ambiguous command "int runs = 2": internals, interpreter-exec, interrupt.
+"2 runs"Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11873)]
+[New Thread 0x7ffff12cf700 (LWP 11874)]
+[New Thread 0x7fffeeace700 (LWP 11875)]
+[New Thread 0x7fffd3da2700 (LWP 11876)]
+[New Thread 0x7fffd2042700 (LWP 11878)]
+[New Thread 0x7fffd1841700 (LWP 11879)]
+[New Thread 0x7fffd1040700 (LWP 11880)]
+[New Thread 0x7fffbb95a700 (LWP 11882)]
+[Thread 0x7fffbb95a700 (LWP 11882) exited]
+[New Thread 0x7fffbb95a700 (LWP 11885)]
+[New Thread 0x7fffbab72700 (LWP 11886)]
+[Thread 0x7fffd3da2700 (LWP 11876) exited]
+[Thread 0x7fffd2042700 (LWP 11878) exited]
+[Thread 0x7fffd1841700 (LWP 11879) exited]
+[Thread 0x7fffd1040700 (LWP 11880) exited]
+[Thread 0x7fffeeace700 (LWP 11875) exited]
+[Thread 0x7ffff12cf700 (LWP 11874) exited]
+[Thread 0x7ffff3ad0700 (LWP 11873) exited]
+[Thread 0x7fffbb95a700 (LWP 11885) exited]
+[Thread 0x7ffff7fcf700 (LWP 11872) exited]
+[Inferior 1 (process 11872) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11888)]
+[New Thread 0x7ffff12cf700 (LWP 11889)]
+[New Thread 0x7fffeeace700 (LWP 11890)]
+[New Thread 0x7fffd3da2700 (LWP 11892)]
+[New Thread 0x7fffd2042700 (LWP 11893)]
+[New Thread 0x7fffd1841700 (LWP 11894)]
+[New Thread 0x7fffd1040700 (LWP 11895)]
+[New Thread 0x7fffbb95a700 (LWP 11901)]
+[Thread 0x7fffbb95a700 (LWP 11901) exited]
+[New Thread 0x7fffbb95a700 (LWP 11902)]
+[New Thread 0x7fffbab72700 (LWP 11903)]
+[Thread 0x7fffd3da2700 (LWP 11892) exited]
+[Thread 0x7fffd2042700 (LWP 11893) exited]
+[Thread 0x7fffd1841700 (LWP 11894) exited]
+[Thread 0x7fffd1040700 (LWP 11895) exited]
+[Thread 0x7fffeeace700 (LWP 11890) exited]
+[Thread 0x7ffff12cf700 (LWP 11889) exited]
+[Thread 0x7ffff3ad0700 (LWP 11888) exited]
+[Thread 0x7fffbab72700 (LWP 11903) exited]
+[Thread 0x7fffbb95a700 (LWP 11902) exited]
+[Inferior 1 (process 11887) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11906)]
+[New Thread 0x7ffff32cf700 (LWP 11907)]
+[New Thread 0x7fffeeace700 (LWP 11908)]
+[New Thread 0x7fffd3da2700 (LWP 11909)]
+[New Thread 0x7fffd2042700 (LWP 11910)]
+[New Thread 0x7fffd1841700 (LWP 11911)]
+[New Thread 0x7fffd1040700 (LWP 11912)]
+[New Thread 0x7fffbb3f3700 (LWP 11915)]
+[New Thread 0x7fffbabf2700 (LWP 11916)]
+[New Thread 0x7fffba3f1700 (LWP 11917)]
+
+Thread 11 "python3" received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x7fffba3f1700 (LWP 11917)]
+malloc_consolidate (av=av@entry=0x7fffb0000020) at malloc.c:4175
+4175	malloc.c: No such file or directory.
+#0  malloc_consolidate (av=av@entry=0x7fffb0000020) at malloc.c:4175
+#1  0x00007ffff7871cde in _int_malloc (av=av@entry=0x7fffb0000020, bytes=bytes@entry=1114)
+    at malloc.c:3450
+#2  0x00007ffff7874184 in __GI___libc_malloc (bytes=1114) at malloc.c:2913
+#3  0x00007ffff7874a18 in __GI___libc_realloc (oldmem=0x0, bytes=1114) at malloc.c:2994
+#4  0x00000000004e60f5 in ?? ()
+#5  0x00000000004e9ba7 in PyCFunction_Call ()
+#6  0x00000000005372f4 in PyEval_EvalFrameEx ()
+#7  0x0000000000540199 in ?? ()
+#8  0x000000000053bd92 in PyEval_EvalFrameEx ()
+#9  0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#10 0x0000000000540199 in ?? ()
+#11 0x000000000053bd92 in PyEval_EvalFrameEx ()
+#12 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#13 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#14 0x00000000004ed3f5 in ?? ()
+#15 0x0000000000537791 in PyEval_EvalFrameEx ()
+#16 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#17 0x00000000004ebe37 in ?? ()
+#18 0x00000000005c1797 in PyObject_Call ()
+#19 0x000000000053920b in PyEval_EvalFrameEx ()
+#20 0x00000000005406df in ?? ()
+#21 0x000000000053c1d0 in PyEval_EvalFrameEx ()
+#22 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#23 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#24 0x00000000004ebe37 in ?? ()
+#25 0x00000000005c1797 in PyObject_Call ()
+#26 0x000000000053920b in PyEval_EvalFrameEx ()
+#27 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#28 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#29 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#30 0x00000000004ebd23 in ?? ()
+#31 0x00000000005c1797 in PyObject_Call ()
+#32 0x00000000004fb9ce in ?? ()
+#33 0x00000000005c1797 in PyObject_Call ()
+#34 0x0000000000534d90 in PyEval_CallObjectWithKeywords ()
+#35 0x0000000000609c02 in ?? ()
+#36 0x00007ffff7bc16ba in start_thread (arg=0x7fffba3f1700) at pthread_create.c:333
+#37 0x00007ffff78f741d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
+quit

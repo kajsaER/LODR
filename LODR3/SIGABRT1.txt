@@ -1,0 +1,82 @@
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 19601)]
+[New Thread 0x7ffff12cf700 (LWP 19602)]
+[New Thread 0x7fffeeace700 (LWP 19603)]
+[New Thread 0x7fffd3da2700 (LWP 19606)]
+[New Thread 0x7fffd2042700 (LWP 19607)]
+[New Thread 0x7fffd1841700 (LWP 19608)]
+[New Thread 0x7fffd1040700 (LWP 19609)]
+[New Thread 0x7fffbb95a700 (LWP 19614)]
+
+Thread 1 "python3" received signal SIGABRT, Aborted.
+0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+54	../sysdeps/unix/sysv/linux/raise.c: No such file or directory.
+#0  0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+#1  0x00007ffff782702a in __GI_abort () at abort.c:89
+#2  0x00007ffff78677ea in __libc_message (do_abort=do_abort@entry=2, 
+    fmt=fmt@entry=0x7ffff7980ed8 "*** Error in `%s': %s: 0x%s ***\n")
+    at ../sysdeps/posix/libc_fatal.c:175
+#3  0x00007ffff787037a in malloc_printerr (ar_ptr=<optimised out>, ptr=<optimised out>, 
+    str=0x7ffff7980fa0 "double free or corruption (fasttop)", action=3) at malloc.c:5006
+#4  _int_free (av=<optimised out>, p=<optimised out>, have_lock=0) at malloc.c:3867
+#5  0x00007ffff787453c in __GI___libc_free (mem=<optimised out>) at malloc.c:2968
+#6  0x00007fffe0ff343b in QVectorTypedData<QWidget*>::free (alignment=<optimised out>, 
+    x=<optimised out>) at ../../include/QtCore/../../src/corelib/tools/qvector.h:99
+#7  QVector<QWidget*>::free (this=0x1ea38a0, x=<optimised out>)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:468
+#8  QVector<QWidget*>::operator= (v=..., this=0x1ea38a0)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:395
+#9  QVector<QWidget*>::clear (this=0x1ea38a0)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:348
+#10 QWidgetBackingStore::sync (this=0x1ea3880) at painting/qbackingstore.cpp:1279
+#11 0x00007fffe0e11c50 in QWidgetPrivate::syncBackingStore (this=0x190ae00)
+    at kernel/qwidget.cpp:1894
+#12 0x00007fffe0e249b8 in QWidget::event (this=this@entry=0x19a2d00, 
+    event=event@entry=0x7fffb4039110) at kernel/qwidget.cpp:8693
+#13 0x00007fffe12089b3 in QMainWindow::event (this=0x19a2d00, event=0x7fffb4039110)
+    at widgets/qmainwindow.cpp:1478
+#14 0x00007fffe1cfc28b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#15 0x00007fffe0dcdfdc in QApplicationPrivate::notify_helper (this=this@entry=0x192fb90, 
+    receiver=receiver@entry=0x19a2d00, e=e@entry=0x7fffb4039110) at kernel/qapplication.cpp:4570
+#16 0x00007fffe0dd4f16 in QApplication::notify (this=0x17cbc80, receiver=0x19a2d00, 
+    e=0x7fffb4039110) at kernel/qapplication.cpp:4356
+#17 0x00007fffe1ebc0c6 in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#18 0x00007fffe2eb390d in QCoreApplication::notifyInternal (this=0x17cbc80, 
+    receiver=receiver@entry=0x19a2d00, event=event@entry=0x7fffb4039110)
+    at kernel/qcoreapplication.cpp:955
+#19 0x00007fffe2eb73c6 in QCoreApplication::sendEvent (event=0x7fffb4039110, receiver=0x19a2d00)
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:231
+#20 QCoreApplicationPrivate::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0, data=0x1928d00) at kernel/qcoreapplication.cpp:1579
+#21 0x00007fffe2eb76a3 in QCoreApplication::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0) at kernel/qcoreapplication.cpp:1472
+#22 0x00007fffe2ee413e in QCoreApplication::sendPostedEvents ()
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:236
+#23 postEventSourceDispatch (s=0xf92780) at kernel/qeventdispatcher_glib.cpp:300
+#24 0x00007fffe2a62197 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#25 0x00007fffe2a623f0 in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#26 0x00007fffe2a6249c in g_main_context_iteration () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#27 0x00007fffe2ee42ae in QEventDispatcherGlib::processEvents (this=0x17c8420, flags=...)
+    at kernel/qeventdispatcher_glib.cpp:450
+#28 0x00007fffe0e7b616 in QGuiEventDispatcherGlib::processEvents (this=<optimised out>, flags=...)
+    at kernel/qguieventdispatcher_glib.cpp:204
+#29 0x00007fffe2eb218f in QEventLoop::processEvents (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:149
+#30 0x00007fffe2eb24f5 in QEventLoop::exec (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:204
+#31 0x00007fffe2eb84b9 in QCoreApplication::exec () at kernel/qcoreapplication.cpp:1227
+#32 0x00007fffe1e6aa2b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#33 0x00000000004e9b7f in PyCFunction_Call ()
+#34 0x00000000005372f4 in PyEval_EvalFrameEx ()
+#35 0x0000000000540199 in ?? ()
+#36 0x0000000000540e4f in PyEval_EvalCode ()
+#37 0x000000000060c272 in ?? ()
+#38 0x000000000060e71a in PyRun_FileExFlags ()
+#39 0x000000000060ef0c in PyRun_SimpleFileExFlags ()
+#40 0x000000000063fb26 in Py_Main ()
+#41 0x00000000004cfeb1 in main ()

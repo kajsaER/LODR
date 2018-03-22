@@ -1,0 +1,577 @@
+"internal display, di increasing"Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2657)]
+[New Thread 0x7ffff12cf700 (LWP 2658)]
+[New Thread 0x7fffeeace700 (LWP 2659)]
+[New Thread 0x7fffd3de2700 (LWP 2660)]
+[New Thread 0x7fffd2082700 (LWP 2661)]
+[New Thread 0x7fffd1881700 (LWP 2662)]
+[New Thread 0x7fffd1080700 (LWP 2663)]
+[New Thread 0x7fffbb95a700 (LWP 2692)]
+[Thread 0x7fffbb95a700 (LWP 2692) exited]
+[New Thread 0x7fffbb95a700 (LWP 2694)]
+[New Thread 0x7fffbab72700 (LWP 2695)]
+[Thread 0x7fffd2082700 (LWP 2661) exited]
+[Thread 0x7fffd3de2700 (LWP 2660) exited]
+[Thread 0x7fffd1881700 (LWP 2662) exited]
+[Thread 0x7fffd1080700 (LWP 2663) exited]
+[Thread 0x7fffeeace700 (LWP 2659) exited]
+[Thread 0x7ffff12cf700 (LWP 2658) exited]
+[Thread 0x7ffff3ad0700 (LWP 2657) exited]
+[Thread 0x7fffbb95a700 (LWP 2694) exited]
+[Thread 0x7ffff7fcf700 (LWP 2653) exited]
+[Inferior 1 (process 2653) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2698)]
+[New Thread 0x7ffff12cf700 (LWP 2699)]
+[New Thread 0x7fffeeace700 (LWP 2700)]
+[New Thread 0x7fffd3de2700 (LWP 2701)]
+[New Thread 0x7fffd2082700 (LWP 2702)]
+[New Thread 0x7fffd1881700 (LWP 2703)]
+[New Thread 0x7fffd1080700 (LWP 2704)]
+[New Thread 0x7fffbb95a700 (LWP 2706)]
+[Thread 0x7fffbb95a700 (LWP 2706) exited]
+[New Thread 0x7fffbb95a700 (LWP 2714)]
+[New Thread 0x7fffbab72700 (LWP 2715)]
+[Thread 0x7fffd3de2700 (LWP 2701) exited]
+[Thread 0x7fffd2082700 (LWP 2702) exited]
+[Thread 0x7fffd1881700 (LWP 2703) exited]
+[Thread 0x7fffd1080700 (LWP 2704) exited]
+[Thread 0x7fffeeace700 (LWP 2700) exited]
+[Thread 0x7ffff12cf700 (LWP 2699) exited]
+[Thread 0x7ffff3ad0700 (LWP 2698) exited]
+[Thread 0x7fffbb95a700 (LWP 2714) exited]
+[Thread 0x7ffff7fcf700 (LWP 2697) exited]
+[Inferior 1 (process 2697) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2718)]
+[New Thread 0x7ffff12cf700 (LWP 2719)]
+[New Thread 0x7fffeeace700 (LWP 2720)]
+[New Thread 0x7fffd3e21700 (LWP 2721)]
+[New Thread 0x7fffd20c1700 (LWP 2722)]
+[New Thread 0x7fffd18c0700 (LWP 2723)]
+[New Thread 0x7fffd10bf700 (LWP 2724)]
+[New Thread 0x7fffbb95a700 (LWP 2730)]
+[Thread 0x7fffbb95a700 (LWP 2730) exited]
+[New Thread 0x7fffbb95a700 (LWP 2738)]
+[New Thread 0x7fffbab72700 (LWP 2739)]
+[Thread 0x7fffd20c1700 (LWP 2722) exited]
+[Thread 0x7fffd3e21700 (LWP 2721) exited]
+[Thread 0x7fffd10bf700 (LWP 2724) exited]
+[Thread 0x7fffd18c0700 (LWP 2723) exited]
+[Thread 0x7fffeeace700 (LWP 2720) exited]
+[Thread 0x7ffff12cf700 (LWP 2719) exited]
+[Thread 0x7ffff3ad0700 (LWP 2718) exited]
+[Thread 0x7fffbb95a700 (LWP 2738) exited]
+[Thread 0x7ffff7fcf700 (LWP 2717) exited]
+[Inferior 1 (process 2717) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2741)]
+[New Thread 0x7ffff12cf700 (LWP 2742)]
+[New Thread 0x7fffeeace700 (LWP 2743)]
+[New Thread 0x7fffd3e21700 (LWP 2744)]
+[New Thread 0x7fffd20c1700 (LWP 2745)]
+[New Thread 0x7fffd18c0700 (LWP 2746)]
+[New Thread 0x7fffd10bf700 (LWP 2747)]
+[New Thread 0x7fffbb95a700 (LWP 2748)]
+[Thread 0x7fffbb95a700 (LWP 2748) exited]
+[New Thread 0x7fffbb95a700 (LWP 2750)]
+[New Thread 0x7fffbab72700 (LWP 2751)]
+[Thread 0x7fffd20c1700 (LWP 2745) exited]
+[Thread 0x7fffd3e21700 (LWP 2744) exited]
+[Thread 0x7fffd10bf700 (LWP 2747) exited]
+[Thread 0x7fffd18c0700 (LWP 2746) exited]
+[Thread 0x7fffeeace700 (LWP 2743) exited]
+[Thread 0x7ffff12cf700 (LWP 2742) exited]
+[Thread 0x7ffff3ad0700 (LWP 2741) exited]
+[Thread 0x7fffbb95a700 (LWP 2750) exited]
+[Thread 0x7ffff7fcf700 (LWP 2740) exited]
+[Inferior 1 (process 2740) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2753)]
+[New Thread 0x7ffff32cf700 (LWP 2754)]
+[New Thread 0x7ffff0ace700 (LWP 2755)]
+[New Thread 0x7fffd3e21700 (LWP 2756)]
+[New Thread 0x7fffd20c1700 (LWP 2757)]
+[New Thread 0x7fffd18c0700 (LWP 2758)]
+[New Thread 0x7fffd10bf700 (LWP 2759)]
+[New Thread 0x7fffbb95a700 (LWP 2760)]
+[Thread 0x7fffbb95a700 (LWP 2760) exited]
+[New Thread 0x7fffbb95a700 (LWP 2764)]
+[New Thread 0x7fffbab72700 (LWP 2765)]
+[Thread 0x7fffd3e21700 (LWP 2756) exited]
+[Thread 0x7fffd20c1700 (LWP 2757) exited]
+[Thread 0x7fffd10bf700 (LWP 2759) exited]
+[Thread 0x7fffd18c0700 (LWP 2758) exited]
+[Thread 0x7ffff0ace700 (LWP 2755) exited]
+[Thread 0x7ffff32cf700 (LWP 2754) exited]
+[Thread 0x7ffff3ad0700 (LWP 2753) exited]
+[Thread 0x7fffbb95a700 (LWP 2764) exited]
+[Thread 0x7ffff7fcf700 (LWP 2752) exited]
+[Inferior 1 (process 2752) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2771)]
+[New Thread 0x7ffff12cf700 (LWP 2772)]
+[New Thread 0x7fffeeace700 (LWP 2773)]
+[New Thread 0x7fffd3e21700 (LWP 2774)]
+[New Thread 0x7fffd20c1700 (LWP 2775)]
+[New Thread 0x7fffd18c0700 (LWP 2776)]
+[New Thread 0x7fffd10bf700 (LWP 2777)]
+[New Thread 0x7fffbb95a700 (LWP 2778)]
+[Thread 0x7fffbb95a700 (LWP 2778) exited]
+[New Thread 0x7fffbb95a700 (LWP 2791)]
+[New Thread 0x7fffbab72700 (LWP 2792)]
+[Thread 0x7fffd20c1700 (LWP 2775) exited]
+[Thread 0x7fffd3e21700 (LWP 2774) exited]
+[Thread 0x7fffd18c0700 (LWP 2776) exited]
+[Thread 0x7fffd10bf700 (LWP 2777) exited]
+[Thread 0x7fffeeace700 (LWP 2773) exited]
+[Thread 0x7ffff12cf700 (LWP 2772) exited]
+[Thread 0x7ffff3ad0700 (LWP 2771) exited]
+[Thread 0x7fffbab72700 (LWP 2792) exited]
+[Thread 0x7ffff7fcf700 (LWP 2770) exited]
+[Inferior 1 (process 2770) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 2795)]
+[New Thread 0x7ffff32cf700 (LWP 2796)]
+[New Thread 0x7fffeeace700 (LWP 2797)]
+[New Thread 0x7fffd3e21700 (LWP 2798)]
+[New Thread 0x7fffd20c1700 (LWP 2799)]
+[New Thread 0x7fffd18c0700 (LWP 2800)]
+[New Thread 0x7fffd10bf700 (LWP 2801)]
+[New Thread 0x7fffbb95a700 (LWP 2955)]
+[Thread 0x7fffbb95a700 (LWP 2955) exited]
+[New Thread 0x7fffbb95a700 (LWP 3203)]
+[New Thread 0x7fffbab72700 (LWP 3204)]
+[Thread 0x7fffd20c1700 (LWP 2799) exited]
+[Thread 0x7fffd3e21700 (LWP 2798) exited]
+[Thread 0x7fffd18c0700 (LWP 2800) exited]
+[Thread 0x7fffd10bf700 (LWP 2801) exited]
+[Thread 0x7fffeeace700 (LWP 2797) exited]
+[Thread 0x7ffff32cf700 (LWP 2796) exited]
+[Thread 0x7ffff3ad0700 (LWP 2795) exited]
+[Thread 0x7fffbb95a700 (LWP 3203) exited]
+[Thread 0x7ffff7fcf700 (LWP 2794) exited]
+[Inferior 1 (process 2794) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 3206)]
+[New Thread 0x7ffff12cf700 (LWP 3207)]
+[New Thread 0x7fffeeace700 (LWP 3208)]
+[New Thread 0x7fffd3de2700 (LWP 3209)]
+[New Thread 0x7fffd2082700 (LWP 3210)]
+[New Thread 0x7fffd1881700 (LWP 3211)]
+[New Thread 0x7fffd1080700 (LWP 3212)]
+[New Thread 0x7fffbb95a700 (LWP 3215)]
+
+Thread 9 "python3" received signal SIGABRT, Aborted.
+[Switching to Thread 0x7fffbb95a700 (LWP 3215)]
+0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+54	../sysdeps/unix/sysv/linux/raise.c: No such file or directory.
+#0  0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+#1  0x00007ffff782702a in __GI_abort () at abort.c:89
+#2  0x00007ffff78677ea in __libc_message (do_abort=do_abort@entry=2, 
+    fmt=fmt@entry=0x7ffff7980ed8 "*** Error in `%s': %s: 0x%s ***\n")
+    at ../sysdeps/posix/libc_fatal.c:175
+#3  0x00007ffff787037a in malloc_printerr (ar_ptr=<optimised out>, ptr=<optimised out>, 
+    str=0x7ffff7980fa0 "double free or corruption (fasttop)", action=3) at malloc.c:5006
+#4  _int_free (av=<optimised out>, p=<optimised out>, have_lock=1) at malloc.c:3867
+#5  0x00007ffff7873350 in _int_realloc (av=av@entry=0x7fffb4000020, 
+    oldp=oldp@entry=0x7fffb4010ac0, oldsize=oldsize@entry=48, nb=nb@entry=64) at malloc.c:4358
+#6  0x00007ffff7874839 in __GI___libc_realloc (oldmem=0x7fffb4010ad0, bytes=48) at malloc.c:3045
+#7  0x00007fffe0ff72ee in QVector<QWidget*>::realloc (this=this@entry=0x1eb2560, asize=2, 
+    aalloc=4) at ../../include/QtCore/../../src/corelib/tools/qvector.h:509
+#8  0x00007fffe0ff73bd in QVector<QWidget*>::append (this=this@entry=0x1eb2560, 
+    t=@0x7fffbb9593c0: 0x1b4d200) at ../../include/QtCore/../../src/corelib/tools/qvector.h:577
+#9  0x00007fffe0ff55e0 in QWidgetBackingStore::addDirtyWidget (rgn=..., widget=0x1b4d200, 
+    this=0x1eb2540) at painting/qbackingstore_p.h:157
+#10 QWidgetBackingStore::markDirty (this=0x1eb2540, rect=..., widget=widget@entry=0x1b4d200, 
+    updateImmediately=updateImmediately@entry=false, 
+    invalidateBuffer=invalidateBuffer@entry=false) at painting/qbackingstore.cpp:718
+#11 0x00007fffe0e1427e in QWidget::update (this=this@entry=0x1b4d200, rect=...)
+    at kernel/qwidget.cpp:10599
+#12 0x00007fffe0e14333 in QWidget::update (this=this@entry=0x1b4d200) at kernel/qwidget.cpp:10560
+#13 0x00007fffe11f558e in QLCDNumberPrivate::internalSetString (this=this@entry=0x1929150, s=...)
+    at widgets/qlcdnumber.cpp:851
+#14 0x00007fffe11f64b3 in QLCDNumber::display (this=0x1b4d200, num=<optimised out>)
+    at widgets/qlcdnumber.cpp:667
+#15 0x00007fffe1cc04c4 in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#16 0x00000000004e9b7f in PyCFunction_Call ()
+#17 0x00000000005372f4 in PyEval_EvalFrameEx ()
+#18 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#19 0x00000000004ebe37 in ?? ()
+#20 0x00000000005c1797 in PyObject_Call ()
+#21 0x000000000053920b in PyEval_EvalFrameEx ()
+#22 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#23 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#24 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#25 0x00000000004ebd23 in ?? ()
+#26 0x00000000005c1797 in PyObject_Call ()
+#27 0x00000000004fb9ce in ?? ()
+#28 0x00000000005c1797 in PyObject_Call ()
+#29 0x0000000000534d90 in PyEval_CallObjectWithKeywords ()
+#30 0x0000000000609c02 in ?? ()
+#31 0x00007ffff7bc16ba in start_thread (arg=0x7fffbb95a700) at pthread_create.c:333
+#32 0x00007ffff78f741d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11322)]
+[New Thread 0x7ffff32cf700 (LWP 11323)]
+[New Thread 0x7fffeeace700 (LWP 11324)]
+[New Thread 0x7fffd3de2700 (LWP 11328)]
+[New Thread 0x7fffd2082700 (LWP 11329)]
+[New Thread 0x7fffd1881700 (LWP 11330)]
+[New Thread 0x7fffd1080700 (LWP 11331)]
+[New Thread 0x7fffbb95a700 (LWP 11332)]
+[Thread 0x7fffbb95a700 (LWP 11332) exited]
+[New Thread 0x7fffbb95a700 (LWP 11333)]
+[New Thread 0x7fffbab72700 (LWP 11334)]
+[Thread 0x7fffd3de2700 (LWP 11328) exited]
+[Thread 0x7fffd2082700 (LWP 11329) exited]
+[Thread 0x7fffd1881700 (LWP 11330) exited]
+[Thread 0x7fffd1080700 (LWP 11331) exited]
+[Thread 0x7fffeeace700 (LWP 11324) exited]
+[Thread 0x7ffff32cf700 (LWP 11323) exited]
+[Thread 0x7ffff3ad0700 (LWP 11322) exited]
+[Thread 0x7fffbb95a700 (LWP 11333) exited]
+[Thread 0x7ffff7fcf700 (LWP 11321) exited]
+[Inferior 1 (process 11321) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11337)]
+[New Thread 0x7ffff32cf700 (LWP 11338)]
+[New Thread 0x7fffeeace700 (LWP 11339)]
+[New Thread 0x7fffd3e21700 (LWP 11340)]
+[New Thread 0x7fffd20c1700 (LWP 11341)]
+[New Thread 0x7fffd18c0700 (LWP 11342)]
+[New Thread 0x7fffd10bf700 (LWP 11343)]
+[New Thread 0x7fffbb95a700 (LWP 11346)]
+[Thread 0x7fffbb95a700 (LWP 11346) exited]
+[New Thread 0x7fffbb95a700 (LWP 11347)]
+[New Thread 0x7fffbab72700 (LWP 11348)]
+[Thread 0x7fffd20c1700 (LWP 11341) exited]
+[Thread 0x7fffd3e21700 (LWP 11340) exited]
+[Thread 0x7fffd18c0700 (LWP 11342) exited]
+[Thread 0x7fffd10bf700 (LWP 11343) exited]
+[Thread 0x7fffeeace700 (LWP 11339) exited]
+[Thread 0x7ffff32cf700 (LWP 11338) exited]
+[Thread 0x7ffff3ad0700 (LWP 11337) exited]
+[Thread 0x7fffbb95a700 (LWP 11347) exited]
+[Thread 0x7ffff7fcf700 (LWP 11336) exited]
+[Inferior 1 (process 11336) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11350)]
+[New Thread 0x7ffff12cf700 (LWP 11351)]
+[New Thread 0x7fffeeace700 (LWP 11352)]
+[New Thread 0x7fffd3e21700 (LWP 11358)]
+[New Thread 0x7fffd20c1700 (LWP 11359)]
+[New Thread 0x7fffd18c0700 (LWP 11360)]
+[New Thread 0x7fffd10bf700 (LWP 11361)]
+[New Thread 0x7fffbb95a700 (LWP 11362)]
+[Thread 0x7fffbb95a700 (LWP 11362) exited]
+[New Thread 0x7fffbb95a700 (LWP 11365)]
+[New Thread 0x7fffbab72700 (LWP 11366)]
+[Thread 0x7fffd20c1700 (LWP 11359) exited]
+[Thread 0x7fffd3e21700 (LWP 11358) exited]
+[Thread 0x7fffd18c0700 (LWP 11360) exited]
+[Thread 0x7fffd10bf700 (LWP 11361) exited]
+[Thread 0x7fffeeace700 (LWP 11352) exited]
+[Thread 0x7ffff12cf700 (LWP 11351) exited]
+[Thread 0x7ffff3ad0700 (LWP 11350) exited]
+[Thread 0x7fffbb95a700 (LWP 11365) exited]
+[Thread 0x7ffff7fcf700 (LWP 11349) exited]
+[Inferior 1 (process 11349) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11368)]
+[New Thread 0x7ffff32cf700 (LWP 11369)]
+[New Thread 0x7fffeeace700 (LWP 11370)]
+[New Thread 0x7fffd3de2700 (LWP 11373)]
+[New Thread 0x7fffd2082700 (LWP 11374)]
+[New Thread 0x7fffd1881700 (LWP 11375)]
+[New Thread 0x7fffd1080700 (LWP 11376)]
+[New Thread 0x7fffbb95a700 (LWP 11377)]
+[Thread 0x7fffbb95a700 (LWP 11377) exited]
+[New Thread 0x7fffbb95a700 (LWP 11378)]
+[New Thread 0x7fffbab72700 (LWP 11379)]
+[Thread 0x7fffd2082700 (LWP 11374) exited]
+[Thread 0x7fffd3de2700 (LWP 11373) exited]
+[Thread 0x7fffd1080700 (LWP 11376) exited]
+[Thread 0x7fffd1881700 (LWP 11375) exited]
+[Thread 0x7fffeeace700 (LWP 11370) exited]
+[Thread 0x7ffff32cf700 (LWP 11369) exited]
+[Thread 0x7ffff3ad0700 (LWP 11368) exited]
+[Thread 0x7fffbb95a700 (LWP 11378) exited]
+[Thread 0x7ffff7fcf700 (LWP 11367) exited]
+[Inferior 1 (process 11367) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11388)]
+[New Thread 0x7ffff32cf700 (LWP 11389)]
+[New Thread 0x7fffeeace700 (LWP 11390)]
+[New Thread 0x7fffd3de2700 (LWP 11391)]
+[New Thread 0x7fffd2082700 (LWP 11392)]
+[New Thread 0x7fffd1881700 (LWP 11393)]
+[New Thread 0x7fffd1080700 (LWP 11394)]
+[New Thread 0x7fffbb95a700 (LWP 11400)]
+[Thread 0x7fffbb95a700 (LWP 11400) exited]
+[New Thread 0x7fffbb95a700 (LWP 11404)]
+[New Thread 0x7fffbab72700 (LWP 11405)]
+[Thread 0x7fffd3de2700 (LWP 11391) exited]
+[Thread 0x7fffd2082700 (LWP 11392) exited]
+[Thread 0x7fffd1881700 (LWP 11393) exited]
+[Thread 0x7fffd1080700 (LWP 11394) exited]
+[Thread 0x7fffeeace700 (LWP 11390) exited]
+[Thread 0x7ffff32cf700 (LWP 11389) exited]
+[Thread 0x7ffff3ad0700 (LWP 11388) exited]
+[Thread 0x7fffbb95a700 (LWP 11404) exited]
+[Thread 0x7ffff7fcf700 (LWP 11387) exited]
+[Inferior 1 (process 11387) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11407)]
+[New Thread 0x7ffff32cf700 (LWP 11408)]
+[New Thread 0x7ffff0ace700 (LWP 11409)]
+[New Thread 0x7fffd3e21700 (LWP 11411)]
+[New Thread 0x7fffd20c1700 (LWP 11412)]
+[New Thread 0x7fffd18c0700 (LWP 11413)]
+[New Thread 0x7fffd10bf700 (LWP 11414)]
+[New Thread 0x7fffbb95a700 (LWP 11420)]
+[Thread 0x7fffbb95a700 (LWP 11420) exited]
+[New Thread 0x7fffbb95a700 (LWP 11427)]
+[New Thread 0x7fffbab72700 (LWP 11428)]
+[Thread 0x7fffd20c1700 (LWP 11412) exited]
+[Thread 0x7fffd3e21700 (LWP 11411) exited]
+[Thread 0x7fffd18c0700 (LWP 11413) exited]
+[Thread 0x7fffd10bf700 (LWP 11414) exited]
+[Thread 0x7ffff0ace700 (LWP 11409) exited]
+[Thread 0x7ffff32cf700 (LWP 11408) exited]
+[Thread 0x7ffff3ad0700 (LWP 11407) exited]
+[Thread 0x7fffbb95a700 (LWP 11427) exited]
+[Thread 0x7ffff7fcf700 (LWP 11406) exited]
+[Inferior 1 (process 11406) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11430)]
+[New Thread 0x7ffff32cf700 (LWP 11431)]
+[New Thread 0x7fffeeace700 (LWP 11432)]
+[New Thread 0x7fffd3de2700 (LWP 11435)]
+[New Thread 0x7fffd2082700 (LWP 11436)]
+[New Thread 0x7fffd1881700 (LWP 11437)]
+[New Thread 0x7fffd1080700 (LWP 11438)]
+[New Thread 0x7fffbb95a700 (LWP 11439)]
+[Thread 0x7fffbb95a700 (LWP 11439) exited]
+[New Thread 0x7fffbb95a700 (LWP 11440)]
+[New Thread 0x7fffbab72700 (LWP 11441)]
+[Thread 0x7fffd3de2700 (LWP 11435) exited]
+[Thread 0x7fffd2082700 (LWP 11436) exited]
+[Thread 0x7fffd1881700 (LWP 11437) exited]
+[Thread 0x7fffd1080700 (LWP 11438) exited]
+[Thread 0x7fffeeace700 (LWP 11432) exited]
+[Thread 0x7ffff32cf700 (LWP 11431) exited]
+[Thread 0x7ffff3ad0700 (LWP 11430) exited]
+[Thread 0x7fffbb95a700 (LWP 11440) exited]
+[Thread 0x7ffff7fcf700 (LWP 11429) exited]
+[Inferior 1 (process 11429) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11444)]
+[New Thread 0x7ffff12cf700 (LWP 11445)]
+[New Thread 0x7ffff0ace700 (LWP 11446)]
+[New Thread 0x7fffd3de2700 (LWP 11447)]
+[New Thread 0x7fffd2082700 (LWP 11448)]
+[New Thread 0x7fffd1881700 (LWP 11449)]
+[New Thread 0x7fffd1080700 (LWP 11450)]
+[New Thread 0x7fffbb95a700 (LWP 11452)]
+[Thread 0x7fffbb95a700 (LWP 11452) exited]
+[New Thread 0x7fffbb95a700 (LWP 11453)]
+[New Thread 0x7fffbab72700 (LWP 11454)]
+[Thread 0x7fffd3de2700 (LWP 11447) exited]
+[Thread 0x7fffd2082700 (LWP 11448) exited]
+[Thread 0x7fffd1080700 (LWP 11450) exited]
+[Thread 0x7fffd1881700 (LWP 11449) exited]
+[Thread 0x7ffff0ace700 (LWP 11446) exited]
+[Thread 0x7ffff12cf700 (LWP 11445) exited]
+[Thread 0x7ffff3ad0700 (LWP 11444) exited]
+[Thread 0x7fffbb95a700 (LWP 11453) exited]
+[Thread 0x7ffff7fcf700 (LWP 11443) exited]
+[Inferior 1 (process 11443) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11456)]
+[New Thread 0x7ffff32cf700 (LWP 11457)]
+[New Thread 0x7fffeeace700 (LWP 11458)]
+[New Thread 0x7fffd3de2700 (LWP 11461)]
+[New Thread 0x7fffd2082700 (LWP 11462)]
+[New Thread 0x7fffd1881700 (LWP 11463)]
+[New Thread 0x7fffd1080700 (LWP 11464)]
+[New Thread 0x7fffbb95a700 (LWP 11465)]
+[Thread 0x7fffbb95a700 (LWP 11465) exited]
+[New Thread 0x7fffbb95a700 (LWP 11471)]
+[New Thread 0x7fffbab72700 (LWP 11472)]
+[Thread 0x7fffd3de2700 (LWP 11461) exited]
+[Thread 0x7fffd2082700 (LWP 11462) exited]
+[Thread 0x7fffd1881700 (LWP 11463) exited]
+[Thread 0x7fffd1080700 (LWP 11464) exited]
+[Thread 0x7fffeeace700 (LWP 11458) exited]
+[Thread 0x7ffff32cf700 (LWP 11457) exited]
+[Thread 0x7ffff3ad0700 (LWP 11456) exited]
+[Thread 0x7fffbb95a700 (LWP 11471) exited]
+[Thread 0x7ffff7fcf700 (LWP 11455) exited]
+[Inferior 1 (process 11455) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11474)]
+[New Thread 0x7ffff12cf700 (LWP 11475)]
+[New Thread 0x7fffeeace700 (LWP 11476)]
+[New Thread 0x7fffd3e21700 (LWP 11477)]
+[New Thread 0x7fffd20c1700 (LWP 11478)]
+[New Thread 0x7fffd18c0700 (LWP 11479)]
+[New Thread 0x7fffd10bf700 (LWP 11480)]
+[New Thread 0x7fffbb95a700 (LWP 11481)]
+
+Thread 1 "python3" received signal SIGABRT, Aborted.
+0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+54	../sysdeps/unix/sysv/linux/raise.c: No such file or directory.
+#0  0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+#1  0x00007ffff782702a in __GI_abort () at abort.c:89
+#2  0x00007ffff78677ea in __libc_message (do_abort=do_abort@entry=2, 
+    fmt=fmt@entry=0x7ffff7980ed8 "*** Error in `%s': %s: 0x%s ***\n")
+    at ../sysdeps/posix/libc_fatal.c:175
+#3  0x00007ffff787037a in malloc_printerr (ar_ptr=<optimised out>, ptr=<optimised out>, 
+    str=0x7ffff7980fa0 "double free or corruption (fasttop)", action=3) at malloc.c:5006
+#4  _int_free (av=<optimised out>, p=<optimised out>, have_lock=0) at malloc.c:3867
+#5  0x00007ffff787453c in __GI___libc_free (mem=<optimised out>) at malloc.c:2968
+#6  0x00007fffe0ff343b in QVectorTypedData<QWidget*>::free (alignment=<optimised out>, 
+    x=<optimised out>) at ../../include/QtCore/../../src/corelib/tools/qvector.h:99
+#7  QVector<QWidget*>::free (this=0x1ed4a10, x=<optimised out>)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:468
+#8  QVector<QWidget*>::operator= (v=..., this=0x1ed4a10)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:395
+#9  QVector<QWidget*>::clear (this=0x1ed4a10)
+    at ../../include/QtCore/../../src/corelib/tools/qvector.h:348
+#10 QWidgetBackingStore::sync (this=0x1ed49f0) at painting/qbackingstore.cpp:1279
+#11 0x00007fffe0e11c50 in QWidgetPrivate::syncBackingStore (this=0x18ac330)
+    at kernel/qwidget.cpp:1894
+#12 0x00007fffe0e249b8 in QWidget::event (this=this@entry=0x1b3ab40, 
+    event=event@entry=0x7fffb400b160) at kernel/qwidget.cpp:8693
+#13 0x00007fffe12089b3 in QMainWindow::event (this=0x1b3ab40, event=0x7fffb400b160)
+    at widgets/qmainwindow.cpp:1478
+#14 0x00007fffe1cfc28b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#15 0x00007fffe0dcdfdc in QApplicationPrivate::notify_helper (this=this@entry=0x18f3660, 
+    receiver=receiver@entry=0x1b3ab40, e=e@entry=0x7fffb400b160) at kernel/qapplication.cpp:4570
+#16 0x00007fffe0dd4f16 in QApplication::notify (this=0x1732030, receiver=0x1b3ab40, 
+    e=0x7fffb400b160) at kernel/qapplication.cpp:4356
+#17 0x00007fffe1ebc0c6 in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#18 0x00007fffe2eb390d in QCoreApplication::notifyInternal (this=0x1732030, 
+    receiver=receiver@entry=0x1b3ab40, event=event@entry=0x7fffb400b160)
+    at kernel/qcoreapplication.cpp:955
+#19 0x00007fffe2eb73c6 in QCoreApplication::sendEvent (event=0x7fffb400b160, receiver=0x1b3ab40)
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:231
+#20 QCoreApplicationPrivate::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0, data=0x18e41f0) at kernel/qcoreapplication.cpp:1579
+#21 0x00007fffe2eb76a3 in QCoreApplication::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0) at kernel/qcoreapplication.cpp:1472
+#22 0x00007fffe2ee413e in QCoreApplication::sendPostedEvents ()
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:236
+#23 postEventSourceDispatch (s=0x1915150) at kernel/qeventdispatcher_glib.cpp:300
+#24 0x00007fffe2a62197 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#25 0x00007fffe2a623f0 in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#26 0x00007fffe2a6249c in g_main_context_iteration () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#27 0x00007fffe2ee42ae in QEventDispatcherGlib::processEvents (this=0x1872100, flags=...)
+    at kernel/qeventdispatcher_glib.cpp:450
+#28 0x00007fffe0e7b616 in QGuiEventDispatcherGlib::processEvents (this=<optimised out>, flags=...)
+    at kernel/qguieventdispatcher_glib.cpp:204
+#29 0x00007fffe2eb218f in QEventLoop::processEvents (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:149
+#30 0x00007fffe2eb24f5 in QEventLoop::exec (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:204
+#31 0x00007fffe2eb84b9 in QCoreApplication::exec () at kernel/qcoreapplication.cpp:1227
+#32 0x00007fffe1e6aa2b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#33 0x00000000004e9b7f in PyCFunction_Call ()
+#34 0x00000000005372f4 in PyEval_EvalFrameEx ()
+#35 0x0000000000540199 in ?? ()
+#36 0x0000000000540e4f in PyEval_EvalCode ()
+#37 0x000000000060c272 in ?? ()
+#38 0x000000000060e71a in PyRun_FileExFlags ()
+#39 0x000000000060ef0c in PyRun_SimpleFileExFlags ()
+#40 0x000000000063fb26 in Py_Main ()
+#41 0x00000000004cfeb1 in main ()
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11489)]
+[New Thread 0x7ffff12cf700 (LWP 11490)]
+[New Thread 0x7fffeeace700 (LWP 11491)]
+[New Thread 0x7fffd3e21700 (LWP 11493)]
+[New Thread 0x7fffd20c1700 (LWP 11494)]
+[New Thread 0x7fffd18c0700 (LWP 11495)]
+[New Thread 0x7fffd10bf700 (LWP 11496)]
+[New Thread 0x7fffbb95a700 (LWP 11498)]
+[Thread 0x7fffbb95a700 (LWP 11498) exited]
+[New Thread 0x7fffbb95a700 (LWP 11504)]
+[New Thread 0x7fffbab72700 (LWP 11505)]
+[Thread 0x7fffd3e21700 (LWP 11493) exited]
+[Thread 0x7fffd20c1700 (LWP 11494) exited]
+[Thread 0x7fffd10bf700 (LWP 11496) exited]
+[Thread 0x7fffd18c0700 (LWP 11495) exited]
+[Thread 0x7fffeeace700 (LWP 11491) exited]
+[Thread 0x7ffff12cf700 (LWP 11490) exited]
+[Thread 0x7ffff3ad0700 (LWP 11489) exited]
+[Thread 0x7fffbb95a700 (LWP 11504) exited]
+[Thread 0x7ffff7fcf700 (LWP 11488) exited]
+[Inferior 1 (process 11488) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 11507)]
+[New Thread 0x7ffff32cf700 (LWP 11508)]
+[New Thread 0x7fffeeace700 (LWP 11509)]
+[New Thread 0x7fffd3de2700 (LWP 11511)]
+[New Thread 0x7fffd2082700 (LWP 11512)]
+[New Thread 0x7fffd1881700 (LWP 11513)]
+[New Thread 0x7fffd1080700 (LWP 11514)]
+[New Thread 0x7fffbb95a700 (LWP 11517)]
+[Thread 0x7fffbb95a700 (LWP 11517) exited]
+[New Thread 0x7fffbb95a700 (LWP 11521)]
+[New Thread 0x7fffbab72700 (LWP 11522)]
+[Thread 0x7fffd2082700 (LWP 11512) exited]
+[Thread 0x7fffd3de2700 (LWP 11511) exited]
+[Thread 0x7fffd1080700 (LWP 11514) exited]
+[Thread 0x7fffd1881700 (LWP 11513) exited]
+[Thread 0x7fffeeace700 (LWP 11509) exited]
+[Thread 0x7ffff32cf700 (LWP 11508) exited]
+[Thread 0x7ffff3ad0700 (LWP 11507) exited]
+[Thread 0x7fffbb95a700 (LWP 11521) exited]
+[Thread 0x7ffff7fcf700 (LWP 11506) exited]
+[Inferior 1 (process 11506) exited normally]
+quit

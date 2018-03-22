@@ -22,7 +22,7 @@ class debris:
         self._cnu = math.cos(self._nu)
 #        self.v0 = math.sqrt(consts.mu*(2/self._orbit.rp - 1/self._orbit.a))
         self._r = self._orbit.a*(1- math.pow(self._orbit.ep, 2))/(1+self._orbit.ep*self._cnu)
-        self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))
+        self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))*1.0
         self._sgamma = self._orbit.rp*self._orbit.v0 / (self._r*self._v)
         self._cgamma = math.sqrt(1 - math.pow(self._sgamma, 2))
         if self._nu < math.pi:
@@ -39,7 +39,7 @@ class debris:
         self._snu = math.sin(self._nu)
         self._cnu = math.cos(self._nu)
         self._r = self._orbit.a*(1- math.pow(self._orbit.ep, 2))/(1+self._orbit.ep*self._cnu)
-        self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))
+        self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))*1.0
         self._sgamma = self._orbit.rp*v0 / (self._r*self._v)
         if self._sgamma > 1:
             print("Sin gamma = " + repr(self._sgamma))
@@ -101,7 +101,7 @@ class debris:
         v = math.sqrt(math.pow((self._v - dvz*czeta), 2) + math.pow((dvz*szeta), 2))
         sdzeta = dvz*szeta/v
         cdzeta = (self._v - dvz*czeta) / v
-        self._v = v
+        self._v = v*1.0
         szeta2 = extmath.sinplus(szeta, czeta, sdzeta, cdzeta)
         czeta2 = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
         return np.array([szeta2, czeta2, v])

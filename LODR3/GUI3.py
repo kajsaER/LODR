@@ -10,6 +10,8 @@ from matplotlib.patches import Circle as Circle
 from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui, uic
 
+#from random import random as rand
+
 qtCreatorMain = "Subsystems/ui_Files/GUI.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorMain)
 
@@ -24,7 +26,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(OperatorGUI, self).__init__(parent)
         self.setupUi(self)
-
+        self.di = 0
         self.filefolder = os.getcwd()
         self.formats = list() #QtCore.QStringList()
         for string in ['LODR Files (*.lodr)','Debris Files (*.dcfg)',
@@ -104,6 +106,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             float(self.antennaEff.value()/100)))
 
         # Debris
+        self.debris = None
         self.debris_list = []
         self.objectNbr.valueChanged.connect(self.change_debris)
         
@@ -114,7 +117,9 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
         
         # Buttons
         self.closeBtn.clicked.connect(self.close_application)
+        self.closeBtn.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Close))
         self.runBtn.clicked.connect(self.run_pushed)
+        self.runBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
 
         # PlotView
         bgcolor =  np.asarray(self.palette().color(self.backgroundRole()).getRgb()[0:3])/255
@@ -216,6 +221,7 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
     def debris_step(self):
         self.lock.acquire()
+        self.di = 0
         self.plot_orbit()
         self.lock.release()
         while self.running:
@@ -224,11 +230,13 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
                 self.lock.acquire()
                 self.debris.step()
                 self.lock.release()
+            self.lock.acquire()
             self.plot_debris()
             self.update_position()
             td = time.time() - t1
 #            print(td)
-            ts = 1 - td
+            ts = .1 - td
+            self.lock.release()
             time.sleep(ts if ts > 0 else 0)
 
     def plot_debris(self):
@@ -243,12 +251,19 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
 
     def update_position(self):
 #        print("Update Position")
-        self.num_r.display(self.debris._r)
-        self.num_nu.display(self.debris._nu)
-        self.num_v.display(self.debris._v)
-        self.show()
+#        v = rand() # (self.debris._v)
+        self.di += 1
+#        self.num_r.display(int(self.debris._r/1000))
+        self.num_r.display(self.di)
+#        time.sleep(0.02)
+        self.num_nu.display(self.di)
+        self.num_v.display(self.di)
+#        self.num_nu.display(int(math.degrees(self.debris._nu)))
+#        print(self.debris._nu)
+#        self.num_v.display(int(self.debris._v))
 
     def update_orbit(self):
+#        print("Update orbit")
         orb = self.debris._orbit
         self.num_rp.display(orb.rp)
         self.num_ra.display(orb.ra)
@@ -532,9 +547,14 @@ class OperatorGUI(QtGui.QMainWindow, Ui_MainWindow):
             time.sleep(1)
 
     def run_pushed(self):
-        self.running = not self.running
-        if self.running:
-            self.debris_thread = threading.Thread(target=self.debris_step).start()
+        if self.debris != None:
+            self.running = not self.running
+            if self.running:
+                self.debris_thread = threading.Thread(target=self.debris_step).start()
+        else:
+            QtGui.QMessageBox.information(self.central_widget, "Error",
+                                          "No debris chosen", QtGui.QMessageBox.Ok)
+            self.running = False
         print("Run function needs to be implemented")
 
     def close_application(self):

@@ -1,0 +1,178 @@
+Undefined command: "echp".  Try "help".
+"seld.di += 1 between displays"Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 14656)]
+[New Thread 0x7ffff12cf700 (LWP 14657)]
+[New Thread 0x7fffeeace700 (LWP 14658)]
+[New Thread 0x7fffd3da2700 (LWP 14659)]
+[New Thread 0x7fffd2042700 (LWP 14660)]
+[New Thread 0x7fffd1841700 (LWP 14661)]
+[New Thread 0x7fffd1040700 (LWP 14662)]
+[New Thread 0x7fffbb95a700 (LWP 14676)]
+
+Thread 1 "python3" received signal SIGSEGV, Segmentation fault.
+QWidgetBackingStore::sync (this=0x1eca9d0) at painting/qbackingstore.cpp:1239
+1239	painting/qbackingstore.cpp: No such file or directory.
+#0  QWidgetBackingStore::sync (this=0x1eca9d0) at painting/qbackingstore.cpp:1239
+#1  0x00007fffe0e11c50 in QWidgetPrivate::syncBackingStore (this=0x19188d0)
+    at kernel/qwidget.cpp:1894
+#2  0x00007fffe0e249b8 in QWidget::event (this=this@entry=0x19a3f60, event=event@entry=0x20be000)
+    at kernel/qwidget.cpp:8693
+#3  0x00007fffe12089b3 in QMainWindow::event (this=0x19a3f60, event=0x20be000)
+    at widgets/qmainwindow.cpp:1478
+#4  0x00007fffe1cfc28b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#5  0x00007fffe0dcdfdc in QApplicationPrivate::notify_helper (this=this@entry=0x19016a0, 
+    receiver=receiver@entry=0x19a3f60, e=e@entry=0x20be000) at kernel/qapplication.cpp:4570
+#6  0x00007fffe0dd4f16 in QApplication::notify (this=0x17be6a0, receiver=0x19a3f60, e=0x20be000)
+    at kernel/qapplication.cpp:4356
+#7  0x00007fffe1ebc0c6 in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#8  0x00007fffe2eb390d in QCoreApplication::notifyInternal (this=0x17be6a0, 
+    receiver=receiver@entry=0x19a3f60, event=event@entry=0x20be000)
+    at kernel/qcoreapplication.cpp:955
+#9  0x00007fffe2eb73c6 in QCoreApplication::sendEvent (event=0x20be000, receiver=0x19a3f60)
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:231
+#10 QCoreApplicationPrivate::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0, data=0x18eed60) at kernel/qcoreapplication.cpp:1579
+#11 0x00007fffe2eb76a3 in QCoreApplication::sendPostedEvents (receiver=receiver@entry=0x0, 
+    event_type=event_type@entry=0) at kernel/qcoreapplication.cpp:1472
+#12 0x00007fffe2ee413e in QCoreApplication::sendPostedEvents ()
+    at ../../include/QtCore/../../src/corelib/kernel/qcoreapplication.h:236
+#13 postEventSourceDispatch (s=0x16a2170) at kernel/qeventdispatcher_glib.cpp:300
+#14 0x00007fffe2a62197 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#15 0x00007fffe2a623f0 in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#16 0x00007fffe2a6249c in g_main_context_iteration () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#17 0x00007fffe2ee42ae in QEventDispatcherGlib::processEvents (this=0x1884d00, flags=...)
+    at kernel/qeventdispatcher_glib.cpp:450
+#18 0x00007fffe0e7b616 in QGuiEventDispatcherGlib::processEvents (this=<optimised out>, flags=...)
+    at kernel/qguieventdispatcher_glib.cpp:204
+#19 0x00007fffe2eb218f in QEventLoop::processEvents (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:149
+#20 0x00007fffe2eb24f5 in QEventLoop::exec (this=this@entry=0x7fffffffd7d0, flags=...)
+    at kernel/qeventloop.cpp:204
+#21 0x00007fffe2eb84b9 in QCoreApplication::exec () at kernel/qcoreapplication.cpp:1227
+#22 0x00007fffe1e6aa2b in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#23 0x00000000004e9b7f in PyCFunction_Call ()
+#24 0x00000000005372f4 in PyEval_EvalFrameEx ()
+#25 0x0000000000540199 in ?? ()
+#26 0x0000000000540e4f in PyEval_EvalCode ()
+#27 0x000000000060c272 in ?? ()
+#28 0x000000000060e71a in PyRun_FileExFlags ()
+#29 0x000000000060ef0c in PyRun_SimpleFileExFlags ()
+#30 0x000000000063fb26 in Py_Main ()
+#31 0x00000000004cfeb1 in main ()
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 14682)]
+[New Thread 0x7ffff32cf700 (LWP 14683)]
+[New Thread 0x7fffeeace700 (LWP 14684)]
+[New Thread 0x7fffd3da2700 (LWP 14685)]
+[New Thread 0x7fffd2042700 (LWP 14686)]
+[New Thread 0x7fffd1841700 (LWP 14687)]
+[New Thread 0x7fffd1040700 (LWP 14688)]
+[New Thread 0x7fffbb95a700 (LWP 14690)]
+[Thread 0x7fffbb95a700 (LWP 14690) exited]
+[New Thread 0x7fffbb95a700 (LWP 14692)]
+[New Thread 0x7fffbab72700 (LWP 14693)]
+[Thread 0x7fffd2042700 (LWP 14686) exited]
+[Thread 0x7fffd3da2700 (LWP 14685) exited]
+[Thread 0x7fffd1040700 (LWP 14688) exited]
+[Thread 0x7fffd1841700 (LWP 14687) exited]
+[Thread 0x7fffeeace700 (LWP 14684) exited]
+[Thread 0x7ffff32cf700 (LWP 14683) exited]
+[Thread 0x7ffff3ad0700 (LWP 14682) exited]
+[Thread 0x7fffbb95a700 (LWP 14692) exited]
+[Thread 0x7ffff7fcf700 (LWP 14681) exited]
+[Inferior 1 (process 14681) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 14695)]
+[New Thread 0x7ffff32cf700 (LWP 14696)]
+[New Thread 0x7fffeeace700 (LWP 14697)]
+[New Thread 0x7fffd3da2700 (LWP 14700)]
+[New Thread 0x7fffd2042700 (LWP 14701)]
+[New Thread 0x7fffd1841700 (LWP 14702)]
+[New Thread 0x7fffd1040700 (LWP 14703)]
+[New Thread 0x7fffbb95a700 (LWP 14704)]
+[Thread 0x7fffbb95a700 (LWP 14704) exited]
+[New Thread 0x7fffbb95a700 (LWP 14711)]
+[New Thread 0x7fffbab72700 (LWP 14712)]
+[Thread 0x7fffd2042700 (LWP 14701) exited]
+[Thread 0x7fffd3da2700 (LWP 14700) exited]
+[Thread 0x7fffd1841700 (LWP 14702) exited]
+[Thread 0x7fffd1040700 (LWP 14703) exited]
+[Thread 0x7fffeeace700 (LWP 14697) exited]
+[Thread 0x7ffff3ad0700 (LWP 14695) exited]
+[Thread 0x7ffff32cf700 (LWP 14696) exited]
+[Thread 0x7fffbab72700 (LWP 14712) exited]
+[Thread 0x7ffff7fcf700 (LWP 14694) exited]
+[Inferior 1 (process 14694) exited normally]
+Starting program: /usr/bin/python3 GUI3.py
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3ad0700 (LWP 14714)]
+[New Thread 0x7ffff32cf700 (LWP 14715)]
+[New Thread 0x7fffeeace700 (LWP 14716)]
+[New Thread 0x7fffd3da2700 (LWP 14717)]
+[New Thread 0x7fffd2042700 (LWP 14718)]
+[New Thread 0x7fffd1841700 (LWP 14719)]
+[New Thread 0x7fffd1040700 (LWP 14720)]
+[New Thread 0x7fffbb95a700 (LWP 14722)]
+
+Thread 9 "python3" received signal SIGABRT, Aborted.
+[Switching to Thread 0x7fffbb95a700 (LWP 14722)]
+0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+54	../sysdeps/unix/sysv/linux/raise.c: No such file or directory.
+#0  0x00007ffff7825428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54
+#1  0x00007ffff782702a in __GI_abort () at abort.c:89
+#2  0x00007ffff78677ea in __libc_message (do_abort=do_abort@entry=2, 
+    fmt=fmt@entry=0x7ffff7980ed8 "*** Error in `%s': %s: 0x%s ***\n")
+    at ../sysdeps/posix/libc_fatal.c:175
+#3  0x00007ffff787037a in malloc_printerr (ar_ptr=<optimised out>, ptr=<optimised out>, 
+    str=0x7ffff7980fa0 "double free or corruption (fasttop)", action=3) at malloc.c:5006
+#4  _int_free (av=<optimised out>, p=<optimised out>, have_lock=1) at malloc.c:3867
+#5  0x00007ffff7873350 in _int_realloc (av=av@entry=0x7fffb4000020, 
+    oldp=oldp@entry=0x7fffb402f180, oldsize=oldsize@entry=48, nb=nb@entry=64) at malloc.c:4358
+#6  0x00007ffff7874839 in __GI___libc_realloc (oldmem=0x7fffb402f190, bytes=48) at malloc.c:3045
+#7  0x00007fffe0ff72ee in QVector<QWidget*>::realloc (this=this@entry=0x1ea9c50, asize=2, 
+    aalloc=4) at ../../include/QtCore/../../src/corelib/tools/qvector.h:509
+#8  0x00007fffe0ff73bd in QVector<QWidget*>::append (this=this@entry=0x1ea9c50, 
+    t=@0x7fffbb959290: 0x1c1d780) at ../../include/QtCore/../../src/corelib/tools/qvector.h:577
+#9  0x00007fffe0ff55e0 in QWidgetBackingStore::addDirtyWidget (rgn=..., widget=0x1c1d780, 
+    this=0x1ea9c30) at painting/qbackingstore_p.h:157
+#10 QWidgetBackingStore::markDirty (this=0x1ea9c30, rect=..., widget=widget@entry=0x1c1d780, 
+    updateImmediately=updateImmediately@entry=false, 
+    invalidateBuffer=invalidateBuffer@entry=false) at painting/qbackingstore.cpp:718
+#11 0x00007fffe0e1427e in QWidget::update (this=this@entry=0x1c1d780, rect=...)
+    at kernel/qwidget.cpp:10599
+#12 0x00007fffe0e14333 in QWidget::update (this=this@entry=0x1c1d780) at kernel/qwidget.cpp:10560
+#13 0x00007fffe11f558e in QLCDNumberPrivate::internalSetString (this=this@entry=0x1b4f950, s=...)
+    at widgets/qlcdnumber.cpp:851
+#14 0x00007fffe11f64b3 in QLCDNumber::display (this=0x1c1d780, num=<optimised out>)
+    at widgets/qlcdnumber.cpp:667
+#15 0x00007fffe1cc04c4 in ?? ()
+   from /usr/lib/python3/dist-packages/PyQt4/QtGui.cpython-35m-x86_64-linux-gnu.so
+#16 0x00000000004e9b7f in PyCFunction_Call ()
+#17 0x00000000005372f4 in PyEval_EvalFrameEx ()
+#18 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#19 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#20 0x00000000004ebe37 in ?? ()
+#21 0x00000000005c1797 in PyObject_Call ()
+#22 0x000000000053920b in PyEval_EvalFrameEx ()
+#23 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#24 0x000000000053b7e4 in PyEval_EvalFrameEx ()
+#25 0x0000000000540f9b in PyEval_EvalCodeEx ()
+#26 0x00000000004ebd23 in ?? ()
+#27 0x00000000005c1797 in PyObject_Call ()
+#28 0x00000000004fb9ce in ?? ()
+#29 0x00000000005c1797 in PyObject_Call ()
+#30 0x0000000000534d90 in PyEval_CallObjectWithKeywords ()
+#31 0x0000000000609c02 in ?? ()
+#32 0x00007ffff7bc16ba in start_thread (arg=0x7fffbb95a700) at pthread_create.c:333
+#33 0x00007ffff78f741d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
+quit
