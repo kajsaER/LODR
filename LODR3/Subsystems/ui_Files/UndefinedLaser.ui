@@ -35,7 +35,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -64,7 +64,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -93,7 +93,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -122,7 +122,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -151,7 +151,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -180,7 +180,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -209,7 +209,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -317,7 +317,7 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="numDigits">
+   <property name="digitCount">
     <number>8</number>
    </property>
    <property name="segmentStyle">
@@ -332,6 +332,12 @@
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>0</number>
+   </property>
+   <property name="maximum">
+    <number>90</number>
    </property>
    <property name="tracking">
     <bool>false</bool>
@@ -348,6 +354,9 @@
      <width>160</width>
      <height>18</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>990</number>
    </property>
    <property name="tracking">
     <bool>false</bool>

@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtWidgets, QtGui, uic
 import math
 from Subsystems.orbit import orbit
 from Subsystems.debris import debris
@@ -49,7 +49,7 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
         self.nu.editingFinished.connect(self.updatenu)
         self.orbitListWidget.currentRowChanged.connect(self.checkOK)
         
-        self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.OKClicked)
 #        self.buttonBox.rejected.connect(self.cancelClicked)
         self.newOrbitButton.clicked.connect(self.add_orbit)
@@ -108,9 +108,9 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
         if (self.orbitListWidget.currentRow() > -1 and self.validm and 
                 self.validd and self.validCm and
                 self.validetac and self.validnu):
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
         else:
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
     
     def add_orbit(self):
         self.main.add_orbit()

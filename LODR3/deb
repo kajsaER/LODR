@@ -1,0 +1,12 @@
+deb http://ddebs.ubuntu.com serena main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-updates main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-security main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-proposed main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-updates main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-security main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-proposed main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-updates main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-security main restricted universe multiverse
+deb http://ddebs.ubuntu.com serena-proposed main restricted universe multiverse

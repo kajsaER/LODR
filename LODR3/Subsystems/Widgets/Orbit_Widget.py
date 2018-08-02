@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtWidgets, QtGui, uic
 import math
 #from orbit import orbit
 
@@ -38,7 +38,7 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         self.epsilon.editingFinished.connect(self.updateepsilon)
         self.omega.editingFinished.connect(self.updateomega)
 
-        self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.OKClicked)
 #        self.buttonBox.rejected.connect(self.cancelClicked)
 
@@ -47,9 +47,9 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         if len(name) < 1:
             self.validname = False
             self.name.setText("name required")
-        if self.main.orbitConf.has_section(name):
+        elif self.main.orbitConf.has_section(name):
             self.validname = False
-            self.name.setText("in use")
+            self.name.setText("name in use")
         else:
             self.validname = True
 
@@ -84,10 +84,10 @@ class NewOrbit(NewOrbitBaseClass, NewOrbitClass):
         self.checkOK()
 
     def checkOK(self):
-        if self.validrp and self.validepsilon and self.validomega:
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+        if self.validname and self.validrp and self.validepsilon and self.validomega:
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
         else:
-            self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
 
     def OKClicked(self):
         name = str(self.name.text())
