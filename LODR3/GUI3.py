@@ -46,10 +46,10 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.saveDiag.filterSelected.connect(self.updateSuffix)
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
                             'Repetition rate', 'Pulse duration'])
-        dl.update({'M2 min':'1', 'M2 max':'1E+02',
+        dl.update({'Energy min':'1E-09', 'Energy max':'1E+03', 'M2 min':'1', 'M2 max':'1E+02',
             'Cb min':'1', 'Cb max':'1E+01',
             'Repetition rate min':'1E+00', 'Repetition rate max':'1E+11',
-            'Pulse duration min':'1E-09', 'Pulse duration max':'1E-03',
+            'Pulse duration min':'1E-15', 'Pulse duration max':'1E+00',
             'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})
         self.laserConf = SCP(dl, allow_no_value=True, delimiters=('='))
         
@@ -474,6 +474,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lasersystem.fire(self.antenna, self.debris,
                 float(self.laserstack.currentWidget().get_duration()),
                 self.atmosphere)
+        self.update_position()
+        self.update_orbit()
 
     # Other functions #
     def open_file(self):
