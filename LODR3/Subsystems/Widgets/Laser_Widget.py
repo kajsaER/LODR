@@ -99,17 +99,18 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')
         exec('self.max_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))')
         pot = pow(10, temp[2])
-        exec('self.scale_'+SHORT+' = self.max_' + SHORT + '-self.min_' + SHORT)
+        exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+
+                '(self.slide_'+SHORT+'.maximum() - self.slide_'+SHORT+'.minimum())')
         if SHORT not in {'M2', 'Cb'}:
             exec('self.pot_' + SHORT + ' = pot')
             if pot != 1:
                 exec('self.unit_' + SHORT + '.setText(temp[0]+units.get(SHORT))')
-            exec('self.slide_'+SHORT+'.setValue(self.num_'+SHORT+'.value())')
-            exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')*'
-                'self.slide_'+SHORT+'.maximum()/self.scale_'+SHORT+')')
+            exec('self.slide_'+SHORT+'.setValue('+
+                    '(self.num_'+SHORT+'.value()*self.pot_'+SHORT+'-self.min_'+SHORT+')/'+
+                    'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
         else:
-            exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')*'
-                'self.slide_'+SHORT+'.maximum()/self.scale_'+SHORT+')')
+            exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')/'+
+                    'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
     
     def double_freq(self):
         if self.freqDub.isChecked():
@@ -122,44 +123,33 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
             self.num_lambda.display(2*self.num_lambda.value())
 
     def slide_trigged(self, action, var):
-        exec("%s" % 'val = self.slide_' + var + '.value()*self.scale_' +
-                var + '/self.slide_' + var + '.maximum() + self.min_' + var)
-        exec("%s" % 'temp = extmath.prefixedValue(val)')
-        if var not in {'M2', 'Cb'}:
-            exec("%s" % 'pot = self.pot_' + var)
-            exec("%s" % 'self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            exec("%s" % 'self.pot_' + var + ' = pow(10, temp[2])')
-        exec("%s" % 'self.num_' + var + '.display(temp[1])')
-        if var != 'T':
-            exec("%s" % 'self.main.lasersystem._' + var + ' = val')
-
-    def slide_moved(self, value, var):
-        exec("%s" % 'val = value*self.scale_' + var + 
-                '/self.slide_' + var + '.maximum() + self.min_' + var)
-        exec("%s" % 'temp = extmath.prefixedValue(val)')
-        if var not in {'M2', 'Cb'}:
-            exec("%s" % 'pot = self.pot_' + var)
-            exec("%s" % 'self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            exec("%s" % 'self.pot_' + var + ' = pow(10, temp[2])')
-        exec("%s" % 'self.num_' + var + '.display(temp[1])')
-
-    def slide_changed(self, value, var):
-        val = eval('value*self.scale_' + var + 
-                '/self.slide_' + var + '.maximum() + self.min_' + var)
-        print('\nVar: ' + repr(var))
-        print('Val: '+ repr(val))
+        val = eval('(self.slide_'+var+'.value()-self.slide_'+var+'.minimum())*self.scale_'+var+
+                '+self.min_'+var)
         temp = extmath.prefixedValue(val)
         if var not in {'M2', 'Cb'}:
-            pot = eval('self.pot_' + var)
-            print('self.pot: ' + repr(pot))
-            print('temp pot: ' + repr(temp[2]))
-            print('pref: ' + repr(temp[0]))
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            print(self.unit_W.text())
             exec('self.pot_' + var + ' = pow(10, temp[2])')
-        else:
-            pot = 1
-        exec("%s" % 'self.num_' + var + '.display(temp[1])')
+        exec('self.num_' + var + '.display(temp[1])')
+        if var != 'T':
+            exec('self.main.lasersystem._' + var + ' = val')
+
+    def slide_moved(self, value, var):
+        val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
+                '+self.min_'+var) 
+        temp = extmath.prefixedValue(val)
+        if var not in {'M2', 'Cb'}:
+            exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
+            exec('self.pot_' + var + ' = pow(10, temp[2])')
+        exec('self.num_' + var + '.display(temp[1])')
+
+    def slide_changed(self, value, var):
+        val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
+                '+self.min_'+var)
+        temp = extmath.prefixedValue(val)
+        if var not in {'M2', 'Cb'}:
+            exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
+            exec('self.pot_' + var + ' = pow(10, temp[2])')
+        exec('self.num_' + var + '.display(temp[1])')
         if var != 'T':
             exec("%s" % 'self.main.lasersystem._' + var + ' = val')
 
