@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import math
+from .orbit import orbit as Orbit
 from .Support_Files import constants as consts
 from .Support_Files import extmath
 import matplotlib.pyplot as plt
@@ -8,19 +9,26 @@ import numpy as np
 
 
 class debris:
-    def __init__(self, ID, etac, Cm, size, mass, orbit, nu):
+    def __init__(self, ID, etac, Cm, size, mass, nu, orbit=None, rp=None, ep=None, omega=None):
         self.ID = ID
-#        self._shape = shape
+        self.compute(etac, Cm, size, mass, nu, orbit, rp, ep, omega)
+
+    def compute(self, etac, Cm, size, mass, nu, orbit=None, rp=None, ep=None, omega=None):
+        self.__Transfer = np.empty(shape=(0,2))
         self._Cm = Cm
+        self._orbit = orbit
         self._size = size
         self._mass = mass
 #        self._orientation = orientation
-        self._orbit = orbit
+        if orbit != None:
+            self._orbit = orbit
+        else:
+            self._orbit = Orbit()
+            self._orbit.make(rp, ep, omega)
         self._nu = nu
         self._etac = etac
         self._snu = math.sin(self._nu)
         self._cnu = math.cos(self._nu)
-#        self.v0 = math.sqrt(consts.mu*(2/self._orbit.rp - 1/self._orbit.a))
         self._r = self._orbit.a*(1- math.pow(self._orbit.ep, 2))/(1+self._orbit.ep*self._cnu)
         self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))*1.0
         self._sgamma = self._orbit.rp*self._orbit.v0 / (self._r*self._v)
@@ -105,4 +113,16 @@ class debris:
         szeta2 = extmath.sinplus(szeta, czeta, sdzeta, cdzeta)
         czeta2 = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
         return np.array([szeta2, czeta2, v])
+
+    def transfer(self):
+#        print("Transfer")
+        self.__Transfer = np.vstack((self.__Transfer, self.plot_data()))
+
+    def transfer_data(self):
+#        print(len(self.__Transfer))
+        self.transfer()
+#        print(len(self.__Transfer))
+        Temp = self.__Transfer
+        self.__Transfer = np.empty(shape=(0,2))
+        return Temp
 

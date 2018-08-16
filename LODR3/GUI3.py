@@ -127,6 +127,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.closeBtn.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Close))
         self.runBtn.clicked.connect(self.run_pushed)
         self.runBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
+        self.resetBtn.clicked.connect(self.reset_debris)
+#        self.resetBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
 
         # PlotView
         bgcolor =  np.asarray(self.palette().color(self.backgroundRole()).getRgb()[0:3])/255
@@ -182,7 +184,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
                     debname = n0 + str(extra)
                     extra += 1
                 Deb = debris(str(debname), float(d.get("etac")), float(d.get("Cm")),
-                             float(d.get("size")), float(d.get("mass")), orb, float(d.get("nu")))
+                             float(d.get("size")), float(d.get("mass")), float(d.get("nu")),
+                             orbit=orb)
                 self.debrisConf.add_section(debname)
                 for key in d:
                     self.debrisConf.set(debname, key, d.get(key))
@@ -250,16 +253,22 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plot_debris()
             meas = self.debris.measure()
             beta = math.atan2(meas['sbeta'], meas['cbeta'])
-            if (math.radians(float(self.beta_min.value())) < beta 
-                    < math.radians(float(self.beta_max.value()))):
+            beta_min = math.radians(float(self.beta_min.value()))
+            beta_max = math.radians(float(self.beta_max.value()))
+            if (beta_min < beta < beta_max):
                 beta_achieved = True 
                 zeta = math.atan2(meas['szeta'], meas['czeta'])
-                if (math.radians(self.zeta_min.value()) < zeta 
-                        < math.radians(self.zeta_max.value())):
+                zeta_min = math.radians(self.zeta_min.value())
+                zeta_max = math.radians(self.zeta_max.value())      
+                if (zeta_min < zeta < zeta_max):
                     zeta_achieved = True
                     if not fired:
-                        self.fire()
+#                        print("zeta: " + str(zeta))
+                        if self.expZeta.isChecked():
+                            zeta_max = math.pi/2
+                        self.fire(beta_min, beta_max, zeta_min, zeta_max)
                         fired = True
+                        self.plot_transfer()
                         self.plot_orbit()
             elif beta_achieved:
                 if not zeta_achieved:
@@ -274,9 +283,9 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             ts = .1 - td
             self.lock.release()
             time.sleep(ts if ts > 0 else 0)
-        print("While ended") 
+#        print("While ended") 
         if self.kill_reason == zetaNotInRange:
-            print("emit killed")
+#            print("emit killed")
             self.killed.emit()
 
     def on_killed(self):
@@ -295,6 +304,16 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.deb_dot = self.graph.plot(data[0], data[1], 'ro')[0]
         self.canvas.draw()
 
+    def plot_transfer(self):
+#        print("plot transfer")
+        data = self.debris.transfer_data()
+#        print(data)
+        if len(data) > 0:
+#            print(len(data))
+            # Plot the transfer
+            self.graph.plot(data[:, 0], data[:, 1])
+            self.canvas.draw()
+
     def update_position(self):
 #        print("Update Position")
         v = round(self.debris._v)
@@ -311,6 +330,20 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.num_ra.display(orb.ra)
         self.num_omega.display(orb.omega)
         self.num_epsilon.display(orb.ep)
+
+    def reset_debris(self):
+        d = dict(self.debrisConf.items(self.debris.ID))
+        o = dict(self.orbitConf.items(d.get("orbit")))
+        self.debris.compute(float(d.get("etac")), float(d.get("Cm")), float(d.get("size")), 
+                float(d.get("mass")), float(d.get("nu")), 
+                rp=float(o.get("rp")), ep=float(o.get("epsilon")), omega=float(o.get("omega")))
+        self.num_m.display(self.debris._mass)
+        self.num_d.display(self.debris._size)
+        self.num_Cm.display(self.debris._Cm)
+        self.num_etac.display(self.debris._etac)
+        self.update_position()
+        self.update_orbit()
+        
 
     # Orbit functions #
     def load_orbit(self, filename=False, scp=False):
@@ -470,10 +503,12 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             self.laserDef.setDefaultLaserParam(LT)
             self.lasersystem.switch(LT)
 
-    def fire(self):
+    def fire(self, beta_min, beta_max, zeta_min, zeta_max):
+#        print("beta_min: " + str(beta_min) + "    beta_max: " + str(beta_max) +
+#                "    zeta_min: " + str(zeta_min) + "    zeta_max: " + str(zeta_max))
         self.lasersystem.fire(self.antenna, self.debris,
                 float(self.laserstack.currentWidget().get_duration()),
-                self.atmosphere)
+                self.atmosphere, beta_min, beta_max, zeta_min, zeta_max)
         self.update_position()
         self.update_orbit()
 

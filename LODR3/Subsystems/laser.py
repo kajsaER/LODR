@@ -50,7 +50,8 @@ class laser:
         divM2 = self._M2 * self._Cb/4 * self._lambda/(Deff/2)
         return math.sqrt(math.pow(divM2, 2) + atm.divergence2(self._lambda))
 
-    def fire(self, ant, deb, duration, atm):
+    def fire(self, ant, deb, duration, atm, beta_min, beta_max, zeta_min, zeta_max):
+        deb.transfer()
         meas = deb.measure()
         z = meas['z']
         szeta = meas['szeta']
@@ -89,8 +90,15 @@ class laser:
         deb._sgamma = extmath.sinplus(sdelta, cdelta, szeta, czeta)
         deb._cgamma = extmath.cosplus(sdelta, cdelta, szeta, czeta)
         if duration > 0:
+#            deb.transfer()
             deb.step()
-            self.fire(ant, deb, duration, atm)
+            meas = deb.measure()
+            beta = math.atan2(meas['sbeta'], meas['cbeta'])
+            zeta = math.atan2(meas['szeta'], meas['cbeta'])
+#            print("beta: " + str(beta) + "    zeta: " + str(zeta))
+            if (beta_min < beta < beta_max) and (zeta_min < zeta < zeta_max):
+#                print("Fire again")
+                self.fire(ant, deb, duration, atm, beta_min, beta_max, zeta_min, zeta_max)
 
     def Print(self):
         print("P: " + str(self._P))                   # The power of the chosen laser
