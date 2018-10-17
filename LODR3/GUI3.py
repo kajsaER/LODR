@@ -44,10 +44,10 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.saveDiag = QtWidgets.QFileDialog(self.central_widget)
         self.saveDiag.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         self.saveDiag.filterSelected.connect(self.updateSuffix)
-        dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cb',
+        dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cd',
                             'Repetition rate', 'Pulse duration'])
         dl.update({'Energy min':'1E-09', 'Energy max':'1E+03', 'M2 min':'1', 'M2 max':'1E+02',
-            'Cb min':'1', 'Cb max':'1E+01',
+            'Cd min':'1', 'Cd max':'1E+01',
             'Repetition rate min':'1E+00', 'Repetition rate max':'1E+11',
             'Pulse duration min':'1E-15', 'Pulse duration max':'1E+00',
             'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})

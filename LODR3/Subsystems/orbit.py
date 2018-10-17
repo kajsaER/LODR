@@ -31,7 +31,7 @@ class orbit:
         self.ra = self.a*(1 + self.ep)
 #        self.rp = self.a*(1 - self.ep)
         self.b = self.a*math.sqrt(1 - math.pow(ep,2))
-        self.v0 = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
+        self.vp = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
         self.cw = math.cos(self.omega)
         self.sw = math.sin(self.omega)
         self.T = 2*math.pi*math.sqrt(math.pow(self.a,3)/consts.mu) #orbital period
@@ -147,7 +147,7 @@ class orbit:
         self.a = (self.ra + self.rp)/2
         self.ep = (self.ra-self.rp)/(self.ra+self.rp)
         self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
-        self.v0 = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
+        self.vp = math.sqrt(consts.mu*(2/self.rp - 1/self.a))
         if turns.shape[0] > 1 :
             mini = turns[0]
             if R[turns[1]] < R[mini]:

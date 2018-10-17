@@ -52,21 +52,21 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         
         self.slide_W.actionTriggered.connect(lambda act: self.slide_trigged(act, 'W'))
         self.slide_M2.actionTriggered.connect(lambda act: self.slide_trigged(act, 'M2'))
-        self.slide_Cb.actionTriggered.connect(lambda act: self.slide_trigged(act, 'Cb'))
+        self.slide_Cd.actionTriggered.connect(lambda act: self.slide_trigged(act, 'Cd'))
         self.slide_frep.actionTriggered.connect(lambda act: self.slide_trigged(act, 'frep'))
         self.slide_tau.actionTriggered.connect(lambda act: self.slide_trigged(act, 'tau'))
         self.slide_T.actionTriggered.connect(lambda act: self.slide_trigged(act, 'T'))
 
         self.slide_W.sliderMoved.connect(lambda value: self.slide_moved(value, 'W'))
         self.slide_M2.sliderMoved.connect(lambda value: self.slide_moved(value, 'M2'))
-        self.slide_Cb.sliderMoved.connect(lambda value: self.slide_moved(value, 'Cb'))
+        self.slide_Cd.sliderMoved.connect(lambda value: self.slide_moved(value, 'Cd'))
         self.slide_frep.sliderMoved.connect(lambda value: self.slide_moved(value, 'frep'))
         self.slide_tau.sliderMoved.connect(lambda value: self.slide_moved(value, 'tau'))
         self.slide_T.sliderMoved.connect(lambda value: self.slide_moved(value, 'T'))
 
         self.slide_W.valueChanged.connect(lambda value: self.slide_changed(value, 'W'))
         self.slide_M2.valueChanged.connect(lambda value: self.slide_changed(value, 'M2'))
-        self.slide_Cb.valueChanged.connect(lambda value: self.slide_changed(value, 'Cb'))
+        self.slide_Cd.valueChanged.connect(lambda value: self.slide_changed(value, 'Cd'))
         self.slide_frep.valueChanged.connect(lambda value: self.slide_changed(value, 'frep'))
         self.slide_tau.valueChanged.connect(lambda value: self.slide_changed(value, 'tau'))
         self.slide_T.valueChanged.connect(lambda value: self.slide_changed(value, 'T'))
@@ -88,7 +88,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         self.unit_lambda.setText(temp[0]+'m')
 
         self.set_default_value('m2', 'M2')
-        self.set_default_value('cb', 'Cb')
+        self.set_default_value('cd', 'Cd')
         self.set_default_value('repetition rate', 'frep')
         self.set_default_value('pulse duration', 'tau')
         self.set_default_value('fire duration', 'T')
@@ -101,7 +101,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         pot = pow(10, temp[2])
         exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+
                 '(self.slide_'+SHORT+'.maximum() - self.slide_'+SHORT+'.minimum())')
-        if SHORT not in {'M2', 'Cb'}:
+        if SHORT not in {'M2', 'Cd'}:
             exec('self.pot_' + SHORT + ' = pot')
             if pot != 1:
                 exec('self.unit_' + SHORT + '.setText(temp[0]+units.get(SHORT))')
@@ -126,7 +126,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         val = eval('(self.slide_'+var+'.value()-self.slide_'+var+'.minimum())*self.scale_'+var+
                 '+self.min_'+var)
         temp = extmath.prefixedValue(val)
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
@@ -137,7 +137,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
                 '+self.min_'+var) 
         temp = extmath.prefixedValue(val)
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
@@ -146,7 +146,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
                 '+self.min_'+var)
         temp = extmath.prefixedValue(val)
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
@@ -175,7 +175,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
               'Energy':'1E-09', 'Energy min':'1E-09', 'Energy max':'1E+00',
               'Lambda':'1E-09', 'Lambda min':'1E-09', 'Lambda max':'1E+00', 
               'M2':'1', 'M2 min':'1', 'M2 max':'1E+02',
-              'Cb':'1', 'Cb min':'1', 'Cb max':'1E+01',
+              'Cd':'1', 'Cd min':'1', 'Cb max':'1E+01',
               'Repetition rate':'1E+11', 'Pulse duration':'1e-09'}
         for name in list(LT.keys()):
             self.main.laserConf.set('Custom', name, LT[name])
@@ -188,7 +188,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.slide_W.actionTriggered.connect(lambda act: self.slide_trigged(act, 'W'))
         self.slide_lambda.actionTriggered.connect(lambda act: self.slide_trigged(act, 'lambda'))
         self.slide_M2.actionTriggered.connect(lambda act: self.slide_trigged(act, 'M2'))
-        self.slide_Cb.actionTriggered.connect(lambda act: self.slide_trigged(act, 'Cb'))
+        self.slide_Cd.actionTriggered.connect(lambda act: self.slide_trigged(act, 'Cd'))
         self.slide_frep.actionTriggered.connect(lambda act: self.slide_trigged(act, 'frep'))
         self.slide_tau.actionTriggered.connect(lambda act: self.slide_trigged(act, 'tau'))
         self.slide_T.actionTriggered.connect(lambda act: self.slide_trigged(act, 'T'))
@@ -197,7 +197,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.slide_W.sliderMoved.connect(lambda value: self.slide_moved(value, 'W'))
         self.slide_lambda.sliderMoved.connect(lambda value: self.slide_moved(value, 'lambda'))
         self.slide_M2.sliderMoved.connect(lambda value: self.slide_moved(value, 'M2'))
-        self.slide_Cb.sliderMoved.connect(lambda value: self.slide_moved(value, 'Cb'))
+        self.slide_Cd.sliderMoved.connect(lambda value: self.slide_moved(value, 'Cd'))
         self.slide_frep.sliderMoved.connect(lambda value: self.slide_moved(value, 'frep'))
         self.slide_tau.sliderMoved.connect(lambda value: self.slide_moved(value, 'tau'))
         self.slide_T.sliderMoved.connect(lambda value: self.slide_moved(value, 'T'))
@@ -206,7 +206,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.slide_W.valueChanged.connect(lambda value: self.slide_changed(value, 'W'))
         self.slide_lambda.valueChanged.connect(lambda value: self.slide_changed(value, 'lambda'))
         self.slide_M2.valueChanged.connect(lambda value: self.slide_changed(value, 'M2'))
-        self.slide_Cb.valueChanged.connect(lambda value: self.slide_changed(value, 'Cb'))
+        self.slide_Cd.valueChanged.connect(lambda value: self.slide_changed(value, 'Cd'))
         self.slide_frep.valueChanged.connect(lambda value: self.slide_changed(value, 'frep'))
         self.slide_tau.valueChanged.connect(lambda value: self.slide_changed(value, 'tau'))
         self.slide_T.valueChanged.connect(lambda value: self.slide_changed(value, 'T'))
@@ -242,7 +242,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.set_default_value('energy', 'W')
         self.set_default_value('lambda', 'lambda')
         self.set_default_value('m2', 'M2')
-        self.set_default_value('cb', 'Cb')
+        self.set_default_value('cd', 'Cd')
 
         self.set_default_value('repetition rate', 'frep')
         self.set_default_value('pulse duration', 'tau')
@@ -255,7 +255,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         exec('self.max_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))')
         pot = pow(10, temp[2])
         exec('self.scale_'+SHORT+' = self.max_' + SHORT + '-self.min_' + SHORT)
-        if SHORT not in {'M2', 'Cb'}:
+        if SHORT not in {'M2', 'Cd'}:
             exec('self.pot_' + SHORT + ' = pot')
             self.build_unit_box(SHORT)
             if pot != 1:
@@ -308,7 +308,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
             self.num_lambda.display(2*self.num_lambda.value())
 
     def slide_trigged(self, action, var):
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             val = eval('self.slide_' + var + '.value()')
             pot = eval('self.pot_' + var)
         else:
@@ -320,7 +320,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
             exec('self.main.lasersystem._' + var + ' = val*pot')
 
     def slide_moved(self, value, var):
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             val = value
         else:
             val = eval('value*self.scale_' + var +
@@ -328,7 +328,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         exec('self.num_' + var + '.display(val)')
 
     def slide_changed(self, value, var):
-        if var not in {'M2', 'Cb'}:
+        if var not in {'M2', 'Cd'}:
             val = value
             pot = eval('self.pot_' + var)
         else:
@@ -359,7 +359,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.validW = False
         self.validlam = False
         self.validM2 = False
-        self.validCb = False
+        self.validCd = False
         self.validfrep = False
         self.validtau = False
 
@@ -370,7 +370,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.W.setValidator(QtGui.QDoubleValidator())
         self.lam.setValidator(QtGui.QDoubleValidator())
         self.M2.setValidator(QtGui.QDoubleValidator())
-        self.Cb.setValidator(QtGui.QDoubleValidator())
+        self.Cd.setValidator(QtGui.QDoubleValidator())
         self.frep.setValidator(QtGui.QDoubleValidator())
         self.tau.setValidator(QtGui.QDoubleValidator())
 
@@ -380,7 +380,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
                 self.updateW(extmath.myfloat(val)))
         self.lam.editingFinished.connect(self.updatelam)
         self.M2.editingFinished.connect(self.updateM2)
-        self.Cb.editingFinished.connect(self.updateCb)
+        self.Cd.editingFinished.connect(self.updateCd)
         self.frep.editingFinished.connect(lambda val=None: 
                 self.updatefrep(extmath.myfloat(val)))
         self.tau.editingFinished.connect(self.updatetau)
@@ -447,14 +447,14 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
             self.validM2 = True
         self.checkOK()
 
-    def updateCb(self):
-        Cb = float(self.Cb.text())
-        if Cb < 1:
-            self.Cb.setText("value too low")
-            self.validCb = False
+    def updateCd(self):
+        Cd = float(self.Cd.text())
+        if Cd < 1:
+            self.Cd.setText("value too low")
+            self.validCd = False
         else:
-            self.valueCb = Cb
-            self.validCb = True
+            self.valueCd = Cd
+            self.validCd = True
         self.checkOK()
 
     def updatefrep(self, frep):
@@ -498,7 +498,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
 
     def checkOK(self):
         if (self.validname and self.validP and self.validW and self.validlam and
-            self.validM2 and self.validCb and self.validfrep and self.validtau):
+            self.validM2 and self.validCd and self.validfrep and self.validtau):
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
         else:
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
@@ -510,7 +510,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.main.laserConf.set(name, "energy", str(self.valueW))
         self.main.laserConf.set(name, "lambda", str(self.valuelam))
         self.main.laserConf.set(name, "m2", str(self.valueM2))
-        self.main.laserConf.set(name, "cb", str(self.valueCb))
+        self.main.laserConf.set(name, "cd", str(self.valueCd))
         self.main.laserConf.set(name, "repetition rate", str(self.valuefrep))
         self.main.laserConf.set(name, "tau", str(self.valuetau))
         

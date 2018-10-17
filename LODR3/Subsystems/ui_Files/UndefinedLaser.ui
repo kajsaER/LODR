@@ -113,7 +113,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;&gt;f&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; vertical-align:sub;&quot;&gt;rep&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;/&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLCDNumber" name="num_Cb">
+  <widget class="QLCDNumber" name="num_Cd">
    <property name="geometry">
     <rect>
      <x>31</x>
@@ -129,7 +129,7 @@
     <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label_Cb">
+  <widget class="QLabel" name="label_Cd">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -139,7 +139,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; vertical-align:sub;&quot;&gt;b&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;/&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; vertical-align:sub;&quot;&gt;d&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLCDNumber" name="num_M2">
@@ -324,7 +324,7 @@
     <enum>QLCDNumber::Flat</enum>
    </property>
   </widget>
-  <widget class="QSlider" name="slide_Cb">
+  <widget class="QSlider" name="slide_Cd">
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -504,7 +504,7 @@
   <tabstop>unit_lambda</tabstop>
   <tabstop>slide_lambda</tabstop>
   <tabstop>slide_M2</tabstop>
-  <tabstop>slide_Cb</tabstop>
+  <tabstop>slide_Cd</tabstop>
   <tabstop>unit_frep</tabstop>
   <tabstop>slide_frep</tabstop>
   <tabstop>unit_tau</tabstop>

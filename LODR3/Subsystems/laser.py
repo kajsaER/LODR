@@ -25,7 +25,7 @@ class laser:
         self._W = extmath.myfloat(LaserType.get('energy'))
         self._lambda = extmath.myfloat(LaserType.get('lambda'))
         self._M2 = extmath.myfloat(LaserType.get('m2'))
-        self._Cb = extmath.myfloat(LaserType.get('cb'))
+        self._Cb = extmath.myfloat(LaserType.get('cd'))
         self._frep = extmath.myfloat(LaserType.get('repetition rate'))
         self._tau = extmath.myfloat(LaserType.get('pulse duration'))
         self._dubf = False
