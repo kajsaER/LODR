@@ -1,6 +1,5 @@
 from .antenna import antenna
 from . import Support_Files
-#from .Support_Files.extmath import extmath
 from .debris import debris
 from .laser import laser
 from .atmosphere import atmosphere

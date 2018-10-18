@@ -22,7 +22,7 @@ skipAll = 10
 renameAll = 11
 replaceAll = 12
 
-zetaNotInRange = 20
+zetaNotInRange = "No \u03b6 in the specified range was found within the specified \u03b2 range"
 
 class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
     killed = QtCore.pyqtSignal()
@@ -124,7 +124,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         
         # Buttons
         self.closeBtn.clicked.connect(self.close_application)
-        self.closeBtn.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Close))
+        self.closeBtn.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Quit))
+        self.closeBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_W))
         self.runBtn.clicked.connect(self.run_pushed)
         self.runBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
         self.resetBtn.clicked.connect(self.reset_debris)
@@ -244,58 +245,55 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.kill_reason = None
         fired = False
         while self.running:
-            t1 = time.time()
-            for i in range(self.time_step):
+            try:
+                t1 = time.time()
+                for i in range(self.time_step):
+                    self.lock.acquire()
+                    self.debris.step()
+                    self.lock.release()
                 self.lock.acquire()
-                self.debris.step()
+                self.plot_debris()
+                meas = self.debris.measure()
+                beta = math.atan2(meas['sbeta'], meas['cbeta'])
+                beta_min = math.radians(float(self.beta_min.value()))
+                beta_max = math.radians(float(self.beta_max.value()))
+                if (beta_min < beta < beta_max):
+                    beta_achieved = True 
+                    zeta = math.atan2(meas['szeta'], meas['czeta'])
+                    zeta_min = math.radians(self.zeta_min.value())
+                    zeta_max = math.radians(self.zeta_max.value())      
+                    if (zeta_min < zeta < zeta_max):
+                        zeta_achieved = True
+                        if not fired:
+                            if self.expZeta.isChecked():
+                                zeta_max = math.pi/2
+                            self.fire(beta_min, beta_max, zeta_min, zeta_max)
+                            fired = True
+                            self.plot_transfer()
+                            self.plot_orbit()
+                elif beta_achieved:
+                    if not zeta_achieved:
+                        self.running = False
+                        self.kill_reason = zetaNotInRange
+                        raise Exception(zetaNotInRange)
+                    zeta_achieved = False
+                    beta_achieved = False
+                    fired = False
+    #            self.update_position()
+                td = time.time() - t1
+                ts = .1 - td
                 self.lock.release()
-            self.lock.acquire()
-            self.plot_debris()
-            meas = self.debris.measure()
-            beta = math.atan2(meas['sbeta'], meas['cbeta'])
-            beta_min = math.radians(float(self.beta_min.value()))
-            beta_max = math.radians(float(self.beta_max.value()))
-            if (beta_min < beta < beta_max):
-                beta_achieved = True 
-                zeta = math.atan2(meas['szeta'], meas['czeta'])
-                zeta_min = math.radians(self.zeta_min.value())
-                zeta_max = math.radians(self.zeta_max.value())      
-                if (zeta_min < zeta < zeta_max):
-                    zeta_achieved = True
-                    if not fired:
-#                        print("zeta: " + str(zeta))
-                        if self.expZeta.isChecked():
-                            zeta_max = math.pi/2
-                        self.fire(beta_min, beta_max, zeta_min, zeta_max)
-                        fired = True
-                        self.plot_transfer()
-                        self.plot_orbit()
-            elif beta_achieved:
-                if not zeta_achieved:
-                    self.running = False
-                    self.kill_reason = zetaNotInRange
-                zeta_achieved = False
-                beta_achieved = False
-                fired = False
-#            self.update_position()
-            td = time.time() - t1
-#            print(td)
-            ts = .1 - td
-            self.lock.release()
-            time.sleep(ts if ts > 0 else 0)
-#        print("While ended") 
-        if self.kill_reason == zetaNotInRange:
-#            print("emit killed")
-            self.killed.emit()
+                time.sleep(ts if ts > 0 else 0)
+            except Exception as e:
+                self.running = False
+                self.lock.release()
+                self.kill_reason = e
+                self.killed.emit()
 
     def on_killed(self):
-        QtWidgets.QMessageBox.information(None, "Error",
-                              ("No \u03b6 in the specified range was "
-                               "found within the specified \u03b2 range"), 
-                               QtWidgets.QMessageBox.Ok)
+        QtWidgets.QMessageBox.information(None, "Error", str(self.kill_reason), QtWidgets.QMessageBox.Ok)
 
     def plot_debris(self):
-#        print("Plot Debris")
         data = self.debris.plot_data()
         try:
             del self.graph.lines[self.graph.lines.index(self.deb_dot)]
@@ -305,17 +303,13 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.canvas.draw()
 
     def plot_transfer(self):
-#        print("plot transfer")
         data = self.debris.transfer_data()
-#        print(data)
         if len(data) > 0:
-#            print(len(data))
             # Plot the transfer
             self.graph.plot(data[:, 0], data[:, 1])
             self.canvas.draw()
 
     def update_position(self):
-#        print("Update Position")
         v = round(self.debris._v)
         r = round(self.debris._r/1000)
         nu = round(math.degrees(self.debris._nu))
@@ -324,7 +318,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.num_v.display(v)
 
     def update_orbit(self):
-#        print("Update orbit")
         orb = self.debris._orbit
         self.num_rp.display(orb.rp)
         self.num_ra.display(orb.ra)
@@ -504,8 +497,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             self.lasersystem.switch(LT)
 
     def fire(self, beta_min, beta_max, zeta_min, zeta_max):
-#        print("beta_min: " + str(beta_min) + "    beta_max: " + str(beta_max) +
-#                "    zeta_min: " + str(zeta_min) + "    zeta_max: " + str(zeta_max))
         self.lasersystem.fire(self.antenna, self.debris,
                 float(self.laserstack.currentWidget().get_duration()),
                 self.atmosphere, beta_min, beta_max, zeta_min, zeta_max)
@@ -619,15 +610,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
                 scp.set(sec, key, str(vals.get(key)))
         return scp
 
-    def run_app(self):
-        i = 0
-        self.plot_orbit()
-        while self.running:
-            print(i)
-            i += 1
-            self.debris_step()
-            self.plot_debris()
-            time.sleep(1)
 
     def run_pushed(self):
         if self.debris != None:
@@ -638,7 +620,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.information(self.central_widget, "Error",
                                           "No debris chosen", QtWidgets.QMessageBox.Ok)
             self.running = False
-        print("Run function needs to be implemented")
 
     def close_application(self):
         choice = QtWidgets.QMessageBox.question(self.central_widget, "Close",
