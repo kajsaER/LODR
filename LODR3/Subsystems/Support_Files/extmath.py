@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# Connection between standard unit prefixes and their powers of 10
 allPrefixes = {'a':'1E-18', 'f':'1E-15', 'p':'1E-12', 'n':'1E-09',
                 '\u03bc':'1E-06', 'm':'1E-03', 'c':'1E-02', 'd':'1E-01',
                 '':'1E+00', 'da':'1E+01', 'h':'1E+02', 'k':'1E+03', 'M':'1E+06',
@@ -23,7 +24,7 @@ def cosminus(sa, ca, sb, cb): # cos(a-b)
 def cosplus(sa, ca, sb, cb): # cos(a+b)
     return ca*cb - sa*sb
 
-def myfloat(item):
+def myfloat(item):      # Safe float() operation
     try:    
         f = float(item)
         return f
@@ -31,6 +32,7 @@ def myfloat(item):
         return None
 
 def prefixedValue(item, useDeci=False, useDeca=False, useHecto=False):
+    # Convert value to prefixed value, e.x. 1000 W ⇒ 1 kW
     number = myfloat(item)
     pref = 0
     pot = 0

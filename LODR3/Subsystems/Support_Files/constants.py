@@ -10,4 +10,4 @@ Re = 6378e3 #Earth radius [m]
 lat = -0.053683419 # GS latitude
 slat = math.sin(lat)
 clat = math.cos(lat)
-# long = 0.651938653 # GS longitude
+# long = 0.651938653 # GS longitude not used for 2D
