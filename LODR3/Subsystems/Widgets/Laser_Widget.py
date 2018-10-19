@@ -34,19 +34,20 @@ counterParam = {'P':'W', 'W':'tau', }
 ################## Beginning Defined Laser #########################
 
 
-class Laser_Widget(laserBaseClass, laser_widget):
+class Laser_Widget(laserBaseClass, laser_widget):   # Empty laser widget
     def __init__(self, main, parent=None):
         super(Laser_Widget, self).__init__(parent)
         self.setupUi(self)
         self.main = main
 
 
-class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
+class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for predefined lasers
     def __init__(self, main, parent=None):
         super(DefinedLaser, self).__init__(parent)
         self.setupUi(self)
         self.main = main
-
+        
+        # Setup buttons, sliders and actions connected to them
         self.freqDub.toggled.connect(self.double_freq)
         self.lambda_coeff = 1
         
@@ -72,14 +73,14 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         self.slide_T.valueChanged.connect(lambda value: self.slide_changed(value, 'T'))
 
 
-    def setDefaultLaserParam(self, LaserType):
+    def setDefaultLaserParam(self, LaserType):  # Set values to defaults for given laser type
         self.freqDub.setChecked(False)
         self.lambda_coeff = 1
         self.LaserType = LaserType
 
-        temp = extmath.prefixedValue(LaserType.get('power'))
-        self.num_P.display(temp[1])
-        self.unit_P.setText(temp[0]+'W')
+        temp = extmath.prefixedValue(LaserType.get('power'))    # Get prefixed value
+        self.num_P.display(temp[1])     # Display value
+        self.unit_P.setText(temp[0]+'W')# Display prefixed unit
 
         self.set_default_value('energy', 'W')
 
@@ -93,36 +94,36 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
         self.set_default_value('pulse duration', 'tau')
         self.set_default_value('fire duration', 'T')
 
-    def set_default_value(self, LONG, SHORT):
-        temp = extmath.prefixedValue(self.LaserType.get(LONG))
-        exec('self.num_' + SHORT + '.display(temp[1])')
-        exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')
+    def set_default_value(self, LONG, SHORT):   # Set default value with prefixed units
+        temp = extmath.prefixedValue(self.LaserType.get(LONG))  # Get prefixed value
+        exec('self.num_' + SHORT + '.display(temp[1])') # Display value
+        exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')  # Get min and max values
         exec('self.max_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))')
-        pot = pow(10, temp[2])
-        exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+
+        pot = pow(10, temp[2])      # Get the power of 10
+        exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+   # Get scale for the slider
                 '(self.slide_'+SHORT+'.maximum() - self.slide_'+SHORT+'.minimum())')
-        if SHORT not in {'M2', 'Cd'}:
-            exec('self.pot_' + SHORT + ' = pot')
-            if pot != 1:
-                exec('self.unit_' + SHORT + '.setText(temp[0]+units.get(SHORT))')
-            exec('self.slide_'+SHORT+'.setValue('+
+        if SHORT not in {'M2', 'Cd'}:   # If a power of 10 could be present
+            exec('self.pot_' + SHORT + ' = pot')    # Set power of 10
+            if pot != 1:            # If power of 10 isn't 1
+                exec('self.unit_' + SHORT + '.setText(temp[0]+units.get(SHORT))')   # Display prefixed unit
+            exec('self.slide_'+SHORT+'.setValue('+  # Move slider to the right value
                     '(self.num_'+SHORT+'.value()*self.pot_'+SHORT+'-self.min_'+SHORT+')/'+
                     'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
-        else:
+        else:       # If no power of 10 possible, move slider to the right value
             exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')/'+
                     'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
     
-    def double_freq(self):
-        if self.freqDub.isChecked():
-            self.main.lasersystem.doubfreq()
-            self.lambda_coeff = 0.5
-            self.num_lambda.display(0.5*self.num_lambda.value())
-        else:
-            self.main.lasersystem.normfreq()
-            self.lambda_coeff = 1
-            self.num_lambda.display(2*self.num_lambda.value())
+    def double_freq(self):  # Double or normal frequency
+        if self.freqDub.isChecked():    # If doubling was ticked
+            self.main.lasersystem.doubfreq()    # Set double frequency in laser
+            self.lambda_coeff = 0.5     # Set λ coefficient to 0.5
+            self.num_lambda.display(0.5*self.num_lambda.value())    # Display 0.5*λ
+        else:                           # If doubling was unticked
+            self.main.lasersystem.normfreq()    # Set normal frequency in laser
+            self.lambda_coeff = 1       # Set λ coefficient to 1
+            self.num_lambda.display(2*self.num_lambda.value())      # Display 2*λ
 
-    def slide_trigged(self, action, var):
+    def slide_trigged(self, action, var):   # If slider was triggered, Update value and unit
         val = eval('(self.slide_'+var+'.value()-self.slide_'+var+'.minimum())*self.scale_'+var+
                 '+self.min_'+var)
         temp = extmath.prefixedValue(val)
@@ -130,10 +131,10 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
-        if var != 'T':
+        if var != 'T':          # If not fireing period, set value in laser
             exec('self.main.lasersystem._' + var + ' = val')
 
-    def slide_moved(self, value, var):
+    def slide_moved(self, value, var):      # If slider was moved, update value and unit
         val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
                 '+self.min_'+var) 
         temp = extmath.prefixedValue(val)
@@ -142,7 +143,7 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
 
-    def slide_changed(self, value, var):
+    def slide_changed(self, value, var):    # If slider was changed, update value and unit
         val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
                 '+self.min_'+var)
         temp = extmath.prefixedValue(val)
@@ -150,10 +151,10 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
             exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
             exec('self.pot_' + var + ' = pow(10, temp[2])')
         exec('self.num_' + var + '.display(temp[1])')
-        if var != 'T':
+        if var != 'T':          # If not fireing period, set value in laser
             exec("%s" % 'self.main.lasersystem._' + var + ' = val')
 
-    def get_duration(self):
+    def get_duration(self):     # Return the fireing duration 
         return self.num_T.value()*self.pot_T
 
 ################### End of Defined Laser ###########################
@@ -162,12 +163,12 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):
 ####################################################################
 ################ Beginning Undefined Laser #########################
 
-class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
+class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):    # Widget for free tuned lasers
     def __init__(self, main, parent=None):
         super(UndefinedLaser, self).__init__(parent)
         self.setupUi(self)
         self.main = main
-        self.main.laserConf.add_section('Custom')
+        self.main.laserConf.add_section('Custom')   # Make sure laser is in main list and Conf
         if 'Custom' not in self.main.laser_type_list:
             self.main.laserType.addItem('Custom')
             self.main.laser_type_list.append('Custom')
@@ -180,7 +181,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         for name in list(LT.keys()):
             self.main.laserConf.set('Custom', name, LT[name])
 
-
+        # Setup buttons, sliders and the actions connected to them
         self.freqDub.toggled.connect(self.double_freq)
         self.lambda_coeff = 1
         
@@ -218,22 +219,22 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.unit_tau.activated[str].connect(lambda choice: self.unit_change(choice, 'tau'))
         self.unit_T.activated[str].connect(lambda choice: self.unit_change(choice, 'T'))
 
-    def build_unit_box(self, measure):
-        listed = []
+    def build_unit_box(self, measure):  # Make unit choice box
+        listed = []     
         keylist = []
-        mini = eval('self.min_' + measure)
-        maxi = eval('self.max_' + measure)
-        for key in list(extmath.allPot.keys()):
-            pot = float(key)
-            if pot > mini/1000 and pot < maxi and key not in [1e-02, 1e-01, 1e+01, 1e+02]:
-                pref = extmath.allPot.get(key)
-                keylist.append(float(key))
-        keylist.sort()
-        for key in keylist:
+        mini = eval('self.min_' + measure)  # Get minimum value
+        maxi = eval('self.max_' + measure)  # Get maximum value
+        for key in list(extmath.allPot.keys()): # Go through all prefixes
+            pot = float(key)        # Get the power of 10 for the prefix
+            if pot > mini/1000 and pot < maxi and key not in [1e-02, 1e-01, 1e+01, 1e+02]:  # If pot in range
+#                pref = extmath.allPot.get(key)  # Get the prefix
+                keylist.append(float(key))      # Add pot to the keylist
+        keylist.sort()      # Sort keylist
+        for key in keylist: # Add prefixed unit for all pots to the list
             listed.append(str(extmath.allPot.get(key) + units.get(measure)))
-        exec('self.unit_'+measure+'.addItems(listed)')
+        exec('self.unit_'+measure+'.addItems(listed)')  # Add list to choice box
 
-    def setDefaultLaserParam(self, LaserType):
+    def setDefaultLaserParam(self, LaserType):  # Setup default parameters
         self.freqDub.setChecked(False)
         self.lambda_coeff = 1
         self.LaserType = LaserType
@@ -248,66 +249,65 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         self.set_default_value('pulse duration', 'tau')
         self.set_default_value('fire duration', 'T')
 
-    def set_default_value(self, LONG, SHORT):
-        temp = extmath.prefixedValue(self.LaserType.get(LONG))
-        exec('self.num_' + SHORT + '.display(temp[1])')
-        exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')
+    def set_default_value(self, LONG, SHORT):   # Display default values with prefixed units
+        temp = extmath.prefixedValue(self.LaserType.get(LONG))  # Get prefixed values
+        exec('self.num_' + SHORT + '.display(temp[1])')     # Display value
+        exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')  # Get min and max
         exec('self.max_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))')
-        pot = pow(10, temp[2])
-        exec('self.scale_'+SHORT+' = self.max_' + SHORT + '-self.min_' + SHORT)
-        if SHORT not in {'M2', 'Cd'}:
-            exec('self.pot_' + SHORT + ' = pot')
-            self.build_unit_box(SHORT)
-            if pot != 1:
-                self.set_unit(SHORT)
-            exec('self.slide_'+SHORT+'.setValue(self.num_'+SHORT+'.value())')
-        else:
+        pot = pow(10, temp[2])      # Get power of 10
+        exec('self.scale_'+SHORT+' = self.max_' + SHORT + '-self.min_' + SHORT) # Calculate scale
+        if SHORT not in {'M2', 'Cd'}:   # If variable could have a pot
+            exec('self.pot_' + SHORT + ' = pot')    # Set pot
+            self.build_unit_box(SHORT)  # Build unit box for variable
+            if pot != 1:        # If unit has prefix 
+                self.set_unit(SHORT)    # Set the prefix
+            exec('self.slide_'+SHORT+'.setValue(self.num_'+SHORT+'.value())')   # Set slider value
+        else:                           # If variable can't have a pot, set slider value with scale
             exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')*'
                 'self.slide_'+SHORT+'.maximum()/self.scale_'+SHORT+')')
 
-    def set_unit(self, var):
-        p = eval('self.pot_' + var)
-        power = '%.0E' % Decimal(p)
-        prefixedunit = extmath.allPot.get(p) + units.get(var)
-        unit = eval('self.unit_' + var)
-        for ind in range(0, unit.count()):
-            if unit.itemText(ind) == prefixedunit:
-                unit.setCurrentIndex(ind)
+    def set_unit(self, var):    # Set unit choice box to correct prefix
+        p = eval('self.pot_' + var) # Get pot
+        power = '%.0E' % Decimal(p) # Convert to scientific notation
+        prefixedunit = extmath.allPot.get(p) + units.get(var)   # Get the prefixed unit for comparison
+        unit = eval('self.unit_' + var) # Get unit choice box
+        for ind in range(0, unit.count()):  # For all elements in choice box
+            if unit.itemText(ind) == prefixedunit:  # Check if thay match with prefixed unit
+                unit.setCurrentIndex(ind)           # Display right prefixed unit
                 break
 
-    def unit_change(self, choice, var):
-        if var == 'frep':
-            pref = str(choice[0:len(choice)-2])
-        else:
-            pref = str(choice[0:len(choice)-1])
-        old_pot = eval('self.pot_' + var)
-        new_pot = extmath.myfloat(extmath.allPrefixes.get(pref))
-        exec('self.pot_' + var + ' = new_pot')
-        val = eval('new_pot * self.num_'+var+'.value()')
-        mini = eval('self.min_'+var)
+    def unit_change(self, choice, var):     # Unit box changed
+        if var == 'frep':       # If 2 letter unit 
+            pref = str(choice[0:len(choice)-2]) # Get prefix
+        else:                   # If 1 letter unit
+            pref = str(choice[0:len(choice)-1]) # Get prefix
+        new_pot = extmath.myfloat(extmath.allPrefixes.get(pref))# Get new pot
+        exec('self.pot_' + var + ' = new_pot')  # Set new pot
+        val = eval('new_pot * self.num_'+var+'.value()')    # New unprefixed value
+        mini = eval('self.min_'+var)            # Get min and max values
         maxi = eval('self.max_'+var)
-        if val < mini:
+        if val < mini:          # If value too small, adjust
             exec('self.num_'+var+'.display(mini/new_pot)')
             exec('self.slide_'+var+'.setValue(mini/new_pot)')
             exec('self.main.lasersystem._' + var + '= mini')
-        elif val > maxi:
+        elif val > maxi:        # If value too large, adjust
             exec('self.num_'+var+'.display(maxi/new_pot)')
             exec('self.slide_'+var+'.setValue(maxi/new_pot)')
             exec('self.main.lasersystem._' + var + '= maxi')
-        else:
+        else:                   # Set in main laser
             exec('self.main.lasersystem._' + var + '= val')
 
-    def double_freq(self):
-        if self.freqDub.isChecked():
-            self.main.lasersystem.doubfreq()
-            self.lambda_coeff = 0.5
-            self.num_lambda.display(0.5*self.num_lambda.value())
-        else:
-            self.main.lasersystem.normfreq()
-            self.lambda_coeff = 1
-            self.num_lambda.display(2*self.num_lambda.value())
+    def double_freq(self):      # Double or normal frequency
+        if self.freqDub.isChecked():    # If doubling is ticked
+            self.main.lasersystem.doubfreq()    # Set doubling in main laser
+            self.lambda_coeff = 0.5     # Set λ ceofficient to 0.5
+            self.num_lambda.display(0.5*self.num_lambda.value())    # Set 0.5*λ
+        else:                           # If doubling is unticked
+            self.main.lasersystem.normfreq()    # Set normal in main laser
+            self.lambda_coeff = 1       # Set λ coefficient to 1
+            self.num_lambda.display(2*self.num_lambda.value())      # Set 2*λ
 
-    def slide_trigged(self, action, var):
+    def slide_trigged(self, action, var):   # If slider was trigged, update value and unit
         if var not in {'M2', 'Cd'}:
             val = eval('self.slide_' + var + '.value()')
             pot = eval('self.pot_' + var)
@@ -319,7 +319,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         if var != 'T':
             exec('self.main.lasersystem._' + var + ' = val*pot')
 
-    def slide_moved(self, value, var):
+    def slide_moved(self, value, var):      # If slider was moved, update value and unit 
         if var not in {'M2', 'Cd'}:
             val = value
         else:
@@ -327,7 +327,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
                 '/self.slide_' + var + '.maximum() + self.min_' + var)
         exec('self.num_' + var + '.display(val)')
 
-    def slide_changed(self, value, var):
+    def slide_changed(self, value, var):    # If slider was changed, update value and unit
         if var not in {'M2', 'Cd'}:
             val = value
             pot = eval('self.pot_' + var)
@@ -339,7 +339,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
         if var != 'T':
             exec('self.main.lasersystem._' + var + ' = val*pot')
 
-    def get_duration(self):
+    def get_duration(self): # Return fireing duration
         return self.num_T.value()*self.pot_T
 
 #################### End of Undefined Laser ########################
@@ -348,7 +348,7 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):
 ####################################################################
 ####################################################################
 
-class NewLaser(NewLaserBaseClass, NewLaserClass):
+class NewLaser(NewLaserBaseClass, NewLaserClass):   # Widget for making new defined lasers
     def __init__(self, main, parent=None):
         super(NewLaser, self).__init__(parent)
         self.setupUi(self)
@@ -366,7 +366,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.valueW = None
         self.valuefrep = None
         
-        self.P.setValidator(QtGui.QDoubleValidator())
+        self.P.setValidator(QtGui.QDoubleValidator())   # Require double values
         self.W.setValidator(QtGui.QDoubleValidator())
         self.lam.setValidator(QtGui.QDoubleValidator())
         self.M2.setValidator(QtGui.QDoubleValidator())
@@ -374,6 +374,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         self.frep.setValidator(QtGui.QDoubleValidator())
         self.tau.setValidator(QtGui.QDoubleValidator())
 
+        # Connect feilds to actions
         self.name.editingFinished.connect(self.updatename)
         self.P.editingFinished.connect(self.updateP)
         self.W.editingFinished.connect(lambda val=None:
@@ -385,11 +386,11 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
                 self.updatefrep(extmath.myfloat(val)))
         self.tau.editingFinished.connect(self.updatetau)
 
+        # Setup buttons and actions
         self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.OKClicked)
-#        self.buttonBox.rejected.connect(self.cancelClicked)
 
-    def updatename(self):
+    def updatename(self):   # Check if name is valid and unique
         name = str(self.name.text())
         if len(str(name)) < 1:
             self.validname = False
@@ -399,9 +400,9 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
             self.name.setText("in use")
         else:
             self.validname = True
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def updateP(self):
+    def updateP(self):      # Check if power is positive
         P = float(self.P.text())
         if P <= 0:
             self.P.setText("value too low")
@@ -409,25 +410,25 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         else:
             self.valueP = P
             self.validP = True
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def updateW(self, W):
-        if W == None:
-            W = extmath.myfloat(self.W.text())
-        if W <= 0:
+    def updateW(self, W):   # Check if energy is OK
+        if W == None:       # If no new value was given
+            W = extmath.myfloat(self.W.text()) # Get value
+        if W <= 0:          # If negative, not ok
             self.W.setText("value too low")
             self.validW = False
-        else:
-            self.valueW = W
-            self.W.setText(str(W))
-            self.validW = True
-            if self.validP:
-                frep = self.valueP / W
-                if self.valuefrep != frep:
+        else:               # If positive
+            self.valueW = W # Store value 
+            self.W.setText(str(W))  # Set value
+            self.validW = True  # Set valid
+            if self.validP:     # If valid power
+                frep = self.valueP / W  # Get associated frep
+                if self.valuefrep != frep:  # Make sure frep is right
                     self.updatefrep(frep)
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def updatelam(self):
+    def updatelam(self):    # Check if λ is ok
         lam = float(self.lam.text())
         if lam <= 0:
             self.lam.setText("value too low")
@@ -435,9 +436,9 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         else:
             self.valuelam = lam
             self.validlam = True
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def updateM2(self):
+    def updateM2(self):     # Check if M² if ok
         M2 = float(self.M2.text())
         if M2 < 1:
             self.M2.setText("value too low")
@@ -445,9 +446,9 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         else:
             self.valueM2 = M2
             self.validM2 = True
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def updateCd(self):
+    def updateCd(self):     # Check if Cd is ok
         Cd = float(self.Cd.text())
         if Cd < 1:
             self.Cd.setText("value too low")
@@ -455,28 +456,28 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):
         else:
             self.valueCd = Cd
             self.validCd = True
-        self.checkOK()
+        self.checkOK()      #Check if ready to save
 
-    def updatefrep(self, frep):
-        if frep == None:
-            frep = extmath.myfloat(self.frep.text())
-        if frep <= 0:
+    def updatefrep(self, frep): # Check if frep is ok
+        if frep == None:    # If no value was given
+            frep = extmath.myfloat(self.frep.text())    # Get value
+        if frep <= 0:       # If negative, not ok
             self.frep.setText("value too low")
             self.validfrep = False
-        else:
-            self.valuefrep = frep
-            self.frep.setText(str(frep))
+        else:               # If positive
+            self.valuefrep = frep   # Set value
+            self.frep.setText(str(frep))    # Display value
             self.validfrep = True
-            if self.validP:
-                W = self.valueP / frep
-                if self.valueW != W:
+            if self.validP: # If power is valid
+                W = self.valueP / frep  # Get correct W
+                if self.valueW != W:    # Make sure right W
                     self.updateW(W)
-            if self.validtau:
-                taumax = 1 / frep
-                if self.valuetau > taumax:
+            if self.validtau:   # If τ is valid
+                taumax = 1 / frep   # Get maximum τ
+                if self.valuetau > taumax:  # If τ is too large, not ok
                     self.tau.setText("max value: " + str(taumax))
                     self.validtau = False
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
     def updatetau(self):
         tau = float(self.tau.text())

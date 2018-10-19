@@ -19,7 +19,7 @@ class debris:
         self.__Transfer = np.empty(shape=(0,2))     # Empty matrix for transfer
         self._Cm = Cm           # Momentum coupling coefficient
         self._orbit = orbit     # Orbit
-        self._size = size       # Debris radius in m
+        self._size = size       # Debris diameter in m
         self._mass = mass       # Debris mass in kg
 #        self._orientation = orientation   # Not used for assumed spherical debris
         if orbit != None:       # If an orbit was provided, use it
@@ -105,7 +105,7 @@ class debris:
 
     def hit(self, Phi, szeta, czeta, reps): # Calculate and return v and ζ
         dvz = (reps*self._etac*self._Cm*Phi /       # velocity change in z
-               (self._mass/(math.pi*math.pow(self._size, 2))))  # direction
+               (self._mass/(math.pi*math.pow((self._size/2), 2))))  # direction
         v = math.sqrt(math.pow((self._v - dvz*czeta), 2) + math.pow((dvz*szeta), 2))
         sdzeta = dvz*szeta/v
         cdzeta = (self._v - dvz*czeta) / v
