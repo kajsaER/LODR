@@ -10,33 +10,33 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from matplotlib.patches import Circle as Circle
 from matplotlib.figure import Figure
 
-#from random import random as rand
 
 qtCreatorMain = "Subsystems/ui_Files/GUI.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorMain)
 
-skipThis = 00
-renameThis = 0o1
-replaceThis = 0o2
-skipAll = 10
-renameAll = 11
-replaceAll = 12
+# Define standard states
+skipThis = 00           # Skip only current item
+renameThis = 0o1        # Rename only current item
+replaceThis = 0o2       # Replace only current item
+skipAll = 10            # Skip all items
+renameAll = 11          # Rename all items
+replaceAll = 12         # Replace all items
 
-zetaNotInRange = "No \u03b6 in the specified range was found within the specified \u03b2 range"
 
-class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
-    killed = QtCore.pyqtSignal()
+class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
+    killed = QtCore.pyqtSignal()    # Initiate a signal called killed
 
     def __init__(self, parent=None):
         super(OperatorGUI, self).__init__(parent)
         self.setupUi(self)
-        self.filefolder = os.getcwd()
-        self.formats = list() #QtCore.QStringList()
+        self.filefolder = os.getcwd()   # Get current working directory
+        self.formats = list()           # Make an empty list and fill it with custom file formats
         for string in ['LODR Files (*.lodr)','Debris Files (*.dcfg)',
                        'Laser Files (*.lcfg)','Orbit Files (*.ocfg)',
                        'All Files (*)']:
-            self.formats.append(string)
+            self.formats.append(string) 
         
+        # Setup open and save dialog windows
         self.openDiag = QtWidgets.QFileDialog(self.central_widget)
         self.openDiag.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
         self.openDiag.setFileMode(QtWidgets.QFileDialog.ExistingFile)
@@ -44,6 +44,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.saveDiag = QtWidgets.QFileDialog(self.central_widget)
         self.saveDiag.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         self.saveDiag.filterSelected.connect(self.updateSuffix)
+
+        # Make a dictionry for default values and ranges of lasers
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cd',
                             'Repetition rate', 'Pulse duration'])
         dl.update({'Energy min':'1E-09', 'Energy max':'1E+03', 'M2 min':'1', 'M2 max':'1E+02',
@@ -51,13 +53,19 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
             'Repetition rate min':'1E+00', 'Repetition rate max':'1E+11',
             'Pulse duration min':'1E-15', 'Pulse duration max':'1E+00',
             'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})
-        self.laserConf = SCP(dl, allow_no_value=True, delimiters=('='))
+        # Make a SafeConfigParser for lasers, using the default values from dl
+         self.laserConf = SCP(dl, allow_no_value=True, delimiters=('='))
         
+        # Make a SafeConfigParser for debris, and add a section called ORBITS
         self.debrisConf = SCP(allow_no_value=False, delimiters=('='))
         self.debrisConf.add_section("ORBITS")
-        self.debrisConf.optionxform = str
-        self.orbitConf = SCP(allow_no_value=True, delimiters=('='))
+        self.debrisConf.optionxform = str   # Making the SCP case sensitive
 
+        #Make a SafeConfigParser for orbits
+        self.orbitConf = SCP(allow_no_value=True, delimiters=('='))
+        # Using only '=' as a delimiter allows for storing dictionaries and specific laser names
+
+        # Initiate atmosphere object
         self.atmosphere = atmosphere()
 
 
@@ -82,13 +90,14 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionRemove_Orbits.triggered.connect(self.remove_orbit)
         self.actionSave_Orbits.triggered.connect(self.save_orbit)
 
-        # Run Menu
+        # Run Menu, disabled but can be enabled when more functionallity is added
+        # A simple button is used for now
         self.menuRun.menuAction().setVisible(False)
         self.running = False
-        self.kill_reason = None
-        self.time_step = 240
-        self.lock = threading.Lock()
-        self.killed.connect(self.on_killed, QtCore.Qt.QueuedConnection)
+        self.kill_reason = None     # Message to show when run thread is killed from within
+        self.time_step = 240        # Time resolution, nbr of steps to move the debris between measurements
+        self.lock = threading.Lock()   
+        self.killed.connect(self.on_killed, QtCore.Qt.QueuedConnection) # Connecting custom killed signal to action
 
         # Laser Widget
         self.laserType.activated[str].connect(self.laser_choice) 
@@ -274,8 +283,9 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):
                 elif beta_achieved:
                     if not zeta_achieved:
                         self.running = False
-                        self.kill_reason = zetaNotInRange
-                        raise Exception(zetaNotInRange)
+                        raise Exception("No \u03b6 in the specified range "
+                                        "was found within the specified "
+                                        "\u03b2 range")
                     zeta_achieved = False
                     beta_achieved = False
                     fired = False
