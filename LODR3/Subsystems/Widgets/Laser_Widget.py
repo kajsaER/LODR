@@ -479,34 +479,34 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):   # Widget for making new defi
                     self.validtau = False
         self.checkOK()      # Check if ready to save
 
-    def updatetau(self):
-        tau = float(self.tau.text())
-        if tau <= 0:
+    def updatetau(self):    # Check if τ is ok
+        tau = float(self.tau.text())    # Get value
+        if tau <= 0:        # If negative, not ok
             self.tau.setText("value too low")
             self.validtau = False
-        elif self.validfrep:
-            taumax = 1 / self.valuefrep
-            if tau > taumax:
+        elif self.validfrep:    # If frep is ok
+            taumax = 1 / self.valuefrep # Compute maximum τ
+            if tau > taumax:    # If τ is too big, not ok
                 self.tau.setText("max value: " + str(taumax))
                 self.validtau = False
-            else:
+            else:               # If τ is ok, then it's ok
                 self.valuetau = tau
                 self.validtau = True
-        else:
+        else:               # If no frep, then τ is ok
             self.valuetau = tau
             self.validtau = True
-        self.checkOK()
+        self.checkOK()      # Check if ready to save
 
-    def checkOK(self):
+    def checkOK(self):      # Check if all values are valid, if so enable ok button
         if (self.validname and self.validP and self.validW and self.validlam and
             self.validM2 and self.validCd and self.validfrep and self.validtau):
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
-        else:
+        else:               # If not, diable ok button
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
 
-    def OKClicked(self):
+    def OKClicked(self):    # When ok is clicked, save data
         name = str(self.name.text())
-        self.main.laserConf.add_section(name)
+        self.main.laserConf.add_section(name)   # Add a new section to the main conf
         self.main.laserConf.set(name, "power", str(self.valueP))
         self.main.laserConf.set(name, "energy", str(self.valueW))
         self.main.laserConf.set(name, "lambda", str(self.valuelam))
@@ -515,48 +515,51 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):   # Widget for making new defi
         self.main.laserConf.set(name, "repetition rate", str(self.valuefrep))
         self.main.laserConf.set(name, "tau", str(self.valuetau))
         
-        if "Custom" in self.main.laser_type_list:
-            pos = self.main.laserType.count()-1
-        else:
-            pos = self.main.laserType.count()
+        if "Custom" in self.main.laser_type_list:   # If main list includes "Custom"
+            pos = self.main.laserType.count()-1     # Put second last in list
+        else:                                       # If no "Custom"
+            pos = self.main.laserType.count()       # Put last in the list
         self.main.laserType.insertItem(pos, name)
         self.main.laser_type_list.insert(pos, name)
 
 ######################### End of New Laser #########################
 
-class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):
+class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):  # Widget for removing laser
     def __init__(self, main, parent=None):
         super(RemoveLaser, self).__init__(parent)
         self.setupUi(self)
         self.main = main
 
-        for laser in self.main.laser_type_list:
-            if laser != "Choose" and laser != "Custom":
-                self.laserListWidget.addItem(laser)
+        for laser in self.main.laser_type_list: # For all items in the list
+            if laser != "Choose" and laser != "Custom": # Except Choose and Custom
+                self.laserListWidget.addItem(laser) # Put in a new list
 
+        # Setup and connect button and action
         self.buttonBox.accepted.connect(self.remove)
 
-    def remove(self):
-        i = self.laserListWidget.currentRow()
-        if i > -1:
-            del self.main.laser_type_list[i]
-            name = str(self.laserListWidget.currentItem().text())
-            self.main.laserConf.remove_section(name)
-            ind = self.main.laserType.findText(name)
-            self.main.laserType.removeItem(ind)
+    def remove(self):   # When button has been pushed
+        i = self.laserListWidget.currentRow()   # Get current index in the laser list
+        if i > -1:      # If valid index
+            del self.main.laser_type_list[i]    # Delete from main list
+            name = str(self.laserListWidget.currentItem().text())   # Get name of the laser
+            self.main.laserConf.remove_section(name)    # Remove named section from Conf
+            ind = self.main.laserType.findText(name)    # Get index in main list
+            self.main.laserType.removeItem(ind)         # Remove said item
 
-skipThis = 00
-renameThis = 0o1
-replaceThis = 0o2
-skipAll = 10
-renameAll = 11
-replaceAll = 12
+# Define standard states
+skipThis = 00       # Skip only current item
+renameThis = 0o1    # Rename only current item
+replaceThis = 0o2   # Replace only current item
+skipAll = 10        # Skip all items
+renameAll = 11      # Rename all items
+replaceAll = 12     # Replace all items
 
-class DuplicateLaser(DuplicateLaserBaseClass, DuplicateLaserClass):
+class DuplicateLaser(DuplicateLaserBaseClass, DuplicateLaserClass): # Widget for handeling duplicate entries
     def __init__(self, name, parent=None):
         super(DuplicateLaser, self).__init__(parent)
         self.setupUi(self)
-
+        
+        # Setup message text and buttons with actions
         self.textBox.setText("A laser with the name " + str(name) +
                 " in already in use. \nWhat would you like to do?")
 
@@ -564,20 +567,20 @@ class DuplicateLaser(DuplicateLaserBaseClass, DuplicateLaserClass):
         self.renameButton.clicked.connect(self.rename)
         self.replaceButton.clicked.connect(self.replace)
 
-    def skip(self):
-        if self.apply2All.isChecked():
-            self.done(skipAll)
+    def skip(self): # When skip is pushed
+        if self.apply2All.isChecked():  # Check if apply to all box is checked
+            self.done(skipAll)          # If so, return skipAll value
         else:
-            self.done(skipThis)
+            self.done(skipThis)         # If not, return skipThis value
 
-    def rename(self):
-        if self.apply2All.isChecked():
-            self.done(renameAll)
+    def rename(self):   # When rename is pushed
+        if self.apply2All.isChecked():  # Check if apply to all box is checked
+            self.done(renameAll)        # If so, return renameAll value
         else:
-            self.done(renameThis)
+            self.done(renameThis)       # If not, return renameThis value
 
-    def replace(self):
-        if self.apply2All.isChecked():
-            self.done(replaceAll)
+    def replace(self):  # When replace is pushed
+        if self.apply2All.isChecked():  # Check if apply to all box is checked
+            self.done(replaceAll)       # If so, return replaceAll value
         else:
-            self.done(replaceThis)
+            self.done(replaceThis)      # If not, return replaceThis value
