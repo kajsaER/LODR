@@ -1,0 +1,13 @@
+[LASER]
+CO2 = [('power', '70.0'), ('cd', '1.9'), ('pulse duration max', '1E-03'), ('lambda', '10.6e-6'), ('repetition rate max', '1E+05'), ('repetition rate min', '1E+00'), ('m2', '2'), ('pulse duration', '5e-7'), ('repetition rate', '10e3'), ('fire duration max', '1E+01'), ('energy', '0.007'),('energy max', '70.0'), ('fire duration min', '1E-06'), ('fire duration', '1E+00'), ('pulse duration min', '1E-09')]
+Nd:YAG = [('power', '2.0'), ('cd', '1.9'), ('pulse duration max', '1E-03'), ('lambda', '1.06e-6'), ('repetition rate max', '1E+05'), ('repetition rate min', '1E+00'), ('m2', '2'), ('pulse duration', '5e-7'), ('repetition rate', '10e3'), ('fire duration max', '1E+01'), ('energy', '0.0002'), ('energy max', '2.0'), ('fire duration min', '1E-06'), ('fire duration', '1E+00'), ('pulse duration min', '1E-09')]
+TiS = [('power', '5.0'), ('cd', '1.9'), ('pulse duration max', '1E-03'), ('lambda', '830e-9'), ('repetition rate max', '1E+05'), ('repetition rate min', '1E+00'), ('m2', '2'), ('pulse duration', '5e-7'), ('repetition rate', '10e3'), ('fire duration max', '1E+01'), ('energy', '0.0005'), ('energy max', '0.5'), ('fire duration min', '1E-06'), ('fire duration', '1E+00'), ('pulse duration min', '1E-09')]
+
+[ORBIT]
+LEO = [('rp', '7000000'), ('epsilon', '0.3'), ('omega', '2.34')]
+GEO = [('rp', '42164000'), ('epsilon', '0'), ('omega', '1.23')]
+
+[DEBRIS]
+ORBITS = [('LEO', "[('rp', '7000000'), ('epsilon', '0.7'), ('omega', '2.34')]"), ('GEO', "[('rp', '42164000'), ('epsilon', '0'), ('omega', '1.23')]")]
+0xf2LEO = [('etac', '0.3'), ('mass', '10'), ('nu', '1.23'), ('Cm', '300'), ('orbit', 'LEO'), ('size', '2')]
+0xddGEO = [('etac', '0.2'), ('mass', '16'), ('nu', '1.25'), ('Cm', '300'), ('orbit', 'GEO'), ('size', '2.3')]

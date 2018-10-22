@@ -34,13 +34,13 @@ class orbit:
         self.n = math.sqrt(consts.mu/math.pow(self.a, 3))   # Mean angular velocity  2*math.pi/self.T
  
     def find(self, z, v, szeta, czeta, sbeta, cbeta):       # Find an orbit that fits the measurements
-        salpha = extmath.sinplus(sbeta, cbeta, 1, 0)
-        calpha = extmath.cosplus(sbeta, cbeta, 1, 0)
-        r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*calpha) # Law of Cosines
+        sxi = extmath.sinplus(sbeta, cbeta, 1, 0)
+        cxi = extmath.cosplus(sbeta, cbeta, 1, 0)
+        r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*cxi) # Law of Cosines
         cphi = (math.pow(consts.Re, 2) + math.pow(r, 2) - math.pow(z, 2)) / (2*consts.Re*r)
-        sphi = z/r*(-salpha)                                # Law of Sines
+        sphi = z/r*(-sxi)                                # Law of Sines
         cdelta = (math.pow(z, 2) + math.pow(r, 2) - math.pow(consts.Re, 2)) / (2*r*z)
-        sdelta = consts.Re/r*salpha
+        sdelta = consts.Re/r*sxi
 
         sgamma = extmath.sinplus(sdelta, cdelta, szeta, czeta)
         cgamma = extmath.cosplus(sdelta, cdelta, szeta, czeta)

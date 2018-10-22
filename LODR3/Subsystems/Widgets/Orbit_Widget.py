@@ -157,3 +157,21 @@ class DuplicateOrbit(DuplicateOrbitBaseClass, DuplicateOrbitClass): # Widget for
             self.done(replaceAll)       # If so, return replaceAll value
         else:
             self.done(replaceThis)      # If not, return replaceThis value
+
+
+class NoMatch(QtWidgets.QMessageBox):   # Widget for handeling the case when no mathing orbit is found
+    def __init__(self, name, parent=None):
+        super(NoMatch, self).__init__(parent)
+
+        # Setup the ui with title, text, icon and buttons
+        self.setWindowTitle("No Matching Orbit Found")
+        self.setText("No orbit with parameters matching the ones defined as " + repr(name) +
+                     "\nfor this piece of debris.\n\nWould you like to use the parameters of the " + 
+                     "stored orbit with the same name or rename the one with the specific parameters?")
+        self.setIcon(QtWidgets.QMessageBox.Question)
+        self.StoredBtn = self.addButton("Stored", QtWidgets.QMessageBox.RejectRole)
+        self.RenameBtn = self.addButton("Rename", QtWidgets.QMessageBox.ActionRole)
+
+        # Connect buttons to return action and exit widget
+        self.StoredBtn.clicked.connect(lambda: self.done(QtWidgets.QMessageBox.RejectRole))
+        self.RenameBtn.clicked.connect(lambda: self.done(QtWidgets.QMessageBox.ActionRole))

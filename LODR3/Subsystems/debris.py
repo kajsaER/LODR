@@ -24,6 +24,7 @@ class debris:
 #        self._orientation = orientation   # Not used for assumed spherical debris
         if orbit != None:       # If an orbit was provided, use it
             self._orbit = orbit
+            omega = orbit.omega
         else:                   # If no orbit was provided, make one
             self._orbit = Orbit()
             self._orbit.make(rp, ep, omega)
@@ -38,15 +39,18 @@ class debris:
         self._cgamma = math.sqrt(1 - math.pow(self._sgamma, 2))     # cos(γ) ≥ 0
         if self._nu < math.pi:      # If ν < π then cos(γ) < 0
             self._cgamma = - self._cgamma
+        self.__omicron = omega + nu
 
     def step(self):                 # Take a step along the orbit
         dnu = (self._orbit.a*self._orbit.b*self._orbit.n /  # Δν = a*b*n/r²
                math.pow(self._r, 2))
         vp = self._orbit.vp         # Velocity at perigee
-        self._nu = self._nu + dnu   
+        self._nu = (self._nu + dnu) % (2*math.pi)   # ν ∈ [0, 2π)
         if self._nu > 2*math.pi:    # Make ν ∈ [0, 2π)
+            print("modulus not working")
             self._nu -= 2*math.pi
         elif self._nu < 0:
+            print("modulus not working")
             self._nu += 2*math.pi
         self._snu = math.sin(self._nu)
         self._cnu = math.cos(self._nu)
@@ -54,6 +58,7 @@ class debris:
                    (1+self._orbit.ep*self._cnu))    # r = a(1-ε²)/(1-ε cos(ν))
         self._v = math.sqrt(consts.mu*(2/self._r - 1/self._orbit.a))*1.0    #Vis-viva
         self._sgamma = self._orbit.rp*vp / (self._r*self._v)    # Law of Sines
+#        self.__omicron = 
 
         if self._sgamma > 1:        # Impossible γ causes exception
             raise Exception("Sin gamma = " + repr(self._sgamma) + ".\n" +
@@ -76,10 +81,10 @@ class debris:
                       - 2*consts.Re*self._r*cphi)       # Law of Cosines
         cdelta = (math.pow(self._r, 2) + math.pow(z, 2) - math.pow(consts.Re, 2)) / (2*self._r*z)
         sdelta = consts.Re/z*(-sphi)                    # Law of Sines
-        calpha = (math.pow(consts.Re, 2) + math.pow(z, 2) - math.pow(self._r, 2)) / (2*consts.Re*z)
-        salpha = self._r/z*(-sphi)
-        cbeta = extmath.cosminus(salpha, calpha, 1, 0)  # β = α - π/2
-        sbeta = extmath.sinminus(salpha, calpha, 1, 0)
+        cxi = (math.pow(consts.Re, 2) + math.pow(z, 2) - math.pow(self._r, 2)) / (2*consts.Re*z)
+        sxi = self._r/z*(-sphi)
+        cbeta = extmath.cosminus(sxi, cxi, 1, 0)  # β = α - π/2
+        sbeta = extmath.sinminus(sxi, cxi, 1, 0)
         szeta = extmath.sinminus(self._sgamma, self._cgamma, sdelta, cdelta)    # ζ = γ - δ
         czeta = extmath.cosminus(self._sgamma, self._cgamma, sdelta, cdelta)
         return{'z':z, 'v':self._v, 'szeta':szeta, 'czeta':czeta,
@@ -92,10 +97,10 @@ class debris:
         cphi = extmath.cosminus(snuw, cnuw, consts.slat, consts.clat) 
         sphi = extmath.sinminus(snuw, cnuw, consts.slat, consts.clat) 
         z = math.sqrt(math.pow(consts.Re, 2) + math.pow(self._r, 2) - 2*consts.Re*self._r*cphi)
-        calpha = (math.pow(consts.Re, 2) + math.pow(z, 2) - math.pow(self._r, 2)) / (2*consts.Re*z)
-        salpha = self._r/z*(-sphi)
-        cbeta = extmath.cosminus(salpha, calpha, 1, 0)  # β = α - π/2
-        sbeta = extmath.sinminus(salpha, calpha, 1, 0)
+        cxi = (math.pow(consts.Re, 2) + math.pow(z, 2) - math.pow(self._r, 2)) / (2*consts.Re*z)
+        sxi = self._r/z*(-sphi)
+        cbeta = extmath.cosminus(sxi, cxi, 1, 0)  # β = α - π/2
+        sbeta = extmath.sinminus(sxi, cxi, 1, 0)
         return math.atan2(sbeta, cbeta)
 
     def plot_data(self):        # Calculate and return [x,y] coordinates

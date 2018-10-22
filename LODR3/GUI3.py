@@ -132,7 +132,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
         # Buttons
         # Connect buttons to functions and short keys
         self.closeBtn.clicked.connect(self.close_application)
-        self.closeBtn.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Quit))  # Doesn't work since system update
+        self.closeBtn.setShortcut(QtGui.QKeySequence.Quit)  # Doesn't work since system update
         self.closeBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_W)) # Added this to solve
         self.runBtn.clicked.connect(self.run_pushed)
         self.runBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
@@ -181,8 +181,18 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                         O = set(self.orbitConf.items(orbname))  # is the same as the local one
                         if len(o & O) == 3:     # If match is found
                             break               # Stop looking
-                if len(o & O) < 3:
-                    print("Match not found")    # Make a message box to choose which orbit to use, possibly rename
+                if len(o & O) < 3:              # If no match was found
+                    choice = NoMatch(d.get("orbit")).exec_()    # Ask user what to do
+                    if choice == QtWidgets.QMessageBox.RejectRole:      # Use stored orbit parameters
+                        pass                                    # O = O
+                    elif choice == QtWidgets.QMessageBox.ActionRole:    # Rename the new orbit
+                        orbname = d.get("orbit")
+                        name = orbname
+                        while orbname in self.orbit_list:   # While name is a duplicate, ask for a new one
+                            orbname = str(QtWidgets.QInputDialog.getText(self.central_widget,
+                                      "Rename Orbit", "Name")[0])
+                        O = set(orbitscp.items(name))           # O = o
+                        self.insert_orbit(orbname, dict(O))     # Put in Conf and list
                 o = dict(O)
                 orb = orbit()       # Make a new orbit object with chosen parameters
                 orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
