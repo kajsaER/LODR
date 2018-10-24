@@ -327,7 +327,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
     def plot_transfer(self):# Plot debris transfer between orbits
         data = self.debris.transfer_data()  # Get matrix of transfer points
         if len(data) > 0:   # If there are points in the matrix
-            self.graph.plot(data[:, 0], data[:, 1]) # Plot the transfer
+            self.graph.plot(data[:, 0], data[:, 1], '*') # Plot the transfer
             self.canvas.draw()
 
     def update_position(self):  # Update the displayed position values

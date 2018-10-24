@@ -34,6 +34,7 @@ class orbit:
         self.n = math.sqrt(consts.mu/math.pow(self.a, 3))   # Mean angular velocity  2*math.pi/self.T
  
     def find(self, z, v, szeta, czeta, sbeta, cbeta):       # Find an orbit that fits the measurements
+        print("Find")
         sxi = extmath.sinplus(sbeta, cbeta, 1, 0)
         cxi = extmath.cosplus(sbeta, cbeta, 1, 0)
         r = math.sqrt(math.pow(consts.Re, 2) + math.pow(z, 2) - 2*consts.Re*z*cxi) # Law of Cosines
@@ -58,6 +59,8 @@ class orbit:
         nuw = math.atan2(snuw, cnuw)
         x = 1
         passes = 0
+        
+        print("r: " + repr(r) + "   v: " + repr(v) + "   gamma:" + repr(math.degrees(math.atan2(sgamma, cgamma))))
 
         while passes < 3:       # Run for at least one whole orbit
             v1 = v
