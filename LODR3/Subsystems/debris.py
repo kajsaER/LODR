@@ -80,8 +80,6 @@ class debris:
         sbeta = extmath.sinminus(sxi, cxi, 1, 0)
         szeta = extmath.sinminus(self._sgamma, self._cgamma, sdelta, cdelta)    # ζ = γ - δ
         czeta = extmath.cosminus(self._sgamma, self._cgamma, sdelta, cdelta)
-        print("Measure")
-        print("r: " + repr(self._r) + "   v: " + repr(self._v) + "   gamma: " + repr(math.degrees(math.atan2(self._sgamma, self._cgamma))))
         return{'z':z, 'v':self._v, 'szeta':szeta, 'czeta':czeta,
                 'sbeta':sbeta, 'cbeta':cbeta, 'sdelta':sdelta,
                 'cdelta':cdelta, 'sphi':sphi, 'cphi':cphi}
@@ -116,8 +114,6 @@ class debris:
         cgamma = self._cgamma
         self._sgamma = extmath.sinplus(sgamma, cgamma, sdzeta, cdzeta)
         self._cgamma = extmath.cosplus(sgamma, cgamma, sdzeta, cdzeta)
-        print("Hit")
-        print("r: " + repr(self._r) + "   v: " + repr(v) + "   gamma: " + repr(math.degrees(math.atan2(sgamma, cgamma))))
         return np.array([szeta2, czeta2, v])
 
     def update_nu(self):    # Update ν to match ο and ω
@@ -126,7 +122,6 @@ class debris:
         self._cnu = math.cos(self._nu)
 
     def move(self):
-        print("In Move")
         dt = 1.0            # Time step is 1s
         r1 = self._r        # Starting values
         v1 = self._v
@@ -147,9 +142,6 @@ class debris:
         self._v = v2
         self._sgamma = sgamma2
         self._cgamma = cgamma2
-
-        print("r1: " + repr(r1) + "   v1: " + repr(v1) + "   gamma1: " + repr(math.degrees(math.atan2(sgamma1, cgamma1))))
-        print("r2: " + repr(r2) + "   v2: " + repr(v2) + "   gamma2: " + repr(math.degrees(math.atan2(sgamma2, cgamma2))))
 
     def transfer(self):         # Add coordinates to transfer matrix
         self.__Transfer = np.vstack((self.__Transfer, self.plot_data()))

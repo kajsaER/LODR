@@ -131,6 +131,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
         
         # Buttons
         # Connect buttons to functions and short keys
+#        app.aboutToQuit.connect(self.close_application)
         self.closeBtn.clicked.connect(self.close_application)
         self.closeBtn.setShortcut(QtGui.QKeySequence.Quit)  # Doesn't work since system update
         self.closeBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_W)) # Added this to solve
@@ -138,6 +139,8 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
         self.runBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R))
         self.resetBtn.clicked.connect(self.reset_debris)
 #        self.resetBtn.setShortcut(QtGui.QKeySequence(QtCore.Qt.CTRL + QtCore.Qt.Key_R)) Potential short key for resetting orbit
+        self.WholePlotBtn.clicked.connect(self.show_whole_plot)
+        self.EmptyPlotBtn.clicked.connect(self.empty_plot)
 
         # PlotView
         bgcolor =  np.asarray(self.palette().color(self.backgroundRole()).getRgb()[0:3])/255    # Get the bg color of the GUI
@@ -289,7 +292,10 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                                 zeta_max = math.pi/2        # Set ζ = π/2
                             self.fire(beta_min, beta_max, zeta_min, zeta_max)   # Fire at given angles
                             fired = True    # Remember that the laser was fired
-                            self.plot_transfer()    # Plot a line between the transfer points
+                            if self.pltTransfer.isChecked():
+                                self.plot_transfer()    # Plot a line between the transfer points
+                            if self.pltApprox.isChecked():
+                                self.plot_approx_orbit()    # Plot approximation
                             self.plot_orbit()       # Plot the new orbit
                 elif beta_achieved:     # If β was in range but no longer is
                     if not zeta_achieved:   # If ζ wasn't found
@@ -431,6 +437,10 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
     def plot_orbit(self):   # Plot orbit in graph
         data = self.debris._orbit.plot_data()   # Get [x,y] coordinates
         self.graph.plot(data[0], data[1])
+        self.graph.axis('equal')
+        self.canvas.draw()
+
+    def show_whole_plot(self):
         self.graph.axis('equal')
         self.canvas.draw()
 

@@ -61,51 +61,25 @@ class laser:
         cdelta = meas['cdelta']
         sphi = meas['sphi']         # ∠rRe
         cphi = meas['cphi']
-        print("FRIE! tau: " + repr(duration))
-        if duration <= 1:           # If the duration is less than 1s, calculate for it all
-            debval = deb.hit(self.fluence(z, ant.Deff(), atm), szeta,
-                    czeta, self._frep*duration)     # Get new velocity after hit by laser
-            szeta = debval[0]       # New ∠vz
-            czeta = debval[1]
-            v = debval [2]          # New velocity
-            deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)   # Find orbit fitting new values
-            deb.update_nu()
-#            deb._sgamma = extmath.sinplus(sdelta, cdelta, szeta, czeta) # γ = δ + ζ
-#            deb._cgamma = extmath.cosplus(sdelta, cdelta, szeta, czeta) # ∠vr
-        else :                      # If the duration is more than 1s, calculate for 1s
-            debval = deb.hit(self.fluence(z,ant.Deff(), atm), szeta,
+        if duration > 1:           # If the duration is longer than 1s
+            debval = deb.hit(self.fluence(z,ant.Deff(), atm), szeta,    # Do a 1s hit
                     czeta, self._frep)
-            szeta = debval[0]           # New ∠vz
-            czeta = debval[1]
-            v = debval[2]               # New velocity
             duration -= 1               # Decreas duration with 1s
             deb.move()
-            meas = deb.measure()    # Measure again
+            meas = deb.measure()        # Measure again
             beta = math.atan2(meas['sbeta'], meas['cbeta']) # Elevation angle
             zeta = math.atan2(meas['szeta'], meas['cbeta']) # ∠vz
             if (beta_min < beta < beta_max) and (zeta_min < zeta < zeta_max):   # If still in range
                 self.fire(ant, deb, duration, atm, beta_min, beta_max, 
                           zeta_min, zeta_max)  # Fire again
-#        deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)   # Find orbit fitting new values
-#        sw = deb._orbit.sw          # New argument of perigee
-#        cw = deb._orbit.cw
-#        spp = extmath.sinplus(sphi, cphi, consts.slat, consts.clat) # φ + ∅
-#        cpp = extmath.cosplus(sphi, cphi, consts.slat, consts.clat)
-#        deb._snu = extmath.sinminus(spp, cpp, sw, cw)               # ν = φ + ∅ - ω
-#        deb._cnu = extmath.cosminus(spp, cpp, sw, cw)
-#        deb._nu = math.atan2(deb._snu, deb._cnu)
-#        if deb._nu < 0:             # Make ν ∈ [0, 2π)
-#            deb._nu += 2*math.pi
-#        deb._sgamma = extmath.sinplus(sdelta, cdelta, szeta, czeta) # γ = δ + ζ
-#        deb._cgamma = extmath.cosplus(sdelta, cdelta, szeta, czeta) # ∠vr
-#        if duration > 0:            # If there is still time left in duration
-#            deb.step()              # Let debris move along its new orbit, one step
-#            meas = deb.measure()    # Measure again
-#            beta = math.atan2(meas['sbeta'], meas['cbeta']) # Elevation angle
-#            zeta = math.atan2(meas['szeta'], meas['cbeta']) # ∠vz
-#            if (beta_min < beta < beta_max) and (zeta_min < zeta < zeta_max):   # If still in range
-#                self.fire(ant, deb, duration, atm, beta_min, beta_max, 
-#                          zeta_min, zeta_max)  # Fire again
+        else :                      # If the duration is less than 1s
+            debval = deb.hit(self.fluence(z, ant.Deff(), atm), szeta,   # Do a hit for the remaining duration
+                    czeta, self._frep*duration)     # Get new velocity after hit by laser
+            szeta = debval[0]       # New ∠vz
+            czeta = debval[1]
+            v = debval [2]          # New velocity
+            deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)   # Find orbit fitting new values
+            deb.update_nu()         # Update ν to match ο and ω for the new orbit
 
     def get_data(self):             # Get variable values
         string = ("P: " + str(self._P) + "\n" +
