@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 tol = 1e-4      # Tolerance for 0
-
+rpmin = 6538e+03    # Altitudes at perigee below 160 km will descend due to the atmospheric resistance
 
 class orbit:
     def __init__(self):
@@ -159,7 +159,6 @@ class orbit:
             self.omega = 0.0
         
         self.n = math.sqrt(consts.mu/math.pow(self.a, 3))   # Mean angular velocity
-    
             
     def plot_approx_data(self):     # Get data points for plotting the approximation process
         X = self.__vals[:, 5]

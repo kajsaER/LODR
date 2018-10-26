@@ -7,7 +7,8 @@ from .Support_Files import extmath
 import matplotlib.pyplot as plt
 import numpy as np
 
-tol = 1e-4      # Tolerance for 0
+tol = 1e-4          # Tolerance for 0
+rpmin = 6538e+03    # Altitudes at perigee below 160 km will descend due to the atmospheric resistance
 
 class debris:
     def __init__(self, ID, etac, Cm, size, mass, nu,
@@ -112,7 +113,7 @@ class debris:
         czeta2 = extmath.cosplus(szeta, czeta, sdzeta, cdzeta)
         sgamma = self._sgamma
         cgamma = self._cgamma
-        self._sgamma = extmath.sinplus(sgamma, cgamma, sdzeta, cdzeta)
+        self._sgamma = extmath.sinplus(sgamma, cgamma, sdzeta, cdzeta)  # γ₂ = γ₁ + Δζ
         self._cgamma = extmath.cosplus(sgamma, cgamma, sdzeta, cdzeta)
         return np.array([szeta2, czeta2, v])
 
@@ -142,6 +143,12 @@ class debris:
         self._v = v2
         self._sgamma = sgamma2
         self._cgamma = cgamma2
+
+    def inAtmosphere(self):
+        if self._orbit.rp < rpmin:
+            return True
+        else:
+            return False
 
     def transfer(self):         # Add coordinates to transfer matrix
         self.__Transfer = np.vstack((self.__Transfer, self.plot_data()))

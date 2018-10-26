@@ -297,6 +297,14 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                             if self.pltApprox.isChecked():
                                 self.plot_approx_orbit()    # Plot approximation
                             self.plot_orbit()       # Plot the new orbit
+
+                            if self.debris.inAtmosphere():
+                                self.running = False
+                                self.success = True
+                                if self.lock.locked():
+                                    self.lock.release()
+                                self.killed.emit()
+
                 elif beta_achieved:     # If β was in range but no longer is
                     if not zeta_achieved:   # If ζ wasn't found
                         self.running = False    # Stop the loop, nothing will change with set values
@@ -309,17 +317,26 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
     #            self.update_position()      # Updating the position in each iteration causes intermittent segmentation faults from PqQt package
                 td = time.time() - t1   # Check how long the iteration took
                 ts = .1 - td            # Compute sleep time
-                self.lock.release()
+                if self.lock.locked():
+                    self.lock.release()
                 time.sleep(ts if ts > 0 else 0) # Only sleep if iteration was quick enough
             # While loop finished
             except Exception as e:      # If an exception was raised
+                self.success = False
                 self.running = False    # Stop loop
-                self.lock.release()     # Make sure processor is released
+                if self.lock.locked():
+                    self.lock.release()     # Make sure processor is released
                 self.kill_reason = e    # Store message for exception
                 self.killed.emit()      # Emit kill signal
 
     def on_killed(self):    # When kill signal is given, show message box with explination message
-        QtWidgets.QMessageBox.information(None, "Error", str(self.kill_reason), QtWidgets.QMessageBox.Ok)
+        if self.success:
+            QtWidgets.QMessageBox.information(None, "De-orbit successful",
+                      ("The orbit has entered the atmosphere.\n" +
+                       "The debris will crash or burn up in the atmosphere."),
+                        QtWidgets.QMessageBox.Ok)
+        else:
+            QtWidgets.QMessageBox.information(None, "Error", str(self.kill_reason), QtWidgets.QMessageBox.Ok)
 
     def plot_debris(self):  # Plot debris position in the graph
         data = self.debris.plot_data()  # Get [x,y] coordinates 
@@ -333,7 +350,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
     def plot_transfer(self):# Plot debris transfer between orbits
         data = self.debris.transfer_data()  # Get matrix of transfer points
         if len(data) > 0:   # If there are points in the matrix
-            self.graph.plot(data[:, 0], data[:, 1], '*') # Plot the transfer
+            self.graph.plot(data[:, 0], data[:, 1], '--') # Plot the transfer with a dashed line
             self.canvas.draw()
 
     def update_position(self):  # Update the displayed position values

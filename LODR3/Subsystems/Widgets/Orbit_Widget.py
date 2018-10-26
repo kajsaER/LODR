@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 import math
-#from orbit import orbit
 
 qtCreatorNewOrbit = "Subsystems/ui_Files/NewOrbit.ui"
 NewOrbitClass, NewOrbitBaseClass = uic.loadUiType(qtCreatorNewOrbit)
