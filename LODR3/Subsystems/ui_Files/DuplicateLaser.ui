@@ -108,6 +108,12 @@ What do you want to do?</string>
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>apply2All</tabstop>
+  <tabstop>skipButton</tabstop>
+  <tabstop>renameButton</tabstop>
+  <tabstop>replaceButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

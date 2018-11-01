@@ -26,6 +26,9 @@ DuplicateLaserClass, DuplicateLaserBaseClass = uic.loadUiType(qtCreatorDuplicate
 units = {'P':'W', 'W':'J','lambda':'m', 'frep':'Hz', 'tau':'s', 'T':'s'}
 counterParam = {'P':'W', 'W':'tau', }
 
+digits = 1
+resolution = math.pow(10, digits)
+
 
 ###################### End of Preface ##############################
 ####################################################################
@@ -94,24 +97,51 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for pre
         self.set_default_value('pulse duration', 'tau')
         self.set_default_value('fire duration', 'T')
 
+    def valueFromSlider(self, x, var):
+        exp0 = eval('self.exp0_' + var)
+        if x < (1000 * resolution - 1):
+            r = 0
+            exp = exp0
+            y = round((x + 1)/resolution, digits)
+        else:
+            n = round(999 * resolution)
+            z = round(x - (1000 * resolution - 1))
+            r = z // n + 1
+            y = round((z % n)/resolution + 1, digits)
+            exp = exp0 + r * 3
+        return (y, exp)
+
+    def sliderFromValue(self, y, exp, exp0):
+        if exp == exp0:
+            x = y * resolution -1
+        else:
+            zp = (y - 1) * resolution
+            r = (exp - exp0)/3
+            z = (r-1) * 999 * resolution + zp
+            x = z + 1000 * resolution - 1
+        return (x)
+
     def set_default_value(self, LONG, SHORT):   # Set default value with prefixed units
         temp = extmath.prefixedValue(self.LaserType.get(LONG))  # Get prefixed value
-        exec('self.num_' + SHORT + '.display(temp[1])') # Display value
+        exec('self.num_'+SHORT+'.display(temp[1])') # Display value
         exec('self.min_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' min\')))')  # Get min and max values
         exec('self.max_'+SHORT+' = extmath.myfloat(self.LaserType.get(str(LONG + \' max\')))')
-        pot = pow(10, temp[2])      # Get the power of 10
-        exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+   # Get scale for the slider
-                '(self.slide_'+SHORT+'.maximum() - self.slide_'+SHORT+'.minimum())')
         if SHORT not in {'M2', 'Cd'}:   # If a power of 10 could be present
-            exec('self.pot_' + SHORT + ' = pot')    # Set power of 10
-            if pot != 1:            # If power of 10 isn't 1
-                exec('self.unit_' + SHORT + '.setText(temp[0]+units.get(SHORT))')   # Display prefixed unit
-            exec('self.slide_'+SHORT+'.setValue('+  # Move slider to the right value
-                    '(self.num_'+SHORT+'.value()*self.pot_'+SHORT+'-self.min_'+SHORT+')/'+
-                    'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
-        else:       # If no power of 10 possible, move slider to the right value
-            exec('self.slide_'+SHORT+'.setValue((self.num_'+SHORT+'.value()-self.min_'+SHORT+')/'+
-                    'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum())')
+            exp0 = eval('extmath.prefixedValue(self.min_'+SHORT+')[2]')     # Exponent of minimum value
+            expm = eval('extmath.prefixedValue(self.max_'+SHORT+')[2]')     # Exponent of maximum value
+            exec('self.slide_' + SHORT + '.setMinimum(0)')
+            exec('self.slide_' + SHORT + '.setMaximum(((expm - exp0)/3 * 999 + 1000) * resolution - 1)')
+            exec('self.exp0_' +SHORT+' = exp0')
+            x = self.sliderFromValue(temp[1], temp[2], exp0)
+            exec('self.slide_'+SHORT+'.setValue(x)')
+            exec('self.unit_' +SHORT+ '.setText(temp[0]+units.get(SHORT))')
+            if SHORT == 'T':
+                exec('self.pot_' + SHORT + ' = pow(10, temp[2])')    # Set power of 10
+        else:       
+            exec('self.scale_'+SHORT+' = (self.max_' + SHORT + '-self.min_' + SHORT+')/'+   # Get scale for the slider
+                '(self.slide_'+SHORT+'.maximum() - self.slide_'+SHORT+'.minimum())')
+            exec('self.slide_'+SHORT+'.setValue(round((self.num_'+SHORT+'.value()-self.min_'+SHORT+')/'+
+                    'self.scale_'+SHORT+'+self.slide_'+SHORT+'.minimum()))')
     
     def double_freq(self):  # Double or normal frequency
         if self.freqDub.isChecked():    # If doubling was ticked
@@ -124,33 +154,67 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for pre
             self.num_lambda.display(2*self.num_lambda.value())      # Display 2*λ
 
     def slide_trigged(self, action, var):   # If slider was triggered, Update value and unit
-        val = eval('(self.slide_'+var+'.value()-self.slide_'+var+'.minimum())*self.scale_'+var+
-                '+self.min_'+var)
-        temp = extmath.prefixedValue(val)
         if var not in {'M2', 'Cd'}:
-            exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            exec('self.pot_' + var + ' = pow(10, temp[2])')
-        exec('self.num_' + var + '.display(temp[1])')
+            shift = False
+            value = eval('self.slide_' + var + '.value()')
+            y, exp = self.valueFromSlider(value, var)
+            val = y * math.pow(10, exp)
+            pref = extmath.getPrefix(math.pow(10, exp))
+            exec('self.unit_' + var + '.setText(pref + units.get(var))')
+            exec('self.num_' + var + '.display(y)')
+            if var == 'T':
+                exec('self.pot_' + var + ' = math.pow(10, exp)')
+        else:
+            val = eval('(self.slide_'+var+'.value()-self.slide_'+var+'.minimum())*self.scale_'+var+
+                       '+self.min_'+var)
+            temp = extmath.prefixedValue(val)
+            exec('self.num_' + var + '.display(temp[1])')
         if var != 'T':          # If not fireing period, set value in laser
             exec('self.main.lasersystem._' + var + ' = val')
 
     def slide_moved(self, value, var):      # If slider was moved, update value and unit
-        val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
-                '+self.min_'+var) 
-        temp = extmath.prefixedValue(val)
         if var not in {'M2', 'Cd'}:
-            exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            exec('self.pot_' + var + ' = pow(10, temp[2])')
-        exec('self.num_' + var + '.display(temp[1])')
+            y, exp = self.valueFromSlider(value, var)
+            pref = extmath.getPrefix(math.pow(10, exp))
+            exec('self.unit_' + var + '.setText(pref + units.get(var))')
+            exec('self.num_' + var + '.display(y)')
+            val = y * math.pow(10, exp)
+            if var == 'T':
+                exec('self.pot_' + var + ' = math.pow(10, exp)')
+        else:
+            val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
+                       '+self.min_'+var) 
+            temp = extmath.prefixedValue(val)
+            exec('self.num_' + var + '.display(temp[1])')
 
     def slide_changed(self, value, var):    # If slider was changed, update value and unit
-        val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
-                '+self.min_'+var)
-        temp = extmath.prefixedValue(val)
         if var not in {'M2', 'Cd'}:
-            exec('self.unit_' + var + '.setText(temp[0] + units.get(var))')
-            exec('self.pot_' + var + ' = pow(10, temp[2])')
-        exec('self.num_' + var + '.display(temp[1])')
+            shift = False
+            y, exp = self.valueFromSlider(value, var)
+            val = y * math.pow(10, exp)
+            if val < eval('self.min_'+var):
+                val = eval('self.min_'+var)
+                shift = True
+            elif val > eval('self.max_'+var):
+                val = eval('self.max_'+var)
+                shift = True
+            if shift:
+                temp = extmath.prefixedValue(val)
+                exp0 = eval('self.exp0_'+var)
+                exp = temp[2]
+                x = self.sliderFromValue(temp[1], exp, exp0)
+                exec('self.slide_' + var + '.setValue(x)')
+                y, exp = self.valueFromSlider(x, var)
+            pref = extmath.getPrefix(math.pow(10, exp))
+            exec('self.unit_' + var + '.setText(pref + units.get(var))')
+            exec('self.num_' + var + '.display(y)')
+            if var == 'T':
+                exec('self.pot_' + var + ' = pow(10, exp)')
+        else:
+            val = eval('(value-self.slide_'+var+'.minimum())*self.scale_' + var +
+                '+self.min_'+var)
+            temp = extmath.prefixedValue(val)
+            exec('self.num_' + var + '.display(temp[1])')
         if var != 'T':          # If not fireing period, set value in laser
             exec("%s" % 'self.main.lasersystem._' + var + ' = val')
 

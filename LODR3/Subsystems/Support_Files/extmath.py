@@ -66,3 +66,9 @@ def prefixedValue(item, useDeci=False, useDeca=False, useHecto=False):
             pref = pref+1
             pot = pot-3
     return [Prefix[pref], number, pot]
+
+def getPrefix(pot):
+    try:
+        return allPot[pot]
+    except KeyError:
+        return None

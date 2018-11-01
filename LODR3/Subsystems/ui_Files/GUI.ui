@@ -1152,6 +1152,7 @@
   </action>
  </widget>
  <tabstops>
+  <tabstop>laserType</tabstop>
   <tabstop>antennaD</tabstop>
   <tabstop>antennaEff</tabstop>
   <tabstop>beta_min</tabstop>
@@ -1161,12 +1162,12 @@
   <tabstop>objectNbr</tabstop>
   <tabstop>resetBtn</tabstop>
   <tabstop>expZeta</tabstop>
-  <tabstop>closeBtn</tabstop>
-  <tabstop>runBtn</tabstop>
   <tabstop>pltTransfer</tabstop>
   <tabstop>pltApprox</tabstop>
   <tabstop>WholePlotBtn</tabstop>
   <tabstop>EmptyPlotBtn</tabstop>
+  <tabstop>closeBtn</tabstop>
+  <tabstop>runBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

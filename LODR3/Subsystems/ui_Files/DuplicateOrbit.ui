@@ -107,15 +107,13 @@ What do you want to do?</string>
     <string>Apply to all duplicates</string>
    </property>
   </widget>
-  <zorder>textBox</zorder>
-  <zorder>frame</zorder>
-  <zorder>replaceButton</zorder>
-  <zorder>skipButton</zorder>
-  <zorder>renameButton</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>horizontalSpacer_2</zorder>
-  <zorder>apply2All</zorder>
  </widget>
+ <tabstops>
+  <tabstop>apply2All</tabstop>
+  <tabstop>skipButton</tabstop>
+  <tabstop>renameButton</tabstop>
+  <tabstop>replaceButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
