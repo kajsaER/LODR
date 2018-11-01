@@ -65,7 +65,7 @@ class laser:
             debval = deb.hit(self.fluence(z,ant.Deff(), atm), szeta,    # Do a 1s hit
                     czeta, self._frep)
             duration -= 1               # Decreas duration with 1s
-            deb.move()
+            deb.move()                  # Move the debris for 1s
             meas = deb.measure()        # Measure again
             beta = math.atan2(meas['sbeta'], meas['cbeta']) # Elevation angle
             zeta = math.atan2(meas['szeta'], meas['cbeta']) # ∠vz

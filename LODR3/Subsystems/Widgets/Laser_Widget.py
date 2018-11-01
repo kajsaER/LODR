@@ -97,9 +97,9 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for pre
         self.set_default_value('pulse duration', 'tau')
         self.set_default_value('fire duration', 'T')
 
-    def valueFromSlider(self, x, var):
+    def valueFromSlider(self, x, var):          # Calculate actual value from slider position (x)
         exp0 = eval('self.exp0_' + var)
-        if x < (1000 * resolution - 1):
+        if x < (1000 * resolution - 1):         # First range is different than the rest
             r = 0
             exp = exp0
             y = round((x + 1)/resolution, digits)
@@ -111,8 +111,8 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for pre
             exp = exp0 + r * 3
         return (y, exp)
 
-    def sliderFromValue(self, y, exp, exp0):
-        if exp == exp0:
+    def sliderFromValue(self, y, exp, exp0):    # Calculate slider position (x) from the actual value y*10^(exp)
+        if exp == exp0:                         # First range has more values than the rest
             x = y * resolution -1
         else:
             zp = (y - 1) * resolution
@@ -187,25 +187,25 @@ class DefinedLaser(DefinedLaserBaseClass, DefinedLaserWidget):  # Widget for pre
             temp = extmath.prefixedValue(val)
             exec('self.num_' + var + '.display(temp[1])')
 
-    def slide_changed(self, value, var):    # If slider was changed, update value and unit
+    def slide_changed(self, value, var):    # If slider was changed, update value and unit and make sure it is in range
         if var not in {'M2', 'Cd'}:
             shift = False
             y, exp = self.valueFromSlider(value, var)
             val = y * math.pow(10, exp)
-            if val < eval('self.min_'+var):
+            if val < eval('self.min_'+var):     # Make sure not below minimum
                 val = eval('self.min_'+var)
                 shift = True
-            elif val > eval('self.max_'+var):
+            elif val > eval('self.max_'+var):   # Make sure not above maximum
                 val = eval('self.max_'+var)
                 shift = True
-            if shift:
+            if shift:                           # Move inside range
                 temp = extmath.prefixedValue(val)
                 exp0 = eval('self.exp0_'+var)
                 exp = temp[2]
                 x = self.sliderFromValue(temp[1], exp, exp0)
                 exec('self.slide_' + var + '.setValue(x)')
                 y, exp = self.valueFromSlider(x, var)
-            pref = extmath.getPrefix(math.pow(10, exp))
+            pref = extmath.getPrefix(math.pow(10, exp))     # Display unit and value
             exec('self.unit_' + var + '.setText(pref + units.get(var))')
             exec('self.num_' + var + '.display(y)')
             if var == 'T':
