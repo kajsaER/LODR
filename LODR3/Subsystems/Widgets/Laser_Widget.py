@@ -602,10 +602,10 @@ class RemoveLaser(RemoveLaserBaseClass, RemoveLaserClass):  # Widget for removin
         self.buttonBox.accepted.connect(self.remove)
 
     def remove(self):   # When button has been pushed
-        i = self.laserListWidget.currentRow()   # Get current index in the laser list
-        if i > -1:      # If valid index
-            del self.main.laser_type_list[i]    # Delete from main list
+        if self.laserListWidget.currentRow() > -1:      # If valid row chosen
             name = str(self.laserListWidget.currentItem().text())   # Get name of the laser
+            i = self.main.laser_type_list.index(name)
+            del self.main.laser_type_list[i]    # Delete from main list
             self.main.laserConf.remove_section(name)    # Remove named section from Conf
             ind = self.main.laserType.findText(name)    # Get index in main list
             self.main.laserType.removeItem(ind)         # Remove said item

@@ -194,8 +194,11 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                         while orbname in self.orbit_list:   # While name is a duplicate, ask for a new one
                             orbname = str(QtWidgets.QInputDialog.getText(self.central_widget,
                                       "Rename Orbit", "Name")[0])
-                        O = set(orbitscp.items(name))           # O = o
-                        self.insert_orbit(orbname, dict(O))     # Put in Conf and list
+                        if len(orbname) < 1:   # No new name given => use stored orbit
+                            orbname = name
+                        else:
+                            O = set(orbitscp.items(name))           # O = o
+                            self.insert_orbit(orbname, dict(O))     # Put in Conf and list
                 o = dict(O)
                 orb = orbit()       # Make a new orbit object with chosen parameters
                 orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
@@ -414,26 +417,31 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                     while name in self.orbit_list: # While name is a duplicate, ask for a new one
                         name = str(QtWidgets.QInputDialog.getText(self.central_widget,
                                 "Rename Orbit", "Name")[0])
-                    vals = dict(orbitConfTemp.items(orb))   # Put in Conf and list
-                    self.insert_orbit(name, vals)
+                    if len(name) < 1:   # No new name given => skip
+                        pass
+                    else:
+                        vals = dict(orbitConfTemp.items(orb))   # Put in Conf and list
+                        self.insert_orbit(name, vals)
                 elif action == 2: # Replace
                     vals = dict(orbitConfTemp.items(orb))   # Change values for orbit in Conf
                     self.insert_orbit(orb, vals)
         self.orbit_list.sort()  # Sort the list in alphabetical order
 
     def insert_orbit(self, name, vals): # Insert an orbit into Conf and list
+        if self.orbit_list.count(name) <= 0:
+            self.orbit_list.append(name)
         if not self.orbitConf.has_section(name):
             self.orbitConf.add_section(name)
         self.orbitConf.set(name, "rp", vals.get("rp"))
         self.orbitConf.set(name, "epsilon", vals.get("epsilon"))
         self.orbitConf.set(name, "omega", vals.get("omega"))
-        self.orbit_list.append(name)
 
     def add_orbit(self):    # Add new orbit
         self.new_orb = NewOrbit(self)   # Open new orbit window
         self.new_orb.exec_()            # Wait for it to close
 
     def remove_orbit(self): # Remove orbit
+        print(self.orbit_list)
         rem_orb = RemoveOrbit(self)     # Open remove orbit window
         rem_orb.exec_()                 # Wait for it to close
 
@@ -494,23 +502,27 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                     while name in self.laserConf.sections():    # While the name isn't unique
                         name = str(QtWidgets.QInputDialog.getText(self.central_widget,
                                 "Rename Laser", "Name")[0])     # Ask for a new one
-                    vals = dict(laserConfTemp.items(laser))     # And add it to the Conf and list
-                    self.insert_laser(name, vals)
+                    if len(name) < 1:   # No new name given => skip
+                        pass
+                    else:
+                        vals = dict(laserConfTemp.items(laser))     # And add it to the Conf and list
+                        self.insert_laser(name, vals)
                 elif action == 2: # Replace
                     vals = dict(laserConfTemp.items(laser))     # Change values in Conf
                     self.insert_laser(laser, vals)
 
     def insert_laser(self, name, vals): # Insert a laser into the Conf and list
-        if 'Custom' in self.laser_type_list:    # If list has Custom, put it second last
-            pos = self.laserType.count()-1
-        else:                                   # Else, put it last
-            pos = self.laserType.count()
+        if self.laser_type_list.count(name) <= 0:
+            if 'Custom' in self.laser_type_list:    # If list has Custom, put it second last
+                pos = self.laserType.count()-1
+            else:                                   # Else, put it last
+                pos = self.laserType.count()
+            self.laserType.insertItem(pos, name)
+            self.laser_type_list.insert(pos, name)
         if not self.laserConf.has_section(name):
             self.laserConf.add_section(name)
         for key in vals:
             self.laserConf.set(name, key, vals.get(key))
-        self.laserType.insertItem(pos, name)
-        self.laser_type_list.insert(pos, name)
 
     def add_laser(self):    # Add a new laser to the system
         new_laser = NewLaser(self)  # Open new laser window
