@@ -441,7 +441,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
         self.new_orb.exec_()            # Wait for it to close
 
     def remove_orbit(self): # Remove orbit
-        print(self.orbit_list)
         rem_orb = RemoveOrbit(self)     # Open remove orbit window
         rem_orb.exec_()                 # Wait for it to close
 
