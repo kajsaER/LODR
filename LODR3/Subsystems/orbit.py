@@ -146,23 +146,28 @@ class orbit:
         zer = np.zeros(1)                   # [0 Vr]*[Vr 0] to find where the orbit has its turning points
         temp = np.concatenate((zer, VR), axis=0)*np.concatenate((VR, zer), axis=0)
         turns = np.where(temp<0)[0]
-        self.rp = np.amin(R)
-        self.ra = np.amax(R)
-        self.a = (self.ra + self.rp)/2
-        self.ep = (self.ra-self.rp)/(self.ra+self.rp)
-        self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
-        self.vp = math.sqrt(consts.mu*(2/self.rp - 1/self.a))   # Vis-viva
         if turns.shape[0] > 1 :             # If there are turning points check if apogee or perigee
-            mini = turns[0]                 # comes first
-            if R[turns[1]] < R[mini]:
-                mini = turns[1]
-            self.cw = self.__vals[mini-1, 5]/self.rp    # Get argument of perigee
-            self.sw = self.__vals[mini-1, 6]/self.rp
+            if R[turns[1]] < R[turns[0]]:
+                perigee = turns[1]-1
+                apogee = turns[0]-1
+            else:
+                perigee = turns[0]-1
+                apogee = turns[1]-1
+            self.rp = R[perigee]
+            self.ra = R[apogee]
+            self.cw = self.__vals[perigee, 5]/self.rp    # Get argument of perigee
+            self.sw = self.__vals[perigee, 6]/self.rp
             self.omega = math.atan2(self.sw, self.cw)
         else :                              # If there are no turning points
             self.cw = 1                     # circular orbit with 0 degree argument of perigee
             self.sw = 0
             self.omega = 0.0
+            self.rp = np.amin(R)
+            self.ra = self.rp
+        self.a = (self.ra + self.rp)/2
+        self.ep = (self.ra-self.rp)/(self.ra+self.rp)
+        self.b = self.a*math.sqrt(1 - math.pow(self.ep, 2))
+        self.vp = math.sqrt(consts.mu*(2/self.rp - 1/self.a))   # Vis-viva
         
         self.n = math.sqrt(consts.mu/math.pow(self.a, 3))   # Mean angular velocity
             
