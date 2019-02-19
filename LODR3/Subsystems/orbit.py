@@ -82,7 +82,7 @@ class orbit:
             v2 = math.sqrt(math.pow(v1 + dvt, 2) + math.pow(dvn, 2))
             r2 = consts.mu / (1/2*(math.pow(v2, 2) - math.pow(v1, 2)) + consts.mu / r1) # Constant Energy
             sgamma2 = r1*v1/(r2*v2)*sgamma1                 # Law of Sines
-           
+
             if math.fabs(sgamma2) > 1 :                     # If gamma is impossible
                 sgamma2a = sgamma2
                 r2 = math.sqrt(math.pow(r1, 2) + math.pow(v1*dt, 2) - 2*r1*v1*dt*cgamma1)   # Law of Cosines
@@ -97,8 +97,14 @@ class orbit:
                 r2 = r1
 
             if math.fabs(sgamma2) > 1:                      # If it's still impossible, generate error message.
-                raise Exception("sgamma2= " + repr(sgamma2) + ",  dt= " + repr(dt) + " too big?") 
-                break
+                if math.fabs(sgamma2) - 1 > tol:
+                    raise Exception("sgamma2= " + repr(sgamma2) + ",  dt= " + repr(dt) + " too big?") 
+                    break
+                else:
+                    if sgamma2 > 1:
+                        sgamma2 = 1
+                    else:
+                        sgamma2 = -1
             
             cgamma2 = math.sqrt(1-math.pow(sgamma2, 2))     # Pythagorean trigonometric identity
             
@@ -106,8 +112,8 @@ class orbit:
                 cgamma2 = -cgamma2                                          # and adjust if needed
             
             sdnu = sgamma1/r2*v1*dt                         # Law of Sines
-            if sdnu >= 1:                                   # If impossible value, rais error message
-                raise Exception('sin(dnu): ' + repr(sdnu) +  ',  x: ' + repr(x))
+            if math.fabs(sdnu) >= 1:                                   # If impossible value, rais error message
+                raise Exception('Error in orbit.py,   line 116\n' + 'sin(dnu): ' + repr(sdnu) +  ',  x: ' + repr(x))
                 break
 
             cdnu = math.sqrt(1-math.pow(sdnu, 2))           # cos(dnu) should always be positive because dnu is small

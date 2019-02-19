@@ -1,0 +1,12 @@
+[LASER]
+Phipps2012small = [('power', '81000.0'), ('energy', '7300.0'), ('lambda', '1.06e-06'), ('m2', '2.0'), ('cd', '1.7'), ('repetition rate', '11.2'), ('pulse duration', '5e-09'), ('power min', '0E+00'), ('power max', '5E+06'), ('energy min', '1E-09'), ('energy max', '1E+06'), ('lambda min', '1E-07'), ('lambda max', '1E-03'), ('m2 min', '1'), ('m2 max', '1E+02'), ('cd min', '1'), ('cd max', '1E+01'), ('repetition rate min', '1E-01'), ('repetition rate max', '1E+11'), ('pulse duration min', '1E-15'), ('pulse duration max', '1E+01'), ('fire duration', '1E+00'), ('fire duration min', '1E-06'), ('fire duration max', '1E+03')]
+
+[ORBIT]
+Phipps2012small = [('rp', '6878000.0'), ('epsilon', '0.04'), ('omega', '2.0407')]
+Phipps2012small2 = [('rp', '6878000.0'), ('epsilon', '0.04'), ('omega', '4.135')]
+
+[DEBRIS]
+ORBITS = [('Phipps2012small', "[('rp', '6878000.0'), ('epsilon', '0.04'), ('omega', '2.0407')]"), ('Phipps2012small2', "[('rp', '6878000.0'), ('epsilon', '0.04'), ('omega', '4.135')]")]
+0xcPhipps2012small = [('mass', '0.75'), ('size', '0.1545'), ('Cm', '7.5e-05'), ('etac', '0.3'), ('nu', '0.1'), ('orbit', 'Phipps2012small')]
+0xcPhipps2012small2 = [('mass', '0.75'), ('size', '0.1545'), ('Cm', '7.5e-05'), ('etac', '0.3'), ('nu', '0.1'), ('orbit', 'Phipps2012small2')]
+

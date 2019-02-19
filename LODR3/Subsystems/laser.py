@@ -75,11 +75,11 @@ class laser:
         else :                      # If the duration is less than 1s
             debval = deb.hit(self.fluence(z, ant.Deff(), atm), szeta,   # Do a hit for the remaining duration
                     czeta, self._frep*duration)     # Get new velocity after hit by laser
-            szeta = debval[0]       # New ∠vz
-            czeta = debval[1]
-            v = debval [2]          # New velocity
-            deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)   # Find orbit fitting new values
-            deb.update_nu()         # Update ν to match ο and ω for the new orbit
+        szeta = debval[0]       # New ∠vz
+        czeta = debval[1]
+        v = debval [2]          # New velocity
+        deb._orbit.find(z, v, szeta, czeta, sbeta, cbeta)   # Find orbit fitting new values
+        deb.update_nu()         # Update ν to match ο and ω for the new orbit
 
     def get_data(self):             # Get variable values
         string = ("P: " + str(self._P) + "\n" +

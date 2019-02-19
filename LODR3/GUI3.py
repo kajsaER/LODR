@@ -48,11 +48,13 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
         # Make a dictionry for default values and ranges of lasers
         dl = dict.fromkeys(['Power', 'Energy', 'Lambda', 'M2', 'Cd',
                             'Repetition rate', 'Pulse duration'])
-        dl.update({'Energy min':'1E-09', 'Energy max':'1E+03', 'M2 min':'1', 'M2 max':'1E+02',
-            'Cd min':'1', 'Cd max':'1E+01',
-            'Repetition rate min':'1E+00', 'Repetition rate max':'1E+11',
-            'Pulse duration min':'1E-15', 'Pulse duration max':'1E+00',
-            'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+01'})
+        dl.update({'Power min':'0E+00', 'Power max':'5E+06',
+            'Energy min':'1E-09', 'Energy max':'1E+06',
+            'Lambda min':'1E-07', 'Lambda max':'1E-03',
+            'M2 min':'1', 'M2 max':'1E+02', 'Cd min':'1', 'Cd max':'1E+01',
+            'Repetition rate min':'1E-01', 'Repetition rate max':'1E+11',
+            'Pulse duration min':'1E-15', 'Pulse duration max':'1E+01',
+            'Fire duration':'1E+00', 'Fire duration min':'1E-06', 'Fire duration max':'1E+03'})
         # Make a SafeConfigParser for lasers, using the default values from dl
         self.laserConf = SCP(dl, allow_no_value=True, delimiters=('='))
         
@@ -257,7 +259,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
             self.debris = self.debris_list[i-1]     # Store debris object
             self.num_m.display(self.debris._mass)   # Display debris info
             self.num_d.display(self.debris._size)
-            self.num_Cm.display(self.debris._Cm)
+            self.num_Cm.display(self.debris._Cm*1E+06)  # Display in micro N/W
             self.num_etac.display(self.debris._etac)
             self.update_position()                  # Update displayed position info
             self.update_orbit()                     # Update displayed orbit info
@@ -307,7 +309,6 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                                 if self.lock.locked():
                                     self.lock.release()
                                 self.killed.emit()
-
                 elif beta_achieved:     # If β was in range but no longer is
                     if not zeta_achieved:   # If ζ wasn't found
                         self.running = False    # Stop the loop, nothing will change with set values
@@ -379,7 +380,7 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
                 rp=float(o.get("rp")), ep=float(o.get("epsilon")), omega=float(o.get("omega")))
         self.num_m.display(self.debris._mass)
         self.num_d.display(self.debris._size)
-        self.num_Cm.display(self.debris._Cm)
+        self.num_Cm.display(self.debris._Cm*1E+06)
         self.num_etac.display(self.debris._etac)
         self.update_position()
         self.update_orbit()
@@ -536,8 +537,12 @@ class OperatorGUI(QtWidgets.QMainWindow, Ui_MainWindow):    # Main GUI
             filename = self.set_filename('lcfg', formats=['Laser Files (*.lcfg)'])
             if filename == None:    # If no filename was chosen
                 return              # Quit save function
+        laserConfTemp = SCP(allow_no_value=True, delimiters=('='))  # Make local SCP
+        for laser in self.laserConf:    # For each laser in the global Conf
+            if laser not in {'DEFAULT','Custom'}:  # If it's not already in the global Conf
+                laserConfTemp.read_dict({laser : dict(self.laserConf.items(str(laser)))})
         with open(filename, 'w') as writefile:  # Open file and write Conf data to it
-            self.laserConf.write(writefile)
+            laserConfTemp.write(writefile)
 
     def laser_choice(self, choice): # When laser choice box is edited
         if choice == "Choose":      # If the chosen value is Choose, show the empty widget

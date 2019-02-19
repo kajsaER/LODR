@@ -10,11 +10,11 @@ qtCreatorRemoveDebris = "Subsystems/ui_Files/RemoveDebris.ui"
 RemoveDebrisClass, RemoveDebrisBaseClass = uic.loadUiType(qtCreatorRemoveDebris)
 
 mmin = 0        # Minimum mass
-mmax = 100      # Maximum mass
+mmax = 1E+04    # Maximum mass
 dmin = 0        # Minimum diameter
 dmax = 5        # Maximun diameter
 Cmmin = 0       # Minimum momentum coupling coefficient
-Cmmax = 400     # Maximum momentum coupling coefficient
+Cmmax = 5E-04   # Maximum momentum coupling coefficient
 etacmin = 0     # Minimum combined efficiency factor
 etacmax = 1     # Maximum combined efficiency factor
 numin = 0       # Minimum true anomaly
@@ -145,7 +145,7 @@ class NewDebris(NewDebrisBaseClass, NewDebrisClass):
         o = dict(orbvals)
         orb.make(float(o.get("rp")), float(o.get("epsilon")), float(o.get("omega")))
         deb = debris(name, self.valueetac, self.valueCm,    # Make debris
-                     self.valued, self.valuem, orb, self.valuenu)
+                     self.valued, self.valuem, self.valuenu, orb)
         self.main.debris_list.append(deb)   # Add debris to main list
 
 

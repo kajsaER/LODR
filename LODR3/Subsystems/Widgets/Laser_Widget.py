@@ -236,12 +236,8 @@ class UndefinedLaser(UndefinedLaserBaseClass, UndefinedLaserWidget):    # Widget
         if 'Custom' not in self.main.laser_type_list:
             self.main.laserType.addItem('Custom')
             self.main.laser_type_list.append('Custom')
-        LT = {'Power':'1000', 'Power min':'1E+00', 'Power max':'5E+06',
-              'Energy':'1E-09', 'Energy min':'1E-09', 'Energy max':'1E+00',
-              'Lambda':'1E-09', 'Lambda min':'1E-09', 'Lambda max':'1E+00', 
-              'M2':'1', 'M2 min':'1', 'M2 max':'1E+02',
-              'Cd':'1', 'Cd min':'1', 'Cb max':'1E+01',
-              'Repetition rate':'1E+11', 'Pulse duration':'1e-09'}
+        LT = {'Power':'1000', 'Energy':'1E-09', 'Lambda':'1E-07', 'M2':'1', 'Cd':'1',
+              'Repetition rate':'1E+10', 'Pulse duration':'1e-09'}
         for name in list(LT.keys()):
             self.main.laserConf.set('Custom', name, LT[name])
 
@@ -577,7 +573,7 @@ class NewLaser(NewLaserBaseClass, NewLaserClass):   # Widget for making new defi
         self.main.laserConf.set(name, "m2", str(self.valueM2))
         self.main.laserConf.set(name, "cd", str(self.valueCd))
         self.main.laserConf.set(name, "repetition rate", str(self.valuefrep))
-        self.main.laserConf.set(name, "tau", str(self.valuetau))
+        self.main.laserConf.set(name, "pulse duration", str(self.valuetau))
         
         if "Custom" in self.main.laser_type_list:   # If main list includes "Custom"
             pos = self.main.laserType.count()-1     # Put second last in list

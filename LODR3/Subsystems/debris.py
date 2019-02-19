@@ -56,11 +56,17 @@ class debris:
         self._sgamma = self._orbit.rp*vp / (self._r*self._v)    # Law of Sines
         self.__omicron = (self.__omicron + dnu) % (2*math.pi) 
 
-        if self._sgamma > 1:        # Impossible γ causes exception
-            raise Exception("Sin gamma = " + repr(self._sgamma) + ".\n" +
-                            "vp = " + repr(self.vp) + "  v = " + repr(self._v) + ".\n" +
+        if math.fabs(self._sgamma) > 1:     # Impossible γ causes exception
+            if math.fabs(self._sgamma) - 1 > tol:
+                raise Exception("Sin gamma = " + repr(self._sgamma) + ".\n" +
+                            "vp = " + repr(self._orbit.vp) + "  v = " + repr(self._v) + ".\n" +
                             "rp = " + repr(self._orbit.rp) + "  r = " + repr(self._r))
-        
+            else:
+                if self._sgamma > 0:
+                    self._sgamma = 1
+                else:
+                    self._sgamma = -1
+
         self._cgamma = math.sqrt(1 - math.pow(self._sgamma, 2)) # Pythagorean trigonometric identity
         
         if self._nu < math.pi:      # If ν < π then γ ∈ [π/2, 3π/2]
@@ -134,9 +140,19 @@ class debris:
                 (2 * r1 * r2))                                              #     (2 * r₁ * r₂)
         do = math.atan2(sdo, cdo)
         self.__omicron = (self.__omicron + do) % (2*math.pi)    # ο₂ = ο₁ + Δο ∈ [0, 2π)
-
         v2 = math.sqrt(2*(consts.mu/r2 - consts.mu/r1) + math.pow(v1, 2))   # Constant energy and mass
         sgamma2 = (r1*v1) / (r2*v2) * sgamma1                               # Constant angular momentum
+        if math.fabs(sgamma2) > 1:
+            if math.fabs(sgamma2) - 1 > tol:
+                raise Exception('Exception in debris.py move function\n' + "Sin gamma2 = " + repr(self._sgamma) + ".\n" +
+                            "vp = " + repr(self._orbit.vp) + "  v = " + repr(self._v) + ".\n" +
+                            "rp = " + repr(self._orbit.rp) + "  r = " + repr(self._r))
+            else:
+                if sgamma2 > 1:
+                    sgamma2 = 1
+                else:
+                    sgamma2 = -1
+
         cgamma2 = math.sqrt(1 - math.pow(sgamma2, 2))                       # Pythagorean trigonometric identity
 
         self._r = r2        # Store new values
